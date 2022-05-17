@@ -54,12 +54,10 @@ function Results() {
                         </tr>
 
                         <tr>
-                             
                             <td>Ulpiana</td>
                             <td><b>2-1</b></td>
                             <td>Malisheva</td>
                             <td>23 August 2022</td>
-                        
                         </tr>
 
                         <tr>
