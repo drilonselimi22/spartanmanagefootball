@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import { Form, Button } from 'react-bootstrap';
 import background from '../images/homeimage.jpg';
 
@@ -52,5 +53,13 @@ function Register() {
     );
 }
 
+=======
+
+function Register() {
+    return (
+        <h1>Register Page</h1>
+    );
+};
+>>>>>>> develop
 
 export default Register;
