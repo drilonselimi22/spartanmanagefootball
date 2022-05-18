@@ -19,9 +19,7 @@ import Teams from './components/teams';
 import About from './components/about';
 import Login from './components/login';
 import Register from './components/register';
-
 import Match from './components/match';
-
 
 function App() {
   return (
