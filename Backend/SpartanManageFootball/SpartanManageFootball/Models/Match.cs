@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpartanManageFootball.Models
 {
@@ -6,14 +7,12 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int MatchId { get; set; }
-        [Required]
+       
         public Squad EkipiVendas { get; set; }
-        [Required] 
+      
         public Squad EkipiMusafir { get; set; }
-
-        [Required] 
         public List<Referee> Referees { get; set; }
-        [Required] 
+       
         public DateTime MatchDate { get; set; }
     }
 }

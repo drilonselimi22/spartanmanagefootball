@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DELL\\Desktop\\SpartanManageFootball\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj": {}
+    "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DELL\\Desktop\\SpartanManageFootball\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj": {
+    "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DELL\\Desktop\\SpartanManageFootball\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
         "projectName": "SpartanManageFootball",
-        "projectPath": "C:\\Users\\DELL\\Desktop\\SpartanManageFootball\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
+        "projectPath": "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DELL\\Desktop\\SpartanManageFootball\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\obj\\",
+        "outputPath": "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,18 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[10.0.1, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[10.0.1, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.5, )"
@@ -59,6 +71,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.5, )"
+            },
+            "Realm": {
+              "target": "Package",
+              "version": "[10.13.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.11.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
