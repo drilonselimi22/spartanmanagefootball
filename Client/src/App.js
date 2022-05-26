@@ -13,8 +13,6 @@ import SpartanAdmin from './components/spartanAdmin';
 import SpartanLeagues from './spartanadmin/pages/spartanLeagues';
 import SpartanSquads from './spartanadmin/pages/spartanSquads';
 import './App.css';
-import Register from './components/register';
-import Match from './components/match';
 
 function App() {
   return (
