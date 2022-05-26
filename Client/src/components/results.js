@@ -3,9 +3,11 @@ import React from 'react';
 import stadiumimage from '../images/stadium.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
+import Navigation from './navigation';
 function Results() {
     return (
         <div>
+            <Navigation />
             <div style={{
                 backgroundImage: `url(${stadiumimage})`,
                 height: '40vh',
@@ -26,9 +28,9 @@ function Results() {
                 margin: 'auto',
                 marginTop: '50px'
             }}>
-                
+
                 <Table striped bordered hover>
-                
+
                     <thead>
                         <tr>
                             <th className='text-warning'>First Team</th>
@@ -38,8 +40,7 @@ function Results() {
                         </tr>
                     </thead>
                     <tbody className='text-black'>
-                        <tr>   
-                        
+                        <tr>
                             <td>Drita</td>
                             <td><b>1-0</b></td>
                             <td>Feronikeli</td>

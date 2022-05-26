@@ -13,20 +13,17 @@ function Navigation() {
                 fontSize: '18px'
             }}>
                 <NavbarBrand>
-                    <Link to='/home'>
+                    <Link to='/'>
                         <Image src={Logo} width='200px' />
                     </Link>
                 </NavbarBrand>
 
                 <Nav>
-                    <Nav.Link href='/home'>Home</Nav.Link>
+                    <Nav.Link href='/'>Home</Nav.Link>
                     <Nav.Link href='/matches'>Match Fixtures</Nav.Link>
                     <Nav.Link href='/results'>Results</Nav.Link>
                     <Nav.Link href='/teams'>Teams</Nav.Link>
                     <Nav.Link href='/about'>About</Nav.Link>
-                </Nav>
-
-                <Nav>
                     <Nav.Link href='/register' className='text-warning'>Register</Nav.Link>
                     <Nav.Link href='/login' className='text-warning'>LogIn</Nav.Link>
                 </Nav>

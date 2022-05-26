@@ -1,9 +1,12 @@
 import React from 'react';
 import stadiumimage from '../images/stadium.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Navigation from './navigation';
+
 function About() {
     return (
         <div>
+            <Navigation />
             <div style={{
                 backgroundImage: `url(${stadiumimage})`,
                 height: '40vh',
@@ -34,10 +37,10 @@ function About() {
                         Ut felis nulla, ultrices vitae urna eu, rutrum efficitur augue. Praesent dui sapien, porta eu laoreet id, molestie et urna. Integer vel augue et ipsum pellentesque tincidunt ut a odio. Aliquam congue ac nunc vitae commodo. Proin bibendum malesuada urna, ac dapibus sapien. Sed commodo urna a erat consequat pulvinar. In eu venenatis libero, vitae tempus nunc. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur at dui sed massa lacinia laoreet. Morbi fermentum mi odio, ac convallis ipsum faucibus imperdiet. Nam ligula augue, tincidunt at mollis ut, ultrices non nibh. Morbi quis augue quis odio iaculis consectetur.
 
                         Fusce elementum orci ac mauris bibendum, in scelerisque sem vestibulum. Vestibulum et magna venenatis, faucibus neque ultricies, ultrices erat. Integer blandit at orci nec imperdiet. Curabitur vulputate.
-                       </b> </text>
+                    </b> </text>
                 </div>
             </div>
-            </div>
+        </div>
     );
-        };
+};
 export default About;

@@ -3,10 +3,12 @@ import React from 'react';
 import stadiumimage from '../images/stadium.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
+import Navigation from './navigation';
 
 function Match() {
     return (
         <div>
+            <Navigation />
             <div style={{
                 backgroundImage: `url(${stadiumimage})`,
                 height: '40vh',
