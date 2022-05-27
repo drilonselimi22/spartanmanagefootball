@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using SpartanManageFootball.Models;
+using SpartanManageFootball.Persistence;
 
 namespace SpartanManageFootball.Application.Admin
 {
@@ -11,27 +11,31 @@ namespace SpartanManageFootball.Application.Admin
             public string Username { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
-            public int RoleId { get; set; }
+            public string RoleId { get; set; }
 
             public class Handler : IRequestHandler<Command>
             {
                 private readonly UserManager<IdentityUser> _userManager;
                 private readonly RoleManager<IdentityRole> _roleManager;
                 private readonly IConfiguration _configuration;
-
+                private readonly SMFContext _context;
+                
                 public Handler(
                     UserManager<IdentityUser> userManager,
                     RoleManager<IdentityRole> roleManager,
+                    SMFContext context,
                     IConfiguration configuration)
                 {
                     _userManager = userManager;
                     _roleManager = roleManager;
                     _configuration = configuration;
+                    _context = context;
                 }
                 
 
                 public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
                 {
+
                     var userExists = await _userManager.FindByNameAsync(request.Username);
                     if (userExists != null)
                     {
@@ -51,16 +55,16 @@ namespace SpartanManageFootball.Application.Admin
                         return Unit.Value;
 
                     
-                    if(request.RoleId == 1)
+                    if(request.RoleId.ToLower() == "agent")
                     {
                         Console.WriteLine("SPARTAN AGENT IF ROLE");
-                            await _userManager.AddToRoleAsync(user, UserRoles.SpartanAgent);
+                            await _userManager.AddToRoleAsync(user, "agent");
                     }
-                    else if (request.RoleId == 2)
+                    else if (request.RoleId.ToLower() == "admin")
                     {
                         Console.WriteLine("hini");
                         
-                            await _userManager.AddToRoleAsync(user, UserRoles.SquadAdmin);
+                            await _userManager.AddToRoleAsync(user, "admin");
                     }
                     else
                     {

@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[10.0.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.5, )"
@@ -71,10 +75,6 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.5, )"
-            },
-            "Realm": {
-              "target": "Package",
-              "version": "[10.13.0, )"
             },
             "Serilog": {
               "target": "Package",
