@@ -7,7 +7,5 @@
         Task<(string id, string roleName)> GetRoleByIdAsync(string id);
         Task<string> GetUserIdAsync(string userName);
         Task<bool> SigninUserAsync(string email, string password);
-     //  Task<bool> ForgetPasswordAsync(string email);
-        
     }
 }

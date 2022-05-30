@@ -66,6 +66,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(opt=>
   .AddDefaultTokenProviders();
    
     
+//services.AddScoped < IShoppingCartRepository, ShoppingCartRepository > ();
+//services.AddScoped < IShoppingCartRepository, ShoppingCartRepository > ();
 
 var app = builder.Build();
 
