@@ -4,3 +4,6 @@
 *.exe
 *.o
 *.so
+*.bin
+*.obj
+*.suo
