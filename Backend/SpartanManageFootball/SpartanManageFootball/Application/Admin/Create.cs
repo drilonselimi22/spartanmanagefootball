@@ -70,9 +70,8 @@ namespace SpartanManageFootball.Application.Admin
                             //Send email to user for confirming email
                             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
                               
-                        /*     var enCodedPasswordToken = Encoding.UTF8.GetBytes(token);
-                             var validemailToken = WebEncoders.Base64UrlEncode(enCodedPasswordToken);
-                          */   var uriBuilder = new UriBuilder(_configuration["ReturnPaths:ConfirmEmail"]);
+                  
+                           var uriBuilder = new UriBuilder(_configuration["ReturnPaths:ConfirmEmail"]);
                              var query = HttpUtility.ParseQueryString(uriBuilder.Query);
 
                             query["token"] = token;
