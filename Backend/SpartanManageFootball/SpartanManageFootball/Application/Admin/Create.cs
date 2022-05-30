@@ -1,6 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Persistence;
+using System.Text;
+using System.Web;
 
 namespace SpartanManageFootball.Application.Admin
 {
@@ -19,17 +23,21 @@ namespace SpartanManageFootball.Application.Admin
                 private readonly RoleManager<IdentityRole> _roleManager;
                 private readonly IConfiguration _configuration;
                 private readonly SMFContext _context;
-                
+                private readonly IEmailSender _emailSender;
+
                 public Handler(
                     UserManager<IdentityUser> userManager,
                     RoleManager<IdentityRole> roleManager,
                     SMFContext context,
+                    IEmailSender emailSender,
                     IConfiguration configuration)
                 {
+
                     _userManager = userManager;
                     _roleManager = roleManager;
                     _configuration = configuration;
                     _context = context;
+                    _emailSender= emailSender;
                 }
                 
 
@@ -52,17 +60,39 @@ namespace SpartanManageFootball.Application.Admin
                     };
                     var result = await _userManager.CreateAsync(user, request.Password);
                     if (!result.Succeeded)
+                    {
                         return Unit.Value;
+                    }else
+                    {
+                        
 
+                            var userFromDb = await _userManager.FindByEmailAsync(request.Email);
+                            //Send email to user for confirming email
+                            var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
+                              
+                  
+                           var uriBuilder = new UriBuilder(_configuration["ReturnPaths:ConfirmEmail"]);
+                             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+
+                            query["token"] = token;
+                            query["userid"] = userFromDb.Id;
+                            uriBuilder.Query = query.ToString();
+                            var urlString = uriBuilder.ToString();
+
+                            var senderEmail = _configuration["ReturnPaths:SenderEmail"];
+
+                            await _emailSender.SendEmailAsync(senderEmail, userFromDb.Email, "Confirm your email address", urlString);
+                        
+                    }
                     
                     if(request.RoleId.ToLower() == "agent")
                     {
-                        Console.WriteLine("SPARTAN AGENT IF ROLE");
+                      
                             await _userManager.AddToRoleAsync(user, "agent");
                     }
                     else if (request.RoleId.ToLower() == "admin")
                     {
-                        Console.WriteLine("hini");
+                      
                         
                             await _userManager.AddToRoleAsync(user, "admin");
                     }

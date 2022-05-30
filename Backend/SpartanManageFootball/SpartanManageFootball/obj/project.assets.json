@@ -2370,19 +2370,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DELL\\.nuget\\packages\\": {}
+    "C:\\Users\\Flamur\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
+      "projectUniqueName": "C:\\Users\\Flamur\\Desktop\\New F\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
       "projectName": "SpartanManageFootball",
-      "projectPath": "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
-      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DELL\\Desktop\\smf\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\obj\\",
+      "projectPath": "C:\\Users\\Flamur\\Desktop\\New F\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
+      "packagesPath": "C:\\Users\\Flamur\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Flamur\\Desktop\\New F\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Flamur\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2471,7 +2471,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

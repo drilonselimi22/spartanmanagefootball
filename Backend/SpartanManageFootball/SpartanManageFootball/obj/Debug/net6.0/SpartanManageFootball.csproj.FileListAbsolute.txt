@@ -312,3 +312,8 @@ C:\Users\DELL\Desktop\smf\spartanmanagefootball\Backend\SpartanManageFootball\Sp
 C:\Users\DELL\Desktop\smf\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\obj\Debug\net6.0\SpartanManageFootball.genruntimeconfig.cache
 C:\Users\DELL\Desktop\smf\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\obj\Debug\net6.0\ref\SpartanManageFootball.dll
 C:\Users\DELL\Desktop\smf\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Flamur\Desktop\New F\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\bin\Debug\net6.0\MediatR.dll
+C:\Users\Flamur\Desktop\New F\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\bin\Debug\net6.0\MediatR.Contracts.dll
+C:\Users\Flamur\Desktop\New F\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\bin\Debug\net6.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Flamur\Desktop\New F\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Flamur\Desktop\New F\spartanmanagefootball\Backend\SpartanManageFootball\SpartanManageFootball\bin\Debug\net6.0\Serilog.dll

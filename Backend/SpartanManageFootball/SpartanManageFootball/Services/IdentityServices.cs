@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using SpartanManageFootball.Interfaces;
+using SpartanManageFootball.Models;
+using System.Text;
 
 namespace SpartanManageFootball.Services
 {
@@ -9,12 +12,18 @@ namespace SpartanManageFootball.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _configuration;
 
-        public IdentityServices(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+
+
+        public IdentityServices(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _emailSender = emailSender;
+            _configuration = configuration;
         }
 
 
@@ -64,5 +73,71 @@ namespace SpartanManageFootball.Services
 
 
         }
+
+        public async Task<UserManagerResponse> ForgetPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "No user associated with email",
+                };
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{"http://localhost:7122}"}/ResetPassword?email={email}&token={validToken}";
+            var senderEmail = _configuration["ReturnPaths:SenderEmail"];
+
+            await _userManager.FindByEmailAsync(email);
+            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "Follow the instructions to reset your password" +
+                $"<p>To reset your password <a href='{url}'>Click here</a></p>");
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Reset password URL has been sent to the email successfully!"
+            };
+
+
+        }
+        public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+
+            {
+                throw new Exception("No user associated with email");
+            }
+
+            if (model.NewPassword != model.ConfirmPassword)
+
+            {
+                throw new Exception("Passwords do not match");
+            }
+
+            var decodedToken = WebEncoders.Base64UrlDecode(model.token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
+
+            if (result.Succeeded)
+                return new UserManagerResponse
+                {
+                    Message = "Password has been reset successfully!",
+                    IsSuccess = true,
+                };
+
+            return new UserManagerResponse
+            {
+                Message = "Something went wrong",
+                IsSuccess = false,
+                Errors = result.Errors.Select(e => e.Description),
+            };
+        }
+
+
+
     }
 }
