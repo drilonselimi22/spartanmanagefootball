@@ -6,15 +6,15 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Referee name is required")]
         public string Name { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Referee last name is required")]
         public string LastName { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Referee experience is required")] 
         public string Experience { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Referee city is required")]
         public string City { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Referee position is required")] 
         public string Position { get; set; }
 
     }

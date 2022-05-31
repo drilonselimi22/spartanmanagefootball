@@ -2370,19 +2370,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Flamur\\.nuget\\packages\\": {}
+    "C:\\Users\\agon-\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Flamur\\Desktop\\New F\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
+      "projectUniqueName": "C:\\Users\\agon-\\Documents\\StarLabs - GitHub Repository\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
       "projectName": "SpartanManageFootball",
-      "projectPath": "C:\\Users\\Flamur\\Desktop\\New F\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
-      "packagesPath": "C:\\Users\\Flamur\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Flamur\\Desktop\\New F\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\obj\\",
+      "projectPath": "C:\\Users\\agon-\\Documents\\StarLabs - GitHub Repository\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\SpartanManageFootball.csproj",
+      "packagesPath": "C:\\Users\\agon-\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\agon-\\Documents\\StarLabs - GitHub Repository\\spartanmanagefootball\\Backend\\SpartanManageFootball\\SpartanManageFootball\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Flamur\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\agon-\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2471,7 +2471,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
