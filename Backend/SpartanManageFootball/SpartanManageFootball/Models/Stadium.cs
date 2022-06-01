@@ -6,12 +6,11 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Name of stadium is required")] 
         public string Name { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Location is required")]
         public string Location { get; set; }
-        [Required] 
+        [Required(ErrorMessage = "Capacity is required")]
         public int Capacity { get; set; }
-
     }
 }
