@@ -7,9 +7,9 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int MatchId { get; set; }
-        [Required(ErrorMessage = "Ekipi vendas is required")]
+        [Required(ErrorMessage = "Team home is required")]
         public Squad EkipiVendas { get; set; }
-        [Required(ErrorMessage = "Ekipi musafir is required")]
+        [Required(ErrorMessage = "Team away is required")]
         public Squad EkipiMusafir { get; set; }
         [Required(ErrorMessage = "List of referees is required")]
         public List<Referee> Referees { get; set; }
