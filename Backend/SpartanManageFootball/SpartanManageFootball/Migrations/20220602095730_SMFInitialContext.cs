@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SpartanManageFootball.Migrations
 {
-    public partial class AddModels : Migration
+    public partial class SMFInitialContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,8 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdentityNumber = table.Column<int>(type: "int", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -62,34 +64,21 @@ namespace SpartanManageFootball.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpartanAgents",
+                name: "Players",
                 columns: table => new
                 {
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SpartanAgents", x => x.Email);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SquadAdmins",
-                columns: table => new
-                {
-                    Email = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SquadTeamId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SquadAdmins", x => x.Email);
+                    table.PrimaryKey("PK_Players", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,6 +211,7 @@ namespace SpartanManageFootball.Migrations
                     StadiumId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isVerified = table.Column<bool>(type: "bit", nullable: false),
                     LeagueId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -240,48 +230,25 @@ namespace SpartanManageFootball.Migrations
                 {
                     MatchId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EkipiVendasTeamId = table.Column<int>(type: "int", nullable: false),
-                    EkipiMusafirTeamId = table.Column<int>(type: "int", nullable: false),
+                    TeamHomeTeamId = table.Column<int>(type: "int", nullable: false),
+                    TeamAwayTeamId = table.Column<int>(type: "int", nullable: false),
                     MatchDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Matches", x => x.MatchId);
                     table.ForeignKey(
-                        name: "FK_Matches_Squads_EkipiMusafirTeamId",
-                        column: x => x.EkipiMusafirTeamId,
+                        name: "FK_Matches_Squads_TeamAwayTeamId",
+                        column: x => x.TeamAwayTeamId,
                         principalTable: "Squads",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Matches_Squads_EkipiVendasTeamId",
-                        column: x => x.EkipiVendasTeamId,
+                        name: "FK_Matches_Squads_TeamHomeTeamId",
+                        column: x => x.TeamHomeTeamId,
                         principalTable: "Squads",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Players",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SquadTeamId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Players", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Players_Squads_SquadTeamId",
-                        column: x => x.SquadTeamId,
-                        principalTable: "Squads",
-                        principalColumn: "TeamId");
                 });
 
             migrationBuilder.CreateTable(
@@ -353,19 +320,14 @@ namespace SpartanManageFootball.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_EkipiMusafirTeamId",
+                name: "IX_Matches_TeamAwayTeamId",
                 table: "Matches",
-                column: "EkipiMusafirTeamId");
+                column: "TeamAwayTeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_EkipiVendasTeamId",
+                name: "IX_Matches_TeamHomeTeamId",
                 table: "Matches",
-                column: "EkipiVendasTeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Players_SquadTeamId",
-                table: "Players",
-                column: "SquadTeamId");
+                column: "TeamHomeTeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Referees_LeagueId",
@@ -405,12 +367,6 @@ namespace SpartanManageFootball.Migrations
 
             migrationBuilder.DropTable(
                 name: "Referees");
-
-            migrationBuilder.DropTable(
-                name: "SpartanAgents");
-
-            migrationBuilder.DropTable(
-                name: "SquadAdmins");
 
             migrationBuilder.DropTable(
                 name: "Stadiums");

@@ -15,16 +15,16 @@ namespace SpartanManageFootball.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<RegisterUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<RegisterUser> _signInManager;
         private readonly IEmailSender _emailsender;
         private readonly IIdentityService _identityServices;
 
         public UserController(IMediator mediator,
-            UserManager<IdentityUser> userManager,
+            UserManager<RegisterUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager,
+            SignInManager<RegisterUser> signInManager,
             IConfiguration configuration,
             IEmailSender emailSender,
             IIdentityService identityServices

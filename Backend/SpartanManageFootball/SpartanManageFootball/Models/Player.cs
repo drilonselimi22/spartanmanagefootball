@@ -16,5 +16,6 @@ namespace SpartanManageFootball.Models
         public int Number { get; set; }
         [Required(ErrorMessage = "Position is required")]
         public string Position { get; set; }
+        public int SquadTeamId { get; set; }
     }
 }

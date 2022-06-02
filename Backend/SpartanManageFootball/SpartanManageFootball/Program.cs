@@ -8,6 +8,7 @@ using SpartanManageFootball.JwtToken;
 using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Services;
 using System.Text;
+using SpartanManageFootball.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -50,13 +51,13 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddDbContext<SMFContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(opt=>
+builder.Services.AddIdentity<RegisterUser, IdentityRole>(opt =>
 
 {
     opt.User.RequireUniqueEmail = true;
     opt.SignIn.RequireConfirmedEmail = true;
 }
- ) .AddEntityFrameworkStores<SMFContext>()
+ ).AddEntityFrameworkStores<SMFContext>()
   .AddDefaultTokenProviders();
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
