@@ -1,12 +1,12 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/home';
-import Match from './components/match';
-import Results from './components/results';
-import Teams from './components/teams';
+import Home from './components/Home/home';
+import Match from './components/Match/match';
+import Results from './components/Results/results';
+import Teams from './components/Teams/teams';
 import About from './components/about';
-import Register from './components/register'
+import Register from './components/Register/register'
 import Login from './components/login';
 import Navbar from './spartanadmin/Navbar';
 import SpartanAdmin from './components/spartanAdmin';
