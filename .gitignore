@@ -7,3 +7,16 @@
 *.bin
 *.obj
 *.suo
+*/bin
+*/obj
+*bin/
+*obj/
+bin
+obj
+packages
+**/bin/*
+**/obj/*
+*.vs
+*/vs
+*vs/
+**/vs/*
