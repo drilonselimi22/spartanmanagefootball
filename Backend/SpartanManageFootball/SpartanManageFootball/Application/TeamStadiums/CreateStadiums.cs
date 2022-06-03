@@ -8,8 +8,8 @@ namespace SpartanManageFootball.Application.TeamStadiums
     {
         public class StadiumCommand : IRequest<Stadium>
         {
-            public string Name { get; set; } 
-            public string Location { get; set; } 
+            public string Name { get; set; }
+            public string Location { get; set; }
             public int Capacity { get; set; }
             public class CommandHandler : IRequestHandler<StadiumCommand, Stadium>
             {
@@ -23,19 +23,22 @@ namespace SpartanManageFootball.Application.TeamStadiums
                 public async Task<Stadium> Handle(StadiumCommand request, CancellationToken cancellationToken)
                 {
                     var stadium = new Stadium
+
                     {
                         Name = request.Name,
                         Location = request.Location,
-                        Capacity = request.Capacity,
-
+                        Capacity = request.Capacity
                     };
-                    _context.Stadiums.AddAsync(stadium);
+
+                    await _context.Stadiums.AddAsync(stadium);
+
                     var success = await _context.SaveChangesAsync() > 0;
 
                     if (success)
                     {
                         return stadium;
                     }
+
                     throw new Exception("Problem saving changes");
                 }
             }

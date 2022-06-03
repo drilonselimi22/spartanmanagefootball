@@ -14,6 +14,7 @@ namespace SpartanManageFootball.Application.Login
         public string Email { get; set; }
         public string Password { get; set; }
     }
+
     public class AuthCommandHandler : IRequestHandler<AuthCommand, UserDTO>
     {
         private readonly ITokenGenerator _tokenGenerator;
@@ -23,20 +24,19 @@ namespace SpartanManageFootball.Application.Login
         private readonly IIdentityService _identityService;
         private readonly SMFContext _context;
         public AuthCommandHandler(ITokenGenerator tokenGenerator,
-                                    UserManager<RegisterUser> userManager,
-                                    RoleManager<IdentityRole> roleManager,
-                                    SignInManager<RegisterUser> signInManager,
-                                    IIdentityService identityService,
-                                    SMFContext context)
-                {
-                    _tokenGenerator = tokenGenerator;
-                    _userManager = userManager;
-                    _roleManager = roleManager;
-                    _signInManager = signInManager;
-                    _identityService = identityService;
-                    _context = context;
+            UserManager<RegisterUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<RegisterUser> signInManager,
+            IIdentityService identityService,
+            SMFContext context)
+        {
+            _tokenGenerator = tokenGenerator;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+            _identityService = identityService;
+            _context = context;
         }
-
 
         public async Task<UserDTO> Handle(AuthCommand request, CancellationToken cancellationToken)
         {
@@ -48,15 +48,12 @@ namespace SpartanManageFootball.Application.Login
             }
 
             var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.Email));
-            
+
             string token = _tokenGenerator.GenerateJWTToken((userId: userId, userName: userName, roles: roles));
-
-
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
-
             var rolesOfUser = await _userManager.GetRolesAsync(user);
             string role = rolesOfUser[0];
-            Console.WriteLine("counting the array", rolesOfUser.Count);
+
             return new UserDTO()
             {
                 UserName = userId,
@@ -64,8 +61,6 @@ namespace SpartanManageFootball.Application.Login
                 Token = token,
                 Role = role,
             };
-            throw new Exception("invalid");
         }
-
     }
 }

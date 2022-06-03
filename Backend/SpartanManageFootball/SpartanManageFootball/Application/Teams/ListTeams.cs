@@ -9,7 +9,6 @@ namespace SpartanManageFootball.Application.Teams
     {
         public class Query : IRequest<List<Squad>>
         {
-
         }
         public class Handler : IRequestHandler<Query, List<Squad>>
         {

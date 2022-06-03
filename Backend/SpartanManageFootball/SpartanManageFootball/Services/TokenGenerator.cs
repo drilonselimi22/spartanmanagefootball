@@ -11,7 +11,6 @@ namespace SpartanManageFootball.JwtToken
         private readonly string _issuer;
         private readonly string _audience;
         private readonly string _expiryMinutes;
-
         public TokenGenerator(string key, string issueer, string audience, string expiryMinutes)
         {
             _key = key;
@@ -24,7 +23,6 @@ namespace SpartanManageFootball.JwtToken
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
             var (userId, userName, roles) = userDetails;
 
             var claims = new List<Claim>()
@@ -34,8 +32,8 @@ namespace SpartanManageFootball.JwtToken
                 new Claim(ClaimTypes.Name, userName),
                 new Claim("UserId", userId)
             };
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = new JwtSecurityToken(
                 issuer: _issuer,
@@ -46,8 +44,8 @@ namespace SpartanManageFootball.JwtToken
            );
 
             var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
             return encodedToken;
         }
-
     }
 }

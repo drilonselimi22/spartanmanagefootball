@@ -9,7 +9,6 @@ namespace SpartanManageFootball.Application.Players
         public class Query : IRequest<Player>
         {
             public int Id { get; set; }
-
         }
         public class Handler : IRequestHandler<Query, Player>
         {
@@ -23,6 +22,7 @@ namespace SpartanManageFootball.Application.Players
             public async Task<Player> Handle(Query request, CancellationToken cancellationToken)
             {
                 var player = await _context.Players.FindAsync(request.Id);
+
                 return player;
             }
         }

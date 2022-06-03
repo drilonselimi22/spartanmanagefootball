@@ -9,7 +9,6 @@ namespace SpartanManageFootball.Application.RefereesOperations
     {
         public class Query : IRequest<List<Referee>>
         {
-
         }
         public class Handler : IRequestHandler<Query, List<Referee>>
         {

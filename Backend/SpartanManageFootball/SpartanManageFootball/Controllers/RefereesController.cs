@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpartanManageFootball.Application.RefereesOperations;
 using SpartanManageFootball.Models;
@@ -15,8 +14,7 @@ namespace SpartanManageFootball.Controllers
     {
         private readonly IMediator _mediator;
 
-        public RefereesController(IMediator mediator
-            )
+        public RefereesController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -27,27 +25,32 @@ namespace SpartanManageFootball.Controllers
         {
             return await _mediator.Send(command);
         }
+
         [HttpDelete("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Unit>> DeletePlayer(int id)
         {
             return await _mediator.Send(new DeleteReferees.Command { Id = id });
         }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<List<Referee>>> List()
         {
             return await _mediator.Send(new ListReferees.Query());
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Referee>> PlayerDetails(int id)
         {
             return await _mediator.Send(new RefereeDetails.Query { Id = id });
         }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<Referee>> Edit(int id, RefereeEditCommand command)
         {
             command.Id = id;
+
             return await _mediator.Send(command);
         }
     }

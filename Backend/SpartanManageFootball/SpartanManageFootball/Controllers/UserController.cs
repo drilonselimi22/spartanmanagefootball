@@ -6,7 +6,6 @@ using SpartanManageFootball.Application.Admin;
 using SpartanManageFootball.Application.Login;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
-using SpartanManageFootball.Services;
 
 namespace SpartanManageFootball.Controllers
 {
@@ -62,6 +61,7 @@ namespace SpartanManageFootball.Controllers
             {
                 return Ok(user);
             }
+
             return BadRequest();
         }
 
@@ -69,17 +69,19 @@ namespace SpartanManageFootball.Controllers
         public async Task<IActionResult> ForgetPassword(string email)
         {
             if (string.IsNullOrEmpty(email))
+            {
                 return NotFound();
+            }
 
             var result = await _identityServices.ForgetPasswordAsync(email);
 
             if (result.IsSuccess)
-                return Ok(result); 
-
+            {
+                return Ok(result);
+            }
             return BadRequest(result);
         }
 
-        // api/auth/resetpassword
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel model)
         {
@@ -88,8 +90,9 @@ namespace SpartanManageFootball.Controllers
                 var result = await _identityServices.ResetPasswordAsync(model);
 
                 if (result.IsSuccess)
+                {
                     return Ok(result);
-
+                }
                 return BadRequest(result);
             }
 

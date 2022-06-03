@@ -9,7 +9,6 @@ namespace SpartanManageFootball.Application.TeamStadiums
     {
         public class Query : IRequest<List<Stadium>>
         {
-
         }
         public class Handler : IRequestHandler<Query, List<Stadium>>
         {
@@ -23,7 +22,8 @@ namespace SpartanManageFootball.Application.TeamStadiums
             public async Task<List<Stadium>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var stadiums = await _context.Stadiums.ToListAsync();
-                return stadiums ;
+
+                return stadiums;
             }
         }
     }

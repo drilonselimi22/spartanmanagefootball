@@ -47,7 +47,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(Program).Assembly);
-
 builder.Services.AddDbContext<SMFContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -60,9 +59,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 builder.Services.AddIdentity<RegisterUser, IdentityRole>(opt =>
-
 {
     opt.User.RequireUniqueEmail = true;
     opt.SignIn.RequireConfirmedEmail = true;

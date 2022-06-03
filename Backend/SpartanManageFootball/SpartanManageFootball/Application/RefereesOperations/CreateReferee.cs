@@ -31,9 +31,10 @@ namespace SpartanManageFootball.Application.RefereesOperations
                         Experience = request.Experience,
                         City = request.City,
                         Position = request.Position,
-
                     };
-                    _context.Referees.AddAsync(referee);
+
+                    await _context.Referees.AddAsync(referee);
+
                     var success = await _context.SaveChangesAsync() > 0;
 
                     if (success)

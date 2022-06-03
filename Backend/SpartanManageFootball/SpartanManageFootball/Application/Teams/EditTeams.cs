@@ -26,18 +26,19 @@ namespace SpartanManageFootball.Application.Teams
             public async Task<Squad> Handle(TeamEditCommand request, CancellationToken cancellationToken)
             {
                 var team = await _context.Squads.FindAsync(request.TeamId);
+
                 if (team == null)
                 {
                     throw new Exception("could not find player");
                 }
+
                 team.StadiumId = request.StadiumId ?? team.StadiumId;
                 team.Name = request.Name ?? team.Name;
                 team.City = request.City ?? team.City;
-
                 team.isVerified = request.isVerified ?? team.isVerified;
 
-
                 var success = await _context.SaveChangesAsync() > 0;
+
                 if (success)
                 {
                     return team;

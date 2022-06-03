@@ -37,7 +37,9 @@ namespace SpartanManageFootball.Application.Players
                         SquadTeamId = request.SuqadTeamId
 
                     };
-                    _context.Players.AddAsync(player);
+
+                    await _context.Players.AddAsync(player);
+
                     var success = await _context.SaveChangesAsync() > 0;
 
                     if (success)
@@ -47,7 +49,6 @@ namespace SpartanManageFootball.Application.Players
                     throw new Exception("Problem saving changes");
                 }
             }
-
         }
     }
 }
