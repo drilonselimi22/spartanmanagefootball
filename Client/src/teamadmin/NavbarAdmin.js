@@ -16,6 +16,9 @@ export default function NavbarAdmin() {
 
     const showSidebar = () => setSidebar(!sidebar);
 
+
+
+
     async function logout(){
         await localStorage.removeItem("username")
         await localStorage.removeItem("email")
