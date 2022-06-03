@@ -33,8 +33,8 @@ namespace SpartanManageFootball.Controllers
             return await _mediator.Send(new DeleteTeams.Command { Id = id });
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<List<Squad>>> ListTeam()
         {
             return await _mediator.Send(new ListTeams.Query());
@@ -44,6 +44,9 @@ namespace SpartanManageFootball.Controllers
         {
             return await _mediator.Send(new TeamsDetails.Query { Id = id });
         }
+
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Squad>> Edit(int id, TeamEditCommand command)
         {

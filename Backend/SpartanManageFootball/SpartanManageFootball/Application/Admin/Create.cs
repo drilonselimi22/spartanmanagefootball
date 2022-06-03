@@ -5,6 +5,7 @@ using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Persistence;
 using System.Text;
 using System.Web;
+using SpartanManageFootball.Models;
 
 namespace SpartanManageFootball.Application.Admin
 {
@@ -14,19 +15,21 @@ namespace SpartanManageFootball.Application.Admin
         {
             public string Username { get; set; }
             public string Email { get; set; }
+            public int IdentityNumber { get; set; }
+            public DateTime Birthdate { get; set; }
             public string Password { get; set; }
             public string RoleId { get; set; }
 
             public class Handler : IRequestHandler<Command>
             {
-                private readonly UserManager<IdentityUser> _userManager;
+                private readonly UserManager<RegisterUser> _userManager;
                 private readonly RoleManager<IdentityRole> _roleManager;
                 private readonly IConfiguration _configuration;
                 private readonly SMFContext _context;
                 private readonly IEmailSender _emailSender;
 
                 public Handler(
-                    UserManager<IdentityUser> userManager,
+                    UserManager<RegisterUser> userManager,
                     RoleManager<IdentityRole> roleManager,
                     SMFContext context,
                     IEmailSender emailSender,
@@ -50,13 +53,14 @@ namespace SpartanManageFootball.Application.Admin
                         return Unit.Value;
                     }
                         
-                    IdentityUser user = new()
+                    RegisterUser user = new()
                     {
+                        UserName = request.Username,
                         Email = request.Email,
+                        IdentityNumber = request.IdentityNumber,
+                        BirthDate = request.Birthdate,
                         SecurityStamp = Guid.NewGuid().ToString(),
                         Id = Guid.NewGuid().ToString(),
-                        
-                        UserName = request.Username
                     };
                     var result = await _userManager.CreateAsync(user, request.Password);
                     if (!result.Succeeded)
@@ -69,7 +73,6 @@ namespace SpartanManageFootball.Application.Admin
                             var userFromDb = await _userManager.FindByEmailAsync(request.Email);
                             //Send email to user for confirming email
                             var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
-                              
                   
                            var uriBuilder = new UriBuilder(_configuration["ReturnPaths:ConfirmEmail"]);
                              var query = HttpUtility.ParseQueryString(uriBuilder.Query);

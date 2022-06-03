@@ -12,8 +12,6 @@ namespace SpartanManageFootball.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
-        [Required(ErrorMessage = "List of players is required")]
-        public List<Player> Players { get; set; }
-        // TODO Formation
+        public bool isVerified { get; set; }
     }
 }

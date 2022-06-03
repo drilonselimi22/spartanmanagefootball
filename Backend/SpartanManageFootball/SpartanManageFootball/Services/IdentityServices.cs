@@ -4,20 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using System.Text;
+using SpartanManageFootball.Models;
 
 namespace SpartanManageFootball.Services
 {
     public class IdentityServices : IIdentityService
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<RegisterUser> _userManager;
+        private readonly SignInManager<RegisterUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
 
 
 
-        public IdentityServices(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public IdentityServices(UserManager<RegisterUser> userManager, SignInManager<RegisterUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
