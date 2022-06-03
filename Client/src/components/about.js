@@ -1,15 +1,11 @@
-import React from 'react';
-import stadiumimage from '../images/stadium.jpg'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navigation from '../components/Navigation/navigation';
+import React from "react"; 
+import "bootstrap/dist/css/bootstrap.min.css"; 
 
 function About() {
-    return (
-        <div>
-            <Navigation />
-
-            <h3>Under Maintenance</h3>
-        </div>
-    );
-};
+  return (
+    <div>
+      <h3>Under Maintenance</h3>
+    </div>
+  );
+}
 export default About;
