@@ -51,6 +51,16 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddDbContext<SMFContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        });
+});
+
+
 builder.Services.AddIdentity<RegisterUser, IdentityRole>(opt =>
 
 {
@@ -76,5 +86,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors();
 app.MapControllers();
 app.Run();

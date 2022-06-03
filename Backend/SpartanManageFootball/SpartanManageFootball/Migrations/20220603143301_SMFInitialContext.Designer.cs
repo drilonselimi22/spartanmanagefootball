@@ -12,7 +12,7 @@ using SpartanManageFootball.Persistence;
 namespace SpartanManageFootball.Migrations
 {
     [DbContext(typeof(SMFContext))]
-    [Migration("20220602095730_SMFInitialContext")]
+    [Migration("20220603143301_SMFInitialContext")]
     partial class SMFInitialContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,20 +182,25 @@ namespace SpartanManageFootball.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MatchId"), 1L, 1);
 
+                    b.Property<int>("AwayTeamTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeTeamTeamId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("MatchDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TeamAwayTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamHomeTeamId")
+                    b.Property<int>("RefereeId")
                         .HasColumnType("int");
 
                     b.HasKey("MatchId");
 
-                    b.HasIndex("TeamAwayTeamId");
+                    b.HasIndex("AwayTeamTeamId");
 
-                    b.HasIndex("TeamHomeTeamId");
+                    b.HasIndex("HomeTeamTeamId");
+
+                    b.HasIndex("RefereeId");
 
                     b.ToTable("Matches");
                 });
@@ -257,9 +262,6 @@ namespace SpartanManageFootball.Migrations
                     b.Property<int?>("LeagueId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MatchId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -271,8 +273,6 @@ namespace SpartanManageFootball.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LeagueId");
-
-                    b.HasIndex("MatchId");
 
                     b.ToTable("Referees");
                 });
@@ -457,21 +457,29 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("SpartanManageFootball.Models.Match", b =>
                 {
-                    b.HasOne("SpartanManageFootball.Models.Squad", "TeamAway")
+                    b.HasOne("SpartanManageFootball.Models.Squad", "AwayTeam")
                         .WithMany()
-                        .HasForeignKey("TeamAwayTeamId")
+                        .HasForeignKey("AwayTeamTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SpartanManageFootball.Models.Squad", "TeamHome")
+                    b.HasOne("SpartanManageFootball.Models.Squad", "HomeTeam")
                         .WithMany()
-                        .HasForeignKey("TeamHomeTeamId")
+                        .HasForeignKey("HomeTeamTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TeamAway");
+                    b.HasOne("SpartanManageFootball.Models.Referee", "Referee")
+                        .WithMany()
+                        .HasForeignKey("RefereeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("TeamHome");
+                    b.Navigation("AwayTeam");
+
+                    b.Navigation("HomeTeam");
+
+                    b.Navigation("Referee");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Referee", b =>
@@ -479,10 +487,6 @@ namespace SpartanManageFootball.Migrations
                     b.HasOne("SpartanManageFootball.Models.League", null)
                         .WithMany("Referees")
                         .HasForeignKey("LeagueId");
-
-                    b.HasOne("SpartanManageFootball.Models.Match", null)
-                        .WithMany("Referees")
-                        .HasForeignKey("MatchId");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
@@ -497,11 +501,6 @@ namespace SpartanManageFootball.Migrations
                     b.Navigation("Referees");
 
                     b.Navigation("Squads");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.Match", b =>
-                {
-                    b.Navigation("Referees");
                 });
 #pragma warning restore 612, 618
         }
