@@ -26,7 +26,6 @@ namespace SpartanManageFootball.Application.Players
                 _context = context;
             }
 
-
             public async Task<Player> Handle(PlayerEditCommand request, CancellationToken cancellationToken)
             {
                 var player = await _context.Players.FindAsync(request.Id);

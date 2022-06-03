@@ -5,6 +5,7 @@ using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.JwtToken;
 using SpartanManageFootball.Persistence;
+using SpartanManageFootball.Models;
 
 namespace SpartanManageFootball.Application.Login
 {
@@ -16,15 +17,15 @@ namespace SpartanManageFootball.Application.Login
     public class AuthCommandHandler : IRequestHandler<AuthCommand, UserDTO>
     {
         private readonly ITokenGenerator _tokenGenerator;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<RegisterUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<RegisterUser> _signInManager;
         private readonly IIdentityService _identityService;
         private readonly SMFContext _context;
         public AuthCommandHandler(ITokenGenerator tokenGenerator,
-                                    UserManager<IdentityUser> userManager,
+                                    UserManager<RegisterUser> userManager,
                                     RoleManager<IdentityRole> roleManager,
-                                    SignInManager<IdentityUser> signInManager,
+                                    SignInManager<RegisterUser> signInManager,
                                     IIdentityService identityService,
                                     SMFContext context)
                 {

@@ -74,71 +74,6 @@ namespace SpartanManageFootball.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -245,20 +180,25 @@ namespace SpartanManageFootball.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MatchId"), 1L, 1);
 
-                    b.Property<int>("EkipiMusafirTeamId")
+                    b.Property<int>("AwayTeamTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EkipiVendasTeamId")
+                    b.Property<int>("HomeTeamTeamId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("MatchDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("RefereeId")
+                        .HasColumnType("int");
+
                     b.HasKey("MatchId");
 
-                    b.HasIndex("EkipiMusafirTeamId");
+                    b.HasIndex("AwayTeamTeamId");
 
-                    b.HasIndex("EkipiVendasTeamId");
+                    b.HasIndex("HomeTeamTeamId");
+
+                    b.HasIndex("RefereeId");
 
                     b.ToTable("Matches");
                 });
@@ -289,12 +229,10 @@ namespace SpartanManageFootball.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SquadTeamId")
+                    b.Property<int>("SquadTeamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SquadTeamId");
 
                     b.ToTable("Players");
                 });
@@ -322,9 +260,6 @@ namespace SpartanManageFootball.Migrations
                     b.Property<int?>("LeagueId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MatchId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -337,35 +272,78 @@ namespace SpartanManageFootball.Migrations
 
                     b.HasIndex("LeagueId");
 
-                    b.HasIndex("MatchId");
-
                     b.ToTable("Referees");
                 });
 
-            modelBuilder.Entity("SpartanManageFootball.Models.SpartanAgent", b =>
+            modelBuilder.Entity("SpartanManageFootball.Models.RegisterUser", b =>
                 {
-                    b.Property<string>("Email")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("IdentityNumber")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Email");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
-                    b.ToTable("SpartanAgents");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
@@ -390,40 +368,14 @@ namespace SpartanManageFootball.Migrations
                     b.Property<int>("StadiumId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isVerified")
+                        .HasColumnType("bit");
+
                     b.HasKey("TeamId");
 
                     b.HasIndex("LeagueId");
 
                     b.ToTable("Squads");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.SquadAdmin", b =>
-                {
-                    b.Property<int>("Email")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Email"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Email");
-
-                    b.ToTable("SquadAdmins");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Stadium", b =>
@@ -461,7 +413,7 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -470,7 +422,7 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,7 +437,7 @@ namespace SpartanManageFootball.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -494,7 +446,7 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -503,28 +455,29 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("SpartanManageFootball.Models.Match", b =>
                 {
-                    b.HasOne("SpartanManageFootball.Models.Squad", "EkipiMusafir")
+                    b.HasOne("SpartanManageFootball.Models.Squad", "AwayTeam")
                         .WithMany()
-                        .HasForeignKey("EkipiMusafirTeamId")
+                        .HasForeignKey("AwayTeamTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SpartanManageFootball.Models.Squad", "EkipiVendas")
+                    b.HasOne("SpartanManageFootball.Models.Squad", "HomeTeam")
                         .WithMany()
-                        .HasForeignKey("EkipiVendasTeamId")
+                        .HasForeignKey("HomeTeamTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("EkipiMusafir");
+                    b.HasOne("SpartanManageFootball.Models.Referee", "Referee")
+                        .WithMany()
+                        .HasForeignKey("RefereeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("EkipiVendas");
-                });
+                    b.Navigation("AwayTeam");
 
-            modelBuilder.Entity("SpartanManageFootball.Models.Player", b =>
-                {
-                    b.HasOne("SpartanManageFootball.Models.Squad", null)
-                        .WithMany("Players")
-                        .HasForeignKey("SquadTeamId");
+                    b.Navigation("HomeTeam");
+
+                    b.Navigation("Referee");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Referee", b =>
@@ -532,10 +485,6 @@ namespace SpartanManageFootball.Migrations
                     b.HasOne("SpartanManageFootball.Models.League", null)
                         .WithMany("Referees")
                         .HasForeignKey("LeagueId");
-
-                    b.HasOne("SpartanManageFootball.Models.Match", null)
-                        .WithMany("Referees")
-                        .HasForeignKey("MatchId");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
@@ -550,16 +499,6 @@ namespace SpartanManageFootball.Migrations
                     b.Navigation("Referees");
 
                     b.Navigation("Squads");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.Match", b =>
-                {
-                    b.Navigation("Referees");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
-                {
-                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }
