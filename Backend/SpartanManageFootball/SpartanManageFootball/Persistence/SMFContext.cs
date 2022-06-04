@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SpartanManageFootball.Models;
 
@@ -10,7 +9,6 @@ namespace SpartanManageFootball.Persistence
         public SMFContext(DbContextOptions<SMFContext> options) : base(options)
         {
         }
-
         public DbSet<League> Leagues { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Player> Players { get; set; }

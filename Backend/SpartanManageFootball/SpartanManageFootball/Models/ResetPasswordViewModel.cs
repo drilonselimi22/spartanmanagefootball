@@ -6,12 +6,15 @@ namespace SpartanManageFootball.Models
     {
         [Required(ErrorMessage = "Token is required")]
         public string token { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
-        [Required(ErrorMessage ="Password is required")]
+
+        [Required(ErrorMessage = "Password is required")]
         [StringLength(50, MinimumLength = 6)]
         public string NewPassword { get; set; }
-        [Required(ErrorMessage ="password is required")]
+
+        [Required(ErrorMessage = "Password is required")]
         [StringLength(50, MinimumLength = 6)]
         public string ConfirmPassword { get; set; }
     }

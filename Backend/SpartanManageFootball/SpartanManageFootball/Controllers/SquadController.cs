@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpartanManageFootball.Application.Teams;
 using SpartanManageFootball.Models;
@@ -26,6 +25,7 @@ namespace SpartanManageFootball.Controllers
         {
             return await _mediator.Send(command);
         }
+
         [HttpDelete("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Unit>> DeleteTeam(int id)
@@ -39,18 +39,19 @@ namespace SpartanManageFootball.Controllers
         {
             return await _mediator.Send(new ListTeams.Query());
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Squad>> PlayerDetails(int id)
         {
             return await _mediator.Send(new TeamsDetails.Query { Id = id });
         }
 
-
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Squad>> Edit(int id, TeamEditCommand command)
         {
             command.TeamId = id;
+
             return await _mediator.Send(command);
         }
     }

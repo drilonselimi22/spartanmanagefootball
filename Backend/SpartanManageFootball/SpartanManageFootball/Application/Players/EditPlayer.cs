@@ -29,10 +29,12 @@ namespace SpartanManageFootball.Application.Players
             public async Task<Player> Handle(PlayerEditCommand request, CancellationToken cancellationToken)
             {
                 var player = await _context.Players.FindAsync(request.Id);
+
                 if (player == null)
                 {
                     throw new Exception("could not find player");
                 }
+
                 player.Name = request.Name ?? player.Name;
                 player.LastName = request.LastName ?? player.LastName;
                 player.Age = request.Age ?? player.Age;
@@ -41,13 +43,13 @@ namespace SpartanManageFootball.Application.Players
                 player.SquadTeamId = request.SquadTeamId ?? player.SquadTeamId;
 
                 var success = await _context.SaveChangesAsync() > 0;
+
                 if (success)
                 {
                     return player;
                 }
-
                 return null;
             }
-        } 
+        }
     }
 }

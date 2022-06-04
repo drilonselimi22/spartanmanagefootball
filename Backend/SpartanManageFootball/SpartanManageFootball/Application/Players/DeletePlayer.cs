@@ -7,7 +7,7 @@ namespace SpartanManageFootball.Application.Players
     {
         public class Command : IRequest
         {
-            public int Id { get; set; } 
+            public int Id { get; set; }
         }
         public class Handler : IRequestHandler<Command>
         {
@@ -22,13 +22,15 @@ namespace SpartanManageFootball.Application.Players
             {
                 var player = await _context.Players.FindAsync(request.Id);
 
-                if(player == null)
+                if (player == null)
                 {
                     throw new Exception("Could not find player with this id");
                 }
 
                 _context.Remove(player);
+
                 var success = await _context.SaveChangesAsync() > 0;
+
                 if (success)
                 {
                     return Unit.Value;

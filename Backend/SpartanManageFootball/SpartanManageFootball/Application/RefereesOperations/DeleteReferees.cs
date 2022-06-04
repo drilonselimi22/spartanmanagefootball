@@ -28,7 +28,9 @@ namespace SpartanManageFootball.Application.RefereesOperations
                 }
 
                 _context.Remove(referee);
+
                 var success = await _context.SaveChangesAsync() > 0;
+
                 if (success)
                 {
                     return Unit.Value;

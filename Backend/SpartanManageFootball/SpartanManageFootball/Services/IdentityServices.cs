@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using System.Text;
-using SpartanManageFootball.Models;
 
 namespace SpartanManageFootball.Services
 {
@@ -16,8 +15,6 @@ namespace SpartanManageFootball.Services
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
 
-
-
         public IdentityServices(UserManager<RegisterUser> userManager, SignInManager<RegisterUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
@@ -27,12 +24,10 @@ namespace SpartanManageFootball.Services
             _configuration = configuration;
         }
 
-
-
-
         public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
+
             return (role.Id, role.Name);
         }
 
@@ -50,20 +45,23 @@ namespace SpartanManageFootball.Services
         public async Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsAsync(string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
             if (user == null)
             {
                 throw new Exception("User not found");
             }
+
             var roles = await _userManager.GetRolesAsync(user);
+
             return (user.Id, user.UserName, user.UserName, user.Email, roles);
         }
         public async Task<string> GetUserIdAsync(string userName)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+
             if (user == null)
             {
                 throw new Exception("User not found");
-                //throw new Exception("User not found");
             }
             return await _userManager.GetUserIdAsync(user);
         }
@@ -71,13 +69,12 @@ namespace SpartanManageFootball.Services
         {
             var result = await _signInManager.PasswordSignInAsync(email, password, true, false);
             return result.Succeeded;
-
-
         }
 
         public async Task<UserManagerResponse> ForgetPasswordAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+
             if (user == null)
                 return new UserManagerResponse
                 {
@@ -95,17 +92,17 @@ namespace SpartanManageFootball.Services
             await _userManager.FindByEmailAsync(email);
             await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "Follow the instructions to reset your password" +
                 $"<p>To reset your password <a href='{url}'>Click here</a></p>");
+
             return new UserManagerResponse
             {
                 IsSuccess = true,
                 Message = "Reset password URL has been sent to the email successfully!"
             };
-
-
         }
         public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
+
             if (user == null)
 
             {
@@ -137,8 +134,5 @@ namespace SpartanManageFootball.Services
                 Errors = result.Errors.Select(e => e.Description),
             };
         }
-
-
-
     }
 }

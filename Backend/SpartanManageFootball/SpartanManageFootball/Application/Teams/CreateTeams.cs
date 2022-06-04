@@ -8,8 +8,8 @@ namespace SpartanManageFootball.Application.Teams
     {
         public class TeamCommand : IRequest<Squad>
         {
-            public int StadiumId { get; set; } 
-            public string Name { get; set; } 
+            public int StadiumId { get; set; }
+            public string Name { get; set; }
             public string City { get; set; }
             public bool isVerified { get; set; }
 
@@ -29,15 +29,16 @@ namespace SpartanManageFootball.Application.Teams
                         StadiumId = request.StadiumId,
                         Name = request.Name,
                         City = request.City,
-
                     };
-                    _context.Squads.AddAsync(squad);
+                    await _context.Squads.AddAsync(squad);
+
                     var success = await _context.SaveChangesAsync() > 0;
 
                     if (success)
                     {
                         return squad;
                     }
+
                     throw new Exception("Problem saving changes");
                 }
             }

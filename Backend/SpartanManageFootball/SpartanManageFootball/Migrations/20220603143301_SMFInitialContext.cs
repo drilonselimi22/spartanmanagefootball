@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -45,6 +44,7 @@ namespace SpartanManageFootball.Migrations
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
@@ -58,6 +58,7 @@ namespace SpartanManageFootball.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LeagueName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Leagues", x => x.LeagueId);
@@ -68,7 +69,7 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
@@ -76,6 +77,7 @@ namespace SpartanManageFootball.Migrations
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SquadTeamId = table.Column<int>(type: "int", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
@@ -91,6 +93,7 @@ namespace SpartanManageFootball.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stadiums", x => x.Id);
@@ -106,6 +109,7 @@ namespace SpartanManageFootball.Migrations
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
@@ -127,6 +131,7 @@ namespace SpartanManageFootball.Migrations
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
@@ -147,6 +152,7 @@ namespace SpartanManageFootball.Migrations
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
@@ -165,6 +171,7 @@ namespace SpartanManageFootball.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
@@ -191,6 +198,7 @@ namespace SpartanManageFootball.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
@@ -207,7 +215,7 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -215,6 +223,7 @@ namespace SpartanManageFootball.Migrations
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LeagueId = table.Column<int>(type: "int", nullable: true)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Referees", x => x.Id);
@@ -237,6 +246,7 @@ namespace SpartanManageFootball.Migrations
                     isVerified = table.Column<bool>(type: "bit", nullable: false),
                     LeagueId = table.Column<int>(type: "int", nullable: true)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Squads", x => x.TeamId);
@@ -258,6 +268,7 @@ namespace SpartanManageFootball.Migrations
                     RefereeId = table.Column<int>(type: "int", nullable: false),
                     MatchDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
+
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Matches", x => x.MatchId);
