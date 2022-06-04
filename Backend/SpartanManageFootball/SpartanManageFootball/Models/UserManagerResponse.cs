@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SpartanManageFootball.Interfaces
+﻿namespace SpartanManageFootball.Models
 {
     public class UserManagerResponse
     {
