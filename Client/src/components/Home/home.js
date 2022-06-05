@@ -6,6 +6,7 @@ import ConfirmEmail from '../Register/confirmEmail';
 function Home() {
     return (
         <div>
+            <Navigation />
             <div className="home__container">
                 <div className="home__header" >
                     <h3>Welcome to</h3>

@@ -19,7 +19,7 @@ namespace SpartanManageFootball.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("addPlayer")]
+        [HttpPost("addReferee")]
         [AllowAnonymous]
         public async Task<ActionResult<Referee>> CreatePlayer([FromBody] RefereeCommand command)
         {
