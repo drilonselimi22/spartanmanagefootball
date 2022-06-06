@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Form, Button, Spinner, Container } from "react-bootstrap";
+import { Form, Button, Spinner, Container, Nav } from "react-bootstrap";
 import Navigation from "../Navigation/navigation";
 import registerImage from "../../images/register.svg";
 import "./register.css";
@@ -46,6 +46,7 @@ export default function Register() {
 
   return (
     <div>
+      <Navigation />
       <Container className="register__container">
         <div className="register__header">
           <div>
