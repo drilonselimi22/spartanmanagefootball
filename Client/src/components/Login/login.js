@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import './login.css';
 import registerImage from "../../images/access.svg";
+import Navigation from "../Navigation/navigation";
+import Footer from "../Footer/footer";
 
 function Login() {
     const navigate = useNavigate();
@@ -15,7 +17,6 @@ function Login() {
     const [password, setPassword] = useState(false);
 
     async function handleLogin(e) {
-
         e.preventDefault();
         console.log("CLICKED", clickedLoggin);
         setClickedLoggin(true);
@@ -34,9 +35,9 @@ function Login() {
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('role', result.role);
                 if (response.data.role == "agent") {
-                    navigate("/spartan");
+                    navigate("/agent");
                 } else {
-                    navigate("/teamadmin");
+                    navigate("/admin");
                 }
             },
             (error) => {
@@ -48,6 +49,7 @@ function Login() {
     }
     return (
         <div>
+            <Navigation />
             <Container className="login__container">
                 <div className="login__header">
                     <div>
@@ -76,10 +78,10 @@ function Login() {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </Form.Group>
-
-                                <Button type="submit" onClick={handleLogin}>
-                                    LogIn
-                                </Button>
+                                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>   }
+                                
+                                    
+                                
                             </div>
                         </Form>
                     </div>
