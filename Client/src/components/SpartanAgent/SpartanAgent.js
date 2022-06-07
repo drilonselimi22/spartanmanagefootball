@@ -3,7 +3,6 @@ import SidebarAgent from './SidebarAgent'
 
 function SpartanAgent() {
     return (
-        // <Router>
         <SidebarAgent />
     );
 };

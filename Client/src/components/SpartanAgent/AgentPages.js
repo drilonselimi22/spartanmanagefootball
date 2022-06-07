@@ -4,6 +4,7 @@ import * as BiIcons from "react-icons/bi"
 import * as BsIcons from "react-icons/bs"
 import * as FiIcons from "react-icons/fi"
 import * as CgIcons from "react-icons/cg"
+import * as MdIcon from "react-icons/md"
 
 export const AgentPages = [
     {
@@ -28,6 +29,12 @@ export const AgentPages = [
         title: 'Squads',
         path: '/agent-squads',
         icon: <AiIcons.AiOutlineUserAdd />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Verify Squads',
+        path: '/agent-squads-verify',
+        icon: <MdIcon.MdVerified />,
         cName: 'nav-text'
     },
     {

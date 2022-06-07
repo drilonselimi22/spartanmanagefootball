@@ -17,7 +17,6 @@ function Login() {
     const [password, setPassword] = useState(false);
 
     async function handleLogin(e) {
-
         e.preventDefault();
         console.log("CLICKED", clickedLoggin);
         setClickedLoggin(true);
@@ -79,10 +78,10 @@ function Login() {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </Form.Group>
-
-                                <Button type="submit" onClick={handleLogin}>
-                                    LogIn
-                                </Button>
+                                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>   }
+                                
+                                    
+                                
                             </div>
                         </Form>
                     </div>
