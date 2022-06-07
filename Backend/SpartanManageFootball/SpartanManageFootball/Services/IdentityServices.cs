@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
+using SpartanManageFootball.Persistence;
 using System.Text;
 
 namespace SpartanManageFootball.Services
@@ -14,14 +15,17 @@ namespace SpartanManageFootball.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
+        private readonly SMFContext _smfcontext;
 
-        public IdentityServices(UserManager<RegisterUser> userManager, SignInManager<RegisterUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public IdentityServices(UserManager<RegisterUser> userManager, SignInManager<RegisterUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SMFContext smfcontext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _emailSender = emailSender;
             _configuration = configuration;
+            _smfcontext = smfcontext;
+
         }
 
         public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
@@ -70,7 +74,16 @@ namespace SpartanManageFootball.Services
             var result = await _signInManager.PasswordSignInAsync(email, password, true, false);
             return result.Succeeded;
         }
+        public async Task<bool> UpdateUsersRole(string userName, IList<string> usersRole)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var existingRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, existingRoles);
 
+            result = await _userManager.AddToRolesAsync(user, usersRole);
+
+            return result.Succeeded;
+        }
         public async Task<UserManagerResponse> ForgetPasswordAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -133,6 +146,60 @@ namespace SpartanManageFootball.Services
                 IsSuccess = false,
                 Errors = result.Errors.Select(e => e.Description),
             };
+        }
+
+        public async Task<bool> IsInRoleAsync(string userId, string role)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return await _userManager.IsInRoleAsync(user, role);
+        }
+
+        public async Task<List<string>> GetUserRolesAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return roles.ToList();
+        }
+
+        public async Task<bool> AssignUserToRole(string userName, IList<string> roles)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            var result = await _userManager.AddToRolesAsync(user, roles);
+            return result.Succeeded;
+        }
+        public async Task<List<UserRoleViewModel>> GetUsersDetailsAsync()
+        {
+            var UserRolesView = new List<UserRoleViewModel>();
+            var userRoles = _smfcontext.UserRoles.ToList();
+
+            foreach (var userrole in userRoles)
+            {
+                var identitynumber = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
+                var email = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
+                var userid = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
+                var role = _smfcontext.Roles.Where(x => x.Id == userrole.RoleId).FirstOrDefault();
+                UserRolesView.Add(new UserRoleViewModel(userid.UserName, role.Name, email.Email, identitynumber.IdentityNumber));
+            }
+            return UserRolesView;
         }
     }
 }

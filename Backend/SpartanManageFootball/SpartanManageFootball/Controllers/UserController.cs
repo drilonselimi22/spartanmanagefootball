@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SpartanManageFootball.Application;
 using SpartanManageFootball.Application.Admin;
 using SpartanManageFootball.Application.Login;
+using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
-
 namespace SpartanManageFootball.Controllers
 {
     [Route("api/[controller]")]
@@ -93,10 +94,36 @@ namespace SpartanManageFootball.Controllers
                 {
                     return Ok(result);
                 }
+              
                 return BadRequest(result);
             }
 
             return BadRequest("Some properties are not valid");
+        }
+
+        [HttpGet("GetUserDetails")]
+        [ProducesDefaultResponseType(typeof(List<UserDTO>))]
+        public async Task<IActionResult> GetUserDetailsAsync()
+        {
+            var result = await _identityServices.GetUsersDetailsAsync();
+          
+            if (result == null)
+
+            {
+                throw new Exception("Something went wrong");
+            }
+           
+            return Ok(result);
+        }
+        
+        [HttpPut("EditUserRoles")]
+        [ProducesDefaultResponseType(typeof(int))]
+
+        public async Task<ActionResult> EditUserRoles(UpdateUserRolesCommand command)
+        {
+            var result = await _mediator.Send(command);
+           
+            return Ok(result);
         }
     }
 }

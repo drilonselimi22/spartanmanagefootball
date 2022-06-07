@@ -4,6 +4,7 @@ using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Persistence;
 using System.Web;
 using SpartanManageFootball.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SpartanManageFootball.Application.Admin
 {
@@ -44,6 +45,7 @@ namespace SpartanManageFootball.Application.Admin
                 public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
                 {
                     var userExists = await _userManager.FindByNameAsync(request.Username);
+                    
 
                     if (userExists != null)
                     {
