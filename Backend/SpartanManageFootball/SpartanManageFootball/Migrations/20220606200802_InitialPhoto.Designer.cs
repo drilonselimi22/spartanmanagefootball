@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpartanManageFootball.Persistence;
 
@@ -11,9 +12,10 @@ using SpartanManageFootball.Persistence;
 namespace SpartanManageFootball.Migrations
 {
     [DbContext(typeof(SMFContext))]
-    partial class SMFContextModelSnapshot : ModelSnapshot
+    [Migration("20220606200802_InitialPhoto")]
+    partial class InitialPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -392,14 +394,6 @@ namespace SpartanManageFootball.Migrations
 
                     b.Property<bool>("isVerified")
                         .HasColumnType("bit");
-
-                    b.Property<string>("photoNum")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("photoUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeamId");
 

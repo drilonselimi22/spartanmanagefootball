@@ -9,6 +9,8 @@ using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Services;
 using System.Text;
 using SpartanManageFootball.Models;
+using SpartanManageFootball.Photos;
+using SpartanManageFootball.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -71,6 +73,10 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {
     options.TokenLifespan = TimeSpan.FromHours(2);
 });
+
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+builder.Services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
