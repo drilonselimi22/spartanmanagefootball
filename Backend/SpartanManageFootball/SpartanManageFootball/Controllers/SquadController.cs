@@ -10,49 +10,41 @@ namespace SpartanManageFootball.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SquadController : ControllerBase
+    public class SquadController : BaseApiController
     {
-        private readonly IMediator _mediator;
-
-        public SquadController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost("addSquad")]
         [AllowAnonymous]
-        public async Task<ActionResult<Squad>> CreateTeam([FromBody] TeamCommand command)
+        public async Task<IActionResult> CreateTeam([FromForm] CreateTeams.TeamCommand command)
         {
-            return await _mediator.Send(command);
+            return HandleResult(await Mediator.Send(command)); ;
         }
 
         [HttpDelete("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Unit>> DeleteTeam(int id)
         {
-            return await _mediator.Send(new DeleteTeams.Command { Id = id });
+            return await Mediator.Send(new DeleteTeams.Command { Id = id });
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
         public async Task<ActionResult<List<Squad>>> ListTeam()
         {
-            return await _mediator.Send(new ListTeams.Query());
+            return await Mediator.Send(new ListTeams.Query());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Squad>> PlayerDetails(int id)
         {
-            return await _mediator.Send(new TeamsDetails.Query { Id = id });
+            return await Mediator.Send(new TeamsDetails.Query { Id = id });
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<Squad>> Edit(int id, TeamEditCommand command)
+        public async Task<ActionResult<Squad>> Edit(int id, [FromForm] TeamEditCommand command)
         {
             command.TeamId = id;
-
-            return await _mediator.Send(command);
+            return await Mediator.Send(command);
         }
     }
 }
