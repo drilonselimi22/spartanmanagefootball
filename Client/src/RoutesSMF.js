@@ -11,16 +11,16 @@ import Teams from './components/Teams/teams';
 import About from './components/about';
 import Register from './components/Register/register'
 import Login from './components/Login/login';
-import Navbar from './spartanadmin/Navbar';
-import SpartanAdmin from './components/spartanAdmin';
-import SpartanLeagues from './spartanadmin/pages/spartanLeagues';
-import SpartanSquads from './spartanadmin/pages/spartanSquads';
 import ConfirmEmail from './components/Register/confirmEmail';
-import Navigation from './components/Navigation/navigation';
-import NavbarAdmin from './teamadmin/NavbarAdmin';
-import AddTeam from './teamadmin/pages/AddTeam';
-import AddPlayer from './teamadmin/pages/AddPlayer'
-
+import SpartanAgent from './components/SpartanAgent/SpartanAgent';
+import AgentLeagues from './components/SpartanAgent/pages/AgentLeagues';
+import AgentHome from './components/SpartanAgent/pages/AgentHome';
+import AgentSquads from './components/SpartanAgent/pages/AgentSquads';
+import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
+import AgentReferees from './components/SpartanAgent/pages/AgentReferees';
+import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
+import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
+import Verify from './components/SpartanAgent/pages/Verify';
 
 export default function RoutesSMF() {
   // const [logged, setlogged] = useState(false)
@@ -36,8 +36,6 @@ export default function RoutesSMF() {
     <div>
 
       <Router>
-        {/* {logged?null :<Navigation />} */}
-        <Navigation />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route exact path='/matches' element={<Match />} />
@@ -46,14 +44,19 @@ export default function RoutesSMF() {
           <Route exact path='/about' element={<About />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/login' element={<Login />} />
-          <Route exact path='/spartan' element={<Navbar />} />
-          <Route exact path='/spartann' element={<SpartanAdmin />} />
-          <Route exact path='/leagues' element={<SpartanLeagues />} />
-          <Route exact path='/squads' element={<SpartanSquads />} />
-          <Route exact path='/teamadmin' element={<NavbarAdmin />} />
-          <Route exact path='/addteam' element={<AddTeam />} />
-          <Route exact path='/addplayers' element={<AddPlayer />} />
           <Route exact path='/confirmEmail' element={<ConfirmEmail />} />
+
+          <Route path='/agent' exact element={<AgentHome />} />
+          <Route path='/agent-leagues' exact element={<AgentLeagues />} />
+          <Route path='/agent-squads' exact element={<AgentSquads />} />
+          <Route path='/agent-matches' exact element={<AgentMatches />} />
+          <Route path='/agent-referees' exact element={<AgentReferees />} />
+          <Route path='/agent-stadiums' exact element={<AgentStadium />} />
+          <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
+
+          <Route path='/verify' exact element={<Verify />} />
+
+          <Route exact path='/agent' element={<SpartanAgent />} />
         </Routes>
       </Router>
     </div>
