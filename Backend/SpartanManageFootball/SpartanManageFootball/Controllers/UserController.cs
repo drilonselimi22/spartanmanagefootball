@@ -7,8 +7,8 @@ using SpartanManageFootball.Application.Login;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 
-namespace SpartanManageFootball.Controllers
-{
+namespace SpartanManageFootball.Controllers 
+{ 
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -35,15 +35,14 @@ namespace SpartanManageFootball.Controllers
             _signInManager = signInManager;
             _emailsender = emailSender;
             _identityServices = identityServices;
-        }
-
+        } 
         [HttpPost]
         [Route("register-admin")]
         public async Task<ActionResult<Unit>> RegisterAdmin([FromBody] Create.Command command)
         {
-            return await _mediator.Send(command);
+           return await _mediator.Send(command);
         }
-
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] AuthCommand command)
         {

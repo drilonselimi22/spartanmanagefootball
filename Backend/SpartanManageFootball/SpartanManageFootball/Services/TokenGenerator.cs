@@ -30,7 +30,6 @@ namespace SpartanManageFootball.JwtToken
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
                 new Claim(JwtRegisteredClaimNames.Jti, userId),
                 new Claim(ClaimTypes.Name, userName),
-                new Claim("UserId", userId)
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

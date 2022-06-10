@@ -19,33 +19,35 @@ namespace SpartanManageFootball.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("addReferee")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Referee>> CreatePlayer([FromBody] RefereeCommand command)
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
+        [HttpPost("addReferee")] 
+        public async Task<ActionResult<Referee>> CreateReferee([FromBody] RefereeCommand command)
         {
             return await _mediator.Send(command);
         }
 
-        [HttpDelete("{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Unit>> DeletePlayer(int id)
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
+        [HttpDelete("{id}")] 
+        public async Task<ActionResult<Unit>> DeleteReferee(int id)
         {
             return await _mediator.Send(new DeleteReferees.Command { Id = id });
         }
 
-        [HttpGet]
         [AllowAnonymous]
+        [HttpGet] 
         public async Task<ActionResult<List<Referee>>> List()
         {
             return await _mediator.Send(new ListReferees.Query());
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Referee>> PlayerDetails(int id)
+        public async Task<ActionResult<Referee>> RefereeDetails(int id)
         {
             return await _mediator.Send(new RefereeDetails.Query { Id = id });
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Referee>> Edit(int id, RefereeEditCommand command)
         {

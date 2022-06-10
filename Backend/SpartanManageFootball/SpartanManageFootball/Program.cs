@@ -9,6 +9,7 @@ using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Services;
 using System.Text;
 using SpartanManageFootball.Models;
+using Microsoft.AspNetCore.Authorization;
 using SpartanManageFootball.Photos;
 using SpartanManageFootball.Security;
 
@@ -26,8 +27,9 @@ builder.Services.AddAuthentication(x =>
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
-{
+{   
     x.RequireHttpsMetadata = false;
     x.SaveToken = true;
     x.TokenValidationParameters = new TokenValidationParameters()
@@ -42,7 +44,12 @@ builder.Services.AddAuthentication(x =>
         ClockSkew = TimeSpan.FromMinutes(Convert.ToDouble(_expirtyMinutes))
     };
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AgentRole", policy => policy.RequireRole("agent"));
+    options.AddPolicy("AdminRole", policy => policy.RequireRole("admin")); 
 
+});
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddSingleton<ITokenGenerator>(new TokenGenerator(_key, _issuer, _audience, _expirtyMinutes));
 builder.Services.AddControllers();
