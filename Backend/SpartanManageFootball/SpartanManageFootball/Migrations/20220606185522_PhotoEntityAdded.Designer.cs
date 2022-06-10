@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpartanManageFootball.Persistence;
 
@@ -11,9 +12,10 @@ using SpartanManageFootball.Persistence;
 namespace SpartanManageFootball.Migrations
 {
     [DbContext(typeof(SMFContext))]
-    partial class SMFContextModelSnapshot : ModelSnapshot
+    [Migration("20220606185522_PhotoEntityAdded")]
+    partial class PhotoEntityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,8 +210,8 @@ namespace SpartanManageFootball.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("RegisterUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("SquadTeamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -220,7 +222,7 @@ namespace SpartanManageFootball.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RegisterUserId");
+                    b.HasIndex("SquadTeamId");
 
                     b.ToTable("Photos");
                 });
@@ -393,14 +395,6 @@ namespace SpartanManageFootball.Migrations
                     b.Property<bool>("isVerified")
                         .HasColumnType("bit");
 
-                    b.Property<string>("photoNum")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("photoUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("TeamId");
 
                     b.HasIndex("LeagueId");
@@ -512,9 +506,9 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("SpartanManageFootball.Models.Photo", b =>
                 {
-                    b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
+                    b.HasOne("SpartanManageFootball.Models.Squad", null)
                         .WithMany("Photos")
-                        .HasForeignKey("RegisterUserId");
+                        .HasForeignKey("SquadTeamId");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Referee", b =>
@@ -538,7 +532,7 @@ namespace SpartanManageFootball.Migrations
                     b.Navigation("Squads");
                 });
 
-            modelBuilder.Entity("SpartanManageFootball.Models.RegisterUser", b =>
+            modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
                 {
                     b.Navigation("Photos");
                 });
