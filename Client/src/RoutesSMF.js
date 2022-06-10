@@ -15,12 +15,13 @@ import ConfirmEmail from './components/Register/confirmEmail';
 import SpartanAgent from './components/SpartanAgent/SpartanAgent';
 import AgentLeagues from './components/SpartanAgent/pages/AgentLeagues';
 import AgentHome from './components/SpartanAgent/pages/AgentHome';
-import AgentSquads from './components/SpartanAgent/pages/AgentSquads';
 import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
 import AgentReferees from './components/SpartanAgent/pages/AgentReferees';
 import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
 import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
-import Verify from './components/SpartanAgent/pages/Verify';
+import AgentEditUsers from './components/SpartanAgent/pages/AgentEditUsers';
+import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
+import AdminHome from './components/TeamAdmin/pages/AdminHome';
 
 export default function RoutesSMF() {
   // const [logged, setlogged] = useState(false)
@@ -46,17 +47,20 @@ export default function RoutesSMF() {
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/confirmEmail' element={<ConfirmEmail />} />
 
+          {/* Agent */}
+          <Route exact path='/agent' element={<SpartanAgent />} />
           <Route path='/agent' exact element={<AgentHome />} />
           <Route path='/agent-leagues' exact element={<AgentLeagues />} />
-          <Route path='/agent-squads' exact element={<AgentSquads />} />
           <Route path='/agent-matches' exact element={<AgentMatches />} />
           <Route path='/agent-referees' exact element={<AgentReferees />} />
           <Route path='/agent-stadiums' exact element={<AgentStadium />} />
           <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
+          <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
 
-          <Route path='/verify' exact element={<Verify />} />
+          {/* Admin */}
+          <Route path='/admin' exact element={<AdminHome />} />
+          <Route exact path='/admin-squad' element={<AdminAddSquad />} />
 
-          <Route exact path='/agent' element={<SpartanAgent />} />
         </Routes>
       </Router>
     </div>

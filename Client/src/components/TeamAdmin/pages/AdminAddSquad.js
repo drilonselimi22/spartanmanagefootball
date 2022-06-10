@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap';
-import SidebarAgent from '../SidebarAgent';
+import SidebarAdmin from '../SidebarAdmin'
 import axios from 'axios';
+import { Form, Button } from 'react-bootstrap';
 
-function AgentSquads() {
+function AdminAddSquad() {
     const [stadiumId, setStadiumId] = useState('');
     const [name, setName] = useState('');
     const [city, setCity] = useState('');
     const [isVerified, setIsVerified] = useState(false);
+    const [file, setFile] = useState(null);
+
     const [submitedRegister, setSubmitedRegister] = useState(false);
     const [registered, setRegistered] = useState(false);
 
@@ -20,8 +22,12 @@ function AgentSquads() {
                 stadiumId: stadiumId,
                 name: name,
                 city: city,
-                isVerified: isVerified
+                isVerified: isVerified,
+                file: file
             },
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
         }).then(
             (response) => {
                 console.log("response register referee", response);
@@ -34,15 +40,20 @@ function AgentSquads() {
         );
     }
 
+    const handleFileSelect = (event) => {
+        setFile(event.target.files[0])
+    }
+
     return (
         <div>
-            <SidebarAgent />
+            <SidebarAdmin />
             <div style={{
                 position: "absolute",
                 top: '10%',
                 left: '40%',
                 width: '500px'
             }}>
+
                 <Form>
                     <Form.Group className="mb-3" controlId="formName">
                         <Form.Label>Squad Stadium</Form.Label>
@@ -56,12 +67,12 @@ function AgentSquads() {
 
                     <Form.Group className="mb-3" controlId="formExperience">
                         <Form.Label>Squad City</Form.Label>
-                        <Form.Control onChange={(e) => setCity(e.target.value)} type="email" placeholder="Enter Squad City" />
+                        <Form.Control onChange={(e) => setCity(e.target.value)} type="text" placeholder="Enter Squad City" />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formCity">
-                        <Form.Label>Is Squad Verified</Form.Label>
-                        <Form.Control onChange={(e) => setIsVerified(e.target.value)} type="text" placeholder="Is Verified?" />
+                    <Form.Group className="mb-3" controlId="formFile">
+                        <Form.Label>Upload certificate</Form.Label>
+                        <Form.Control type="file" name="file" onChange={(e) => setFile(e.target.files[0])} />
                     </Form.Group>
 
                     <Button variant="primary" type="submit" onClick={registerSquad}>
@@ -73,4 +84,4 @@ function AgentSquads() {
     )
 }
 
-export default AgentSquads;
+export default AdminAddSquad

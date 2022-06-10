@@ -78,10 +78,10 @@ function Login() {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </Form.Group>
-                                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>   }
-                                
-                                    
-                                
+                                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>}
+
+
+
                             </div>
                         </Form>
                     </div>
