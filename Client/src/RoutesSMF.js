@@ -19,24 +19,29 @@ import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
 import AgentReferees from './components/SpartanAgent/pages/AgentReferees';
 import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
 import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
-import AgentEditUsers from './components/SpartanAgent/pages/AgentEditUsers';
 import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
 import AdminHome from './components/TeamAdmin/pages/AdminHome';
+import Navigation from './components/Navigation/navigation';
+import Footer from './components/Footer/footer';
 
 export default function RoutesSMF() {
-  // const [logged, setlogged] = useState(false)
-  // useEffect(() => {
-  //   var items = null
-  //   items = JSON.parse(localStorage.getItem('email'));
-  //   if(items != null){
-  //     setlogged(true)
-  //   }
-  // });
+  const [logged, setlogged] = useState(false);
+  useEffect(() => {
+    var getData = null;
+    getData = localStorage.getItem("email");
+    if (getData != null) {
+      setlogged(true);
+    }
+  });
 
   return (
     <div>
-
       <Router>
+        {logged ? null : (
+          <>
+            <Navigation />
+          </>
+        )}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route exact path='/matches' element={<Match />} />
@@ -55,13 +60,14 @@ export default function RoutesSMF() {
           <Route path='/agent-referees' exact element={<AgentReferees />} />
           <Route path='/agent-stadiums' exact element={<AgentStadium />} />
           <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
-          <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
 
           {/* Admin */}
           <Route path='/admin' exact element={<AdminHome />} />
           <Route exact path='/admin-squad' element={<AdminAddSquad />} />
 
+
         </Routes>
+        {logged ? null : <Footer />}
       </Router>
     </div>
 
