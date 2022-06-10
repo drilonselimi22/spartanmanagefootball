@@ -8,8 +8,10 @@ using static SpartanManageFootball.Application.Players.EditPlayer;
 
 namespace SpartanManageFootball.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
+    
     public class PlayerOperations : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -19,33 +21,35 @@ namespace SpartanManageFootball.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("addPlayer")]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
+        [HttpPost("addPlayer")] 
         public async Task<ActionResult<Player>> CreatePlayer([FromBody] PlayerAddCommand command)
         {
             return await _mediator.Send(command);
         }
 
-        [HttpDelete("{id}")]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
+        [HttpDelete("{id}")] 
         public async Task<ActionResult<Unit>> DeletePlayer(int id)
         {
             return await _mediator.Send(new DeletePlayer.Command { Id = id });
         }
 
-        [HttpGet]
         [AllowAnonymous]
+        [HttpGet] 
         public async Task<ActionResult<List<Player>>> List()
         {
             return await _mediator.Send(new ListPlayers.Query());
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> PlayerDetails(int id)
         {
             return await _mediator.Send(new PlayerDetails.Query { Id = id });
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Player>> Edit(int id, PlayerEditCommand command)
         {

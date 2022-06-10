@@ -3,7 +3,6 @@ import * as AiIcons from "react-icons/ai"
 import * as BiIcons from "react-icons/bi"
 import * as BsIcons from "react-icons/bs"
 import * as FiIcons from "react-icons/fi"
-import * as CgIcons from "react-icons/cg"
 import * as MdIcon from "react-icons/md"
 
 export const AgentPages = [
@@ -49,10 +48,4 @@ export const AgentPages = [
         icon: <FiIcons.FiCreditCard />,
         cName: 'nav-text'
     },
-    {
-        title: 'Logout',
-        path: '/login',
-        icon: <CgIcons.CgLogOut />,
-        cName: 'nav-text'
-    }
 ]

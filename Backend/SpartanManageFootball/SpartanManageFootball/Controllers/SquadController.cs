@@ -19,34 +19,36 @@ namespace SpartanManageFootball.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("addSquad")]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
+        [HttpPost("addSquad")] 
         public async Task<ActionResult<Squad>> CreateTeam([FromBody] TeamCommand command)
         {
             return await _mediator.Send(command);
         }
 
-        [HttpDelete("{id}")]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
+        [HttpDelete("{id}")] 
         public async Task<ActionResult<Unit>> DeleteTeam(int id)
         {
             return await _mediator.Send(new DeleteTeams.Command { Id = id });
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<Squad>>> ListTeam()
         {
             return await _mediator.Send(new ListTeams.Query());
         }
-
+        
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Squad>> PlayerDetails(int id)
+        public async Task<ActionResult<Squad>> TeamDetails(int id)
         {
             return await _mediator.Send(new TeamsDetails.Query { Id = id });
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //AGENT only verifies the team nothing else
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent, admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Squad>> Edit(int id, TeamEditCommand command)
         {
