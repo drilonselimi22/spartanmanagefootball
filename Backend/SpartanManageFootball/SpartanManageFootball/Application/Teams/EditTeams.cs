@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
+using SpartanManageFootball.Interfaces;
 
 namespace SpartanManageFootball.Application.Teams
 {
@@ -17,10 +18,12 @@ namespace SpartanManageFootball.Application.Teams
         public class CommandHandler : IRequestHandler<TeamEditCommand, Squad>
         {
             private readonly SMFContext _context;
+            private readonly IPhotoAccessor _photoAccessor;
 
-            public CommandHandler(SMFContext context)
+            public CommandHandler(SMFContext context, IPhotoAccessor photoAccessor)
             {
                 _context = context;
+                _photoAccessor = photoAccessor;
             }
 
             public async Task<Squad> Handle(TeamEditCommand request, CancellationToken cancellationToken)
@@ -36,7 +39,7 @@ namespace SpartanManageFootball.Application.Teams
                 team.Name = request.Name ?? team.Name;
                 team.City = request.City ?? team.City;
                 team.isVerified = request.isVerified ?? team.isVerified;
-
+                
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success)

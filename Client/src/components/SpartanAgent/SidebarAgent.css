@@ -18,6 +18,9 @@ body {
     align-items: center;
     font-family: 'Open Sans', sans-serif !important;
     padding: 0 65px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }   
 
 .menu-bars {

@@ -203,6 +203,28 @@ namespace SpartanManageFootball.Migrations
                     b.ToTable("Matches");
                 });
 
+            modelBuilder.Entity("SpartanManageFootball.Models.Photo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RegisterUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isMain")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegisterUserId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("SpartanManageFootball.Models.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -371,6 +393,14 @@ namespace SpartanManageFootball.Migrations
                     b.Property<bool>("isVerified")
                         .HasColumnType("bit");
 
+                    b.Property<string>("photoNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("photoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TeamId");
 
                     b.HasIndex("LeagueId");
@@ -480,6 +510,13 @@ namespace SpartanManageFootball.Migrations
                     b.Navigation("Referee");
                 });
 
+            modelBuilder.Entity("SpartanManageFootball.Models.Photo", b =>
+                {
+                    b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("RegisterUserId");
+                });
+
             modelBuilder.Entity("SpartanManageFootball.Models.Referee", b =>
                 {
                     b.HasOne("SpartanManageFootball.Models.League", null)
@@ -499,6 +536,11 @@ namespace SpartanManageFootball.Migrations
                     b.Navigation("Referees");
 
                     b.Navigation("Squads");
+                });
+
+            modelBuilder.Entity("SpartanManageFootball.Models.RegisterUser", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

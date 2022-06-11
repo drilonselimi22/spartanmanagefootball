@@ -6,7 +6,7 @@ namespace SpartanManageFootball.Models
     {
         public int IdentityNumber { get; set; }
         public DateTime BirthDate { get; set; }
-        
-        
+
+        public ICollection<Photo>? Photos { get; set; }
     }
 }

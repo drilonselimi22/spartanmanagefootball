@@ -10,89 +10,87 @@ import Navigation from "../Navigation/navigation";
 import Footer from "../Footer/footer";
 
 function Login() {
-    const navigate = useNavigate();
-    const [clickedLoggin, setClickedLoggin] = useState(false);
-    const [errors, setErrors] = useState(false);
-    const [username, setUsername] = useState(false);
-    const [password, setPassword] = useState(false);
+  const navigate = useNavigate();
+  const [clickedLoggin, setClickedLoggin] = useState(false);
+  const [errors, setErrors] = useState(false);
+  const [username, setUsername] = useState(false);
+  const [password, setPassword] = useState(false);
 
-    async function handleLogin(e) {
-        e.preventDefault();
-        console.log("CLICKED", clickedLoggin);
-        setClickedLoggin(true);
-        await axios({
-            method: "POST",
-            url: "https://localhost:7122/api/User/login",
-            data: {
-                email: username,
-                password: password,
-            },
-        }).then(
-            (response) => {
-                var result = response.data
-                localStorage.setItem('username', result.username);
-                localStorage.setItem('email', result.email);
-                localStorage.setItem('token', result.token);
-                localStorage.setItem('role', result.role);
-                if (response.data.role == "agent") {
-                    navigate("/agent");
-                } else {
-                    navigate("/admin");
-                }
-            },
-            (error) => {
-                console.log("error", error);
-                setErrors(true);
-            }
-        );
-        setClickedLoggin(false);
-    }
-    return (
-        <div>
-            <Navigation />
-            <Container className="login__container">
-                <div className="login__header">
-                    <div>
-                        <Form className="login__form" style={{
-                            width: '500px'
-                        }}>
-                            <div>
-                                <div>
-                                    <h2>Login</h2>
-                                </div>
-
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Username</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter your username"
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Enter your password"
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </Form.Group>
-                                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>   }
-                                
-                                    
-                                
-                            </div>
-                        </Form>
-                    </div>
-
-                    <div>
-                        <img src={registerImage} width="60%" />
-                    </div>
-                </div>
-            </Container>
-        </div >
+  async function handleLogin(e) {
+    e.preventDefault();
+    console.log("CLICKED", clickedLoggin);
+    setClickedLoggin(true);
+    await axios({
+      method: "POST",
+      url: "https://localhost:7122/api/User/login",
+      data: {
+        email: username,
+        password: password,
+      },
+    }).then(
+      (response) => {
+        var result = response.data
+        localStorage.setItem('username', result.username);
+        localStorage.setItem('email', result.email);
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('role', result.role);
+        if (response.data.role == "agent") {
+          navigate("/agent");
+        } else {
+          navigate("/admin");
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        setErrors(true);
+      }
     );
+    setClickedLoggin(false);
+  }
+  return (
+    <div>
+      <Navigation />
+      <Container className="login__container">
+        <div className="login__header">
+          <div>
+            <Form className="login__form" style={{
+              width: '500px'
+            }}>
+              <div>
+                <div>
+                  <h2>Login</h2>
+                </div>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your username"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Form.Group>
+                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>}
+
+              </div>
+            </Form>
+          </div>
+
+          <div>
+            <img src={registerImage} width="60%" />
+          </div>
+        </div>
+      </Container>
+    </div >
+  );
 }
 
 export default Login;

@@ -3,7 +3,6 @@ import * as AiIcons from "react-icons/ai"
 import * as BiIcons from "react-icons/bi"
 import * as BsIcons from "react-icons/bs"
 import * as FiIcons from "react-icons/fi"
-import * as CgIcons from "react-icons/cg"
 import * as MdIcon from "react-icons/md"
 import {IoIosPeople} from "react-icons/io";
 
@@ -24,12 +23,6 @@ export const AgentPages = [
         title: 'Leagues',
         path: '/agent-leagues',
         icon: <BiIcons.BiFootball />,
-        cName: 'nav-text'
-    },
-    {
-        title: 'Squads',
-        path: '/agent-squads',
-        icon: <AiIcons.AiOutlineUserAdd />,
         cName: 'nav-text'
     },
     {

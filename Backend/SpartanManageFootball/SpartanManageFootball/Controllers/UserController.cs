@@ -36,15 +36,14 @@ namespace SpartanManageFootball.Controllers
             _signInManager = signInManager;
             _emailsender = emailSender;
             _identityServices = identityServices;
-        }
-
+        } 
         [HttpPost]
         [Route("register-admin")]
         public async Task<ActionResult<Unit>> RegisterAdmin([FromBody] Create.Command command)
         {
-            return await _mediator.Send(command);
+           return await _mediator.Send(command);
         }
-
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] AuthCommand command)
         {
