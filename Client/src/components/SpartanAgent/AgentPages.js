@@ -25,12 +25,6 @@ export const AgentPages = [
         cName: 'nav-text'
     },
     {
-        title: 'Squads',
-        path: '/agent-squads',
-        icon: <AiIcons.AiOutlineUserAdd />,
-        cName: 'nav-text'
-    },
-    {
         title: 'Verify Squads',
         path: '/agent-squads-verify',
         icon: <MdIcon.MdVerified />,

@@ -28,6 +28,7 @@ namespace SpartanManageFootball.Application.Teams
                     _context = context;
                     _photoAccessor = photoAccessor;
                     _userAccessor = userAccessor;
+
                 }
 
                 public async Task<Result<Squad>> Handle(TeamCommand request, CancellationToken cancellationToken)

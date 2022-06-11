@@ -4,10 +4,10 @@ import background from "../../images/homeimage.jpg";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./login.css";
+import './login.css';
 import registerImage from "../../images/access.svg";
-// import Navigation from "../Navigation/navigation";
-// import Footer from "../Footer/footer";
+import Navigation from "../Navigation/navigation";
+import Footer from "../Footer/footer";
 
 function Login() {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ function Login() {
 
   async function handleLogin(e) {
     e.preventDefault();
+    console.log("CLICKED", clickedLoggin);
     setClickedLoggin(true);
     await axios({
       method: "POST",
@@ -28,12 +29,11 @@ function Login() {
       },
     }).then(
       (response) => {
-        var result = response.data;
-        localStorage.setItem("username", result.username);
-        localStorage.setItem("email", result.email);
-        localStorage.setItem("token", result.token);
-        localStorage.setItem("role", result.role);
-        console.log("logged123123");
+        var result = response.data
+        localStorage.setItem('username', result.username);
+        localStorage.setItem('email', result.email);
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('role', result.role);
         if (response.data.role == "agent") {
           navigate("/agent");
         } else {
@@ -46,21 +46,16 @@ function Login() {
       }
     );
     setClickedLoggin(false);
-
-    window.location.reload();
   }
   return (
     <div>
-      {/* <Navigation /> */}
+      <Navigation />
       <Container className="login__container">
         <div className="login__header">
           <div>
-            <Form
-              className="login__form"
-              style={{
-                width: "500px",
-              }}
-            >
+            <Form className="login__form" style={{
+              width: '500px'
+            }}>
               <div>
                 <div>
                   <h2>Login</h2>
@@ -83,13 +78,8 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
-                {clickedLoggin ? (
-                  <label>Logging in...</label>
-                ) : (
-                  <Button type="submit" onClick={handleLogin}>
-                    Log in
-                  </Button>
-                )}
+                {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>}
+
               </div>
             </Form>
           </div>
@@ -99,7 +89,7 @@ function Login() {
           </div>
         </div>
       </Container>
-    </div>
+    </div >
   );
 }
 
