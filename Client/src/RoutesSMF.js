@@ -19,8 +19,9 @@ import AgentSquads from './components/SpartanAgent/pages/AgentSquads';
 import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
 import AgentReferees from './components/SpartanAgent/pages/AgentReferees';
 import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
-import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
-import Verify from './components/SpartanAgent/pages/Verify';
+
+import AgentEditUsers from './components/SpartanAgent/pages/AgentEditUsers';
+
 
 export default function RoutesSMF() {
   // const [logged, setlogged] = useState(false)
@@ -52,9 +53,8 @@ export default function RoutesSMF() {
           <Route path='/agent-matches' exact element={<AgentMatches />} />
           <Route path='/agent-referees' exact element={<AgentReferees />} />
           <Route path='/agent-stadiums' exact element={<AgentStadium />} />
-          <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
-
-          <Route path='/verify' exact element={<Verify />} />
+          <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
+         
 
           <Route exact path='/agent' element={<SpartanAgent />} />
         </Routes>

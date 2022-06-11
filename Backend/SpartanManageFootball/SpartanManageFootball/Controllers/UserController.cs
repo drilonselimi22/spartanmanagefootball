@@ -125,5 +125,20 @@ namespace SpartanManageFootball.Controllers
            
             return Ok(result);
         }
+
+        [HttpDelete("Delete/{userId}")]
+        [ProducesDefaultResponseType(typeof(int))]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var result = await _mediator.Send(new DeleteUserCommand() { Id = userId });
+            return Ok(result);
+        }
+
+
+
+
+
+
+
     }
 }

@@ -16,7 +16,8 @@ namespace SpartanManageFootball.Interfaces
         Task<List<string>> GetUserRolesAsync(string userId);
         Task<bool> AssignUserToRole(string userName, IList<string> roles);
         Task<bool> UpdateUsersRole(string userName, IList<string> usersRole);
-      
+        Task<bool> DeleteUserAsync(string userId);
+
     }
-    
+
 }

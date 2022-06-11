@@ -103,8 +103,8 @@ namespace SpartanManageFootball.Services
             var senderEmail = _configuration["ReturnPaths:SenderEmail"];
 
             await _userManager.FindByEmailAsync(email);
-            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "Follow the instructions to reset your password" +
-                $"<p>To reset your password <a href='{url}'>Click here</a></p>");
+            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "To reset the password click on the url" +
+              $"{url}");
 
             return new UserManagerResponse
             {
@@ -193,13 +193,33 @@ namespace SpartanManageFootball.Services
 
             foreach (var userrole in userRoles)
             {
+                
                 var identitynumber = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
                 var email = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
-                var userid = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
+                var username = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
                 var role = _smfcontext.Roles.Where(x => x.Id == userrole.RoleId).FirstOrDefault();
-                UserRolesView.Add(new UserRoleViewModel(userid.UserName, role.Name, email.Email, identitynumber.IdentityNumber));
+                var userid=_userManager.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
+                UserRolesView.Add(new UserRoleViewModel(username.UserName, role.Name, email.Email, identitynumber.IdentityNumber, userid.Id));
             }
             return UserRolesView;
+        }
+
+        public async Task<bool> DeleteUserAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+                //throw new Exception("User not found");
+            }
+
+            if (user.UserName == "system" || user.UserName == "admin")
+            {
+                throw new Exception("You can not delete system or admin user");
+                //throw new BadRequestException("You can not delete system or admin user");
+            }
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
         }
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import SidebarAgent from '../SidebarAgent'
 
-function Verify() {
+function ChangeRole() {
     return (
         <div>
             <SidebarAgent />
@@ -13,7 +13,7 @@ function Verify() {
                 backgroundColor: 'red',
                 border: '1px solid black'
             }}>
-                <h1>Verify</h1>
+                <h1>Make Agent</h1>
             </div>
         </div>
     )
