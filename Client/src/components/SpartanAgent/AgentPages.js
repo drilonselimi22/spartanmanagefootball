@@ -4,6 +4,7 @@ import * as BiIcons from "react-icons/bi"
 import * as BsIcons from "react-icons/bs"
 import * as FiIcons from "react-icons/fi"
 import * as MdIcon from "react-icons/md"
+import * as CgIcons from "react-icons/cg"
 import {IoIosPeople} from "react-icons/io";
 
 export const AgentPages = [
@@ -51,11 +52,6 @@ export const AgentPages = [
         
     },
    
-    {
-        title: 'Logout',
-        path: '/login',
-        icon: <CgIcons.CgLogOut />,
-        cName: 'nav-text'
-    }
+  
 
 ]

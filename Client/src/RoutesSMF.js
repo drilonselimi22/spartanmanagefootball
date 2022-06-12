@@ -40,11 +40,11 @@ export default function RoutesSMF() {
   return (
     <div>
       <Router>
-        {logged ? null : (
+        {/* {logged ? null : (
           <>
             <Navigation />
           </>
-        )}
+        )} */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route exact path='/matches' element={<Match />} />
@@ -72,7 +72,7 @@ export default function RoutesSMF() {
 
 
         </Routes>
-        {logged ? null : <Footer />}
+        {/* {logged ? null : <Footer />} */}
       </Router>
     </div>
 

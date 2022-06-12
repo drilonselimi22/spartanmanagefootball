@@ -5,12 +5,12 @@ import "./results.css";
 import team1 from "../../images/team1.png";
 import team2 from "../../images/team2.png";
 import Navigation from "../Navigation/navigation";
-// import Footer from "../Footer/footer";
+import Footer from "../Footer/footer";
 
 function Results() {
   return (
     <div>
-      {/* <Navigation /> */}
+      <Navigation />
       <div className="results__header">
         <div className="results__header__content">
           <h1>Results</h1>
@@ -78,7 +78,7 @@ function Results() {
           </Card.Body>
         </Card>
       </Container>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

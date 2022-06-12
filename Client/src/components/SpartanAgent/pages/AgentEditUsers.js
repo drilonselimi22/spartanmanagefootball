@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SidebarAgent from "../SidebarAgent";
-import Users from "./Users";
-import { Link } from "react-router-dom";
+
 import Modal from 'react-bootstrap/Modal';
 import Button from "react-bootstrap/Button";
 import UserModal from "./UserModal";

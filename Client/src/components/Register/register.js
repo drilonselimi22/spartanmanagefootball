@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Form, Button, Spinner, Container, Nav } from "react-bootstrap";
-// import Navigation from "../Navigation/navigation";
+import Navigation from "../Navigation/navigation";
 import registerImage from "../../images/register.svg";
 import "./register.css";
-// import Footer from "../Footer/footer";
+import Footer from "../Footer/footer";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -46,7 +46,7 @@ export default function Register() {
 
   return (
     <div>
-      {/* <Navigation /> */}
+      <Navigation />
       <Container className="register__container">
         <div className="register__header">
           <div>
@@ -135,7 +135,7 @@ export default function Register() {
         </div>
       </Container>
 
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

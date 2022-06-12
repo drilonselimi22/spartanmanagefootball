@@ -5,7 +5,7 @@ import Navigation from "./Navigation/navigation";
 function About() {
   return (
     <div>
-      {/* <Navigation /> */}
+       <Navigation /> 
       <h3>Under Maintenance</h3>
     </div>
   );
