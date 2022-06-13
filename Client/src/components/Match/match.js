@@ -1,16 +1,16 @@
-import React from "react"; 
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card, Container, Table } from "react-bootstrap";
 import team1 from "../../images/team1.png";
 import team2 from "../../images/team2.png";
 import "./match.css";
-// import Navigation from "../Navigation/navigation";
-// import Footer from "../Footer/footer";
+import Navigation from "../Navigation/navigation";
+import Footer from "../Footer/footer";
 
 function Match() {
   return (
     <div>
-      {/* <Navigation /> */}
+      <Navigation />
       <div className="match__header">
         <div className="match__header__content">
           <h1>Game Schedule</h1>
@@ -90,7 +90,7 @@ function Match() {
           </Card.Body>
         </Card>
       </Container>
-      {/* <Footer /> */}
+       <Footer /> 
     </div>
   );
 }

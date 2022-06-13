@@ -18,6 +18,9 @@ import AgentHome from './components/SpartanAgent/pages/AgentHome';
 import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
 import AgentReferees from './components/SpartanAgent/pages/AgentReferees';
 import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
+
+import AgentEditUsers from './components/SpartanAgent/pages/AgentEditUsers';
+
 import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
 import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
 import AdminHome from './components/TeamAdmin/pages/AdminHome';
@@ -37,11 +40,11 @@ export default function RoutesSMF() {
   return (
     <div>
       <Router>
-        {logged ? null : (
+        {/* {logged ? null : (
           <>
             <Navigation />
           </>
-        )}
+        )} */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route exact path='/matches' element={<Match />} />
@@ -59,6 +62,8 @@ export default function RoutesSMF() {
           <Route path='/agent-matches' exact element={<AgentMatches />} />
           <Route path='/agent-referees' exact element={<AgentReferees />} />
           <Route path='/agent-stadiums' exact element={<AgentStadium />} />
+          <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
+         
           <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
 
           {/* Admin */}
@@ -67,7 +72,7 @@ export default function RoutesSMF() {
 
 
         </Routes>
-        {logged ? null : <Footer />}
+        {/* {logged ? null : <Footer />} */}
       </Router>
     </div>
 

@@ -9,13 +9,13 @@ import teamthree from "../../images/drenicalogo.png";
 import teamfour from "../../images/trepcalogo.png";
 import teamfive from "../../images/ulpianalogo.png";
 import teamsix from "../../images/malishevalogo.png";
-// import Navigation from "../Navigation/navigation";
-// import Footer from "../Footer/footer";
+import Navigation from "../Navigation/navigation";
+import Footer from "../Footer/footer";
 
 function Teams() {
   return (
     <div>
-      {/* <Navigation /> */}
+      <Navigation />
       <div className="teams__header">
         <div className="teams__header__container">
           <h1>Teams</h1>
@@ -83,7 +83,7 @@ function Teams() {
           </Card.Body>
         </Card>
       </Container>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

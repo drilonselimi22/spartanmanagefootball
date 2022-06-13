@@ -4,6 +4,8 @@ import * as BiIcons from "react-icons/bi"
 import * as BsIcons from "react-icons/bs"
 import * as FiIcons from "react-icons/fi"
 import * as MdIcon from "react-icons/md"
+import * as CgIcons from "react-icons/cg"
+import {IoIosPeople} from "react-icons/io";
 
 export const AgentPages = [
     {
@@ -42,4 +44,14 @@ export const AgentPages = [
         icon: <FiIcons.FiCreditCard />,
         cName: 'nav-text'
     },
+    {
+        title:"Users",
+        path:'/agent-edit-users',
+        icon: <IoIosPeople />,
+        cName:'nav-text'
+        
+    },
+   
+  
+
 ]
