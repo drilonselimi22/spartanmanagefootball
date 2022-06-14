@@ -26,6 +26,7 @@ import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
 import AdminHome from './components/TeamAdmin/pages/AdminHome';
 import Navigation from './components/Navigation/navigation';
 import Footer from './components/Footer/footer';
+import PageNotFound from './components/PageNotFound/PageNotFound';
 
 export default function RoutesSMF() {
   const [logged, setlogged] = useState(false);
@@ -63,14 +64,15 @@ export default function RoutesSMF() {
           <Route path='/agent-referees' exact element={<AgentReferees />} />
           <Route path='/agent-stadiums' exact element={<AgentStadium />} />
           <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
-         
+
           <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
 
           {/* Admin */}
           <Route path='/admin' exact element={<AdminHome />} />
           <Route exact path='/admin-squad' element={<AdminAddSquad />} />
 
-
+          {/* Not Found Page */}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
         {/* {logged ? null : <Footer />} */}
       </Router>
