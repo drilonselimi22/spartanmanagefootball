@@ -8,9 +8,7 @@ namespace SpartanManageFootball.Application.League
     {
         public class Query : IRequest<List<SpartanManageFootball.Models.League>>
         {
-
         }
-
         public class Handler : IRequestHandler<Query, List<SpartanManageFootball.Models.League>>
         {
             private readonly SMFContext _context;

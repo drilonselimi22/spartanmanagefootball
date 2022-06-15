@@ -11,7 +11,6 @@ namespace SpartanManageFootball.Application.LeagueSquad
         {
             public LeagueSquadDto dto { get; set; }
         }
-
         public class CommandHandler : IRequestHandler<Command, Unit>
         {
             private readonly IIdentityService _identityService;
