@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SpartanManageFootball.Models
 {
@@ -18,5 +19,6 @@ namespace SpartanManageFootball.Models
         public bool isVerified { get; set; }
         public string photoNum { get; set; }
         public string photoUrl { get; set; }
+        public List<League> Leagues { get; set; }
     }
 }

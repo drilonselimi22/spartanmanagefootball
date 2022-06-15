@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SpartanManageFootball.Migrations
 {
-    public partial class SMFInitialContext : Migration
+    public partial class SMFInitCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,7 +45,6 @@ namespace SpartanManageFootball.Migrations
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
@@ -58,7 +58,6 @@ namespace SpartanManageFootball.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LeagueName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Leagues", x => x.LeagueId);
@@ -69,7 +68,7 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                    .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
@@ -77,10 +76,44 @@ namespace SpartanManageFootball.Migrations
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SquadTeamId = table.Column<int>(type: "int", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Referees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Experience = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Referees", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Squads",
+                columns: table => new
+                {
+                    TeamId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StadiumId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isVerified = table.Column<bool>(type: "bit", nullable: false),
+                    photoNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    photoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Squads", x => x.TeamId);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +126,6 @@ namespace SpartanManageFootball.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stadiums", x => x.Id);
@@ -109,7 +141,6 @@ namespace SpartanManageFootball.Migrations
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
@@ -131,7 +162,6 @@ namespace SpartanManageFootball.Migrations
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
@@ -152,7 +182,6 @@ namespace SpartanManageFootball.Migrations
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
@@ -171,7 +200,6 @@ namespace SpartanManageFootball.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
@@ -198,7 +226,6 @@ namespace SpartanManageFootball.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
@@ -211,50 +238,46 @@ namespace SpartanManageFootball.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Referees",
+                name: "Photos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                    .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Experience = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LeagueId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isMain = table.Column<bool>(type: "bit", nullable: false),
+                    RegisterUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
-
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Referees", x => x.Id);
+                    table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Referees_Leagues_LeagueId",
-                        column: x => x.LeagueId,
-                        principalTable: "Leagues",
-                        principalColumn: "LeagueId");
+                        name: "FK_Photos_AspNetUsers_RegisterUserId",
+                        column: x => x.RegisterUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Squads",
+                name: "LeagueSquad",
                 columns: table => new
                 {
-                    TeamId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StadiumId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isVerified = table.Column<bool>(type: "bit", nullable: false),
-                    LeagueId = table.Column<int>(type: "int", nullable: true)
+                    LeaguesLeagueId = table.Column<int>(type: "int", nullable: false),
+                    SquadsTeamId = table.Column<int>(type: "int", nullable: false)
                 },
-
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Squads", x => x.TeamId);
+                    table.PrimaryKey("PK_LeagueSquad", x => new { x.LeaguesLeagueId, x.SquadsTeamId });
                     table.ForeignKey(
-                        name: "FK_Squads_Leagues_LeagueId",
-                        column: x => x.LeagueId,
+                        name: "FK_LeagueSquad_Leagues_LeaguesLeagueId",
+                        column: x => x.LeaguesLeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "LeagueId");
+                        principalColumn: "LeagueId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LeagueSquad_Squads_SquadsTeamId",
+                        column: x => x.SquadsTeamId,
+                        principalTable: "Squads",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,7 +291,6 @@ namespace SpartanManageFootball.Migrations
                     RefereeId = table.Column<int>(type: "int", nullable: false),
                     MatchDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
-
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Matches", x => x.MatchId);
@@ -332,6 +354,11 @@ namespace SpartanManageFootball.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LeagueSquad_SquadsTeamId",
+                table: "LeagueSquad",
+                column: "SquadsTeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Matches_AwayTeamTeamId",
                 table: "Matches",
                 column: "AwayTeamTeamId");
@@ -347,14 +374,9 @@ namespace SpartanManageFootball.Migrations
                 column: "RefereeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Referees_LeagueId",
-                table: "Referees",
-                column: "LeagueId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Squads_LeagueId",
-                table: "Squads",
-                column: "LeagueId");
+                name: "IX_Photos_RegisterUserId",
+                table: "Photos",
+                column: "RegisterUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -375,7 +397,13 @@ namespace SpartanManageFootball.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "LeagueSquad");
+
+            migrationBuilder.DropTable(
                 name: "Matches");
+
+            migrationBuilder.DropTable(
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Players");
@@ -387,7 +415,7 @@ namespace SpartanManageFootball.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Leagues");
 
             migrationBuilder.DropTable(
                 name: "Referees");
@@ -396,7 +424,7 @@ namespace SpartanManageFootball.Migrations
                 name: "Squads");
 
             migrationBuilder.DropTable(
-                name: "Leagues");
+                name: "AspNetUsers");
         }
     }
 }

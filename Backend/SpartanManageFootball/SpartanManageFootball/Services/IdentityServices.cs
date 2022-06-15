@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
@@ -220,6 +222,39 @@ namespace SpartanManageFootball.Services
             }
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded;
+        }
+
+        public async Task<Unit> AddSquadsToLeague(LeagueSquadDto dto)
+        {
+            var league = await _smfcontext.Leagues.FindAsync(dto.LeaguesLeagueId);
+
+            /*var squads = await _smfcontext.Squads.Where(x => x.Squads == dto.SquadsTeamId).FirstOrDefaultAsync();*/
+
+            var userRoles = _smfcontext.Squads;
+
+            foreach (var userrole in userRoles)
+            {
+
+                var identitynumber = _smfcontext.Squads.Where(x => x.TeamId == userrole.TeamId).FirstOrDefault();
+
+                league.Squads.Add(userrole);
+            }
+
+            if (league == null)
+            {
+                throw new Exception("League not found");
+            }
+
+            /*league.Squads.Add(squads);*/
+
+            /*league.Squads.AddAsync(squads);*/
+
+            /*_smfcontext.AddAsync(dto);*/
+
+            await _smfcontext.SaveChangesAsync();
+
+            return Unit.Value;
+
         }
     }
 }

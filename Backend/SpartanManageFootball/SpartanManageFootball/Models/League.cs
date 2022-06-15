@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SpartanManageFootball.DTOs;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpartanManageFootball.Models
 {
@@ -10,10 +11,12 @@ namespace SpartanManageFootball.Models
         [Required(ErrorMessage = "League name is required!")]
         public string LeagueName { get; set; }
 
-        [Required(ErrorMessage = "List of referees is required")]
-        public List<Referee> Referees { get; set; }
+        // Referee not need here
+        /*[Required(ErrorMessage = "List of referees is required")]
+        public List<Referee> Referees { get; set; }*/
 
-        [Required(ErrorMessage = "List of squads is required")]
-        public List<Squad> Squads { get; set; }
+        // We will remove the require for now (testing mode)
+        /*[Required(ErrorMessage = "List of squads is required")]*/
+        public List<Squad> Squads { get; set; } = new List<Squad>();
     }
 }
