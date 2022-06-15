@@ -1,15 +1,16 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Persistence;
 
 namespace SpartanManageFootball.Application.TeamStadiums
 {
     public class DeleteStadiums
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public int Id { get; set; }
         }
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command,Result<Unit>>
         {
             private readonly SMFContext _context;
 
@@ -18,13 +19,13 @@ namespace SpartanManageFootball.Application.TeamStadiums
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var stadium = await _context.Stadiums.FindAsync(request.Id);
 
                 if (stadium == null)
                 {
-                    throw new Exception("Could not find player with this id");
+                    return Result<Unit>.Failure("Could not find stadium with this id");
                 }
 
                 _context.Remove(stadium);
@@ -33,10 +34,10 @@ namespace SpartanManageFootball.Application.TeamStadiums
                 
                 if (success)
                 {
-                    return Unit.Value;
+                    return Result<Unit>.Success(Unit.Value);
                 }
-               
-                throw new Exception("Problem saving changes");
+
+                return Result<Unit>.Failure("There was a problem saving changes");
             }
         }
     }

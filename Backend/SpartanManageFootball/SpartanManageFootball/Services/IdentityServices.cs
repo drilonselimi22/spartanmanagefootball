@@ -119,20 +119,35 @@ namespace SpartanManageFootball.Services
             if (user == null)
 
             {
-                throw new Exception("No user associated with email");
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "No user is associated with this email!"
+                };
             }
 
             if (model.NewPassword != model.ConfirmPassword)
 
             {
-                throw new Exception("Passwords do not match");
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Passwords do not match!"
+                };
             }
 
             var decodedToken = WebEncoders.Base64UrlDecode(model.token);
             string normalToken = Encoding.UTF8.GetString(decodedToken);
 
             var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
-
+            if (model.token != normalToken)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Passwords do not match!"
+                };
+            }
             if (result.Succeeded)
                 return new UserManagerResponse
                 {
@@ -193,12 +208,12 @@ namespace SpartanManageFootball.Services
 
             foreach (var userrole in userRoles)
             {
-                
+
                 var identitynumber = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
                 var email = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
                 var username = _smfcontext.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
                 var role = _smfcontext.Roles.Where(x => x.Id == userrole.RoleId).FirstOrDefault();
-                var userid=_userManager.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
+                var userid = _userManager.Users.Where(x => x.Id == userrole.UserId).FirstOrDefault();
                 UserRolesView.Add(new UserRoleViewModel(username.UserName, role.Name, email.Email, identitynumber.IdentityNumber, userid.Id));
             }
             return UserRolesView;

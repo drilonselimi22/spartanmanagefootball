@@ -1,15 +1,16 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Persistence;
 
 namespace SpartanManageFootball.Application.RefereesOperations
 {
     public class DeleteReferees
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public int Id { get; set; }
         }
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command,Result<Unit>>
         {
             private readonly SMFContext _context;
 
@@ -18,13 +19,13 @@ namespace SpartanManageFootball.Application.RefereesOperations
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var referee = await _context.Referees.FindAsync(request.Id);
 
                 if (referee == null)
                 {
-                    throw new Exception("Could not find player with this id");
+                    return Result<Unit>.Failure("Referee does not exist");
                 }
 
                 _context.Remove(referee);
@@ -33,9 +34,9 @@ namespace SpartanManageFootball.Application.RefereesOperations
 
                 if (success)
                 {
-                    return Unit.Value;
+                    return Result<Unit>.Success(Unit.Value);
                 }
-                throw new Exception("Problem saving changes");
+                return Result<Unit>.Failure("Something went wrong");
             }
         }
     }

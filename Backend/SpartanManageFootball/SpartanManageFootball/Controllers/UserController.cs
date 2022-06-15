@@ -12,7 +12,7 @@ namespace SpartanManageFootball.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
         private readonly IMediator _mediator;
         private readonly UserManager<RegisterUser> _userManager;
@@ -39,15 +39,17 @@ namespace SpartanManageFootball.Controllers
         } 
         [HttpPost]
         [Route("register-admin")]
-        public async Task<ActionResult<Unit>> RegisterAdmin([FromBody] Create.Command command)
+        public async Task<IActionResult> RegisterAdmin([FromBody] Create.Command command)
         {
-           return await _mediator.Send(command);
+
+            return HandleResult(await _mediator.Send(command));
         }
+
         [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] AuthCommand command)
         {
-            return Ok(await _mediator.Send(command));
+           return HandleResult(await _mediator.Send(command));
         }
 
         [HttpGet("confirmemail")]
@@ -121,8 +123,11 @@ namespace SpartanManageFootball.Controllers
         public async Task<ActionResult> EditUserRoles(UpdateUserRolesCommand command)
         {
             var result = await _mediator.Send(command);
-           
-            return Ok(result);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
         }
 
         [HttpDelete("Delete/{userId}")]

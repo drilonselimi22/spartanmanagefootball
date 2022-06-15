@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 
@@ -6,12 +7,12 @@ namespace SpartanManageFootball.Application.TeamStadiums
 {
     public class CreateStadiums
     {
-        public class StadiumCommand : IRequest<Stadium>
+        public class StadiumCommand : IRequest<Result<Stadium>>
         {
             public string Name { get; set; }
             public string Location { get; set; }
             public int Capacity { get; set; }
-            public class CommandHandler : IRequestHandler<StadiumCommand, Stadium>
+            public class CommandHandler : IRequestHandler<StadiumCommand, Result<Stadium>>
             {
                 private readonly SMFContext _context;
 
@@ -20,7 +21,7 @@ namespace SpartanManageFootball.Application.TeamStadiums
                     _context = context;
                 }
 
-                public async Task<Stadium> Handle(StadiumCommand request, CancellationToken cancellationToken)
+                public async Task<Result<Stadium>> Handle(StadiumCommand request, CancellationToken cancellationToken)
                 {
                     var stadium = new Stadium
 
@@ -36,10 +37,10 @@ namespace SpartanManageFootball.Application.TeamStadiums
 
                     if (success)
                     {
-                        return stadium;
+                        return Result<Stadium>.Success(stadium);
                     }
 
-                    throw new Exception("Problem saving changes");
+                    return Result<Stadium>.Failure("There was a problem saving changes");
                 }
             }
         }

@@ -9,7 +9,6 @@ using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Services;
 using System.Text;
 using SpartanManageFootball.Models;
-using Microsoft.AspNetCore.Authorization;
 using SpartanManageFootball.Photos;
 using SpartanManageFootball.Security;
 

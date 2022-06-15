@@ -4,13 +4,13 @@ using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Persistence;
 using System.Web;
 using SpartanManageFootball.Models;
-using Microsoft.EntityFrameworkCore;
+using SpartanManageFootball.Application.Core;
 
 namespace SpartanManageFootball.Application.Admin
 {
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public string Username { get; set; }
             public string Email { get; set; }
@@ -19,7 +19,7 @@ namespace SpartanManageFootball.Application.Admin
             public string Password { get; set; }
             public string RoleId { get; set; }
 
-            public class Handler : IRequestHandler<Command>
+            public class Handler : IRequestHandler<Command,Result<Unit>>
             {
                 private readonly UserManager<RegisterUser> _userManager;
                 private readonly RoleManager<IdentityRole> _roleManager;
@@ -42,14 +42,14 @@ namespace SpartanManageFootball.Application.Admin
                     _emailSender = emailSender;
                 }
 
-                public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+                public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
                 {
                     var userExists = await _userManager.FindByNameAsync(request.Username);
                     
 
                     if (userExists != null)
                     {
-                        return Unit.Value;
+                        return Result<Unit>.Failure("This username is taken");
                     }
 
                     RegisterUser user = new()
@@ -66,7 +66,7 @@ namespace SpartanManageFootball.Application.Admin
 
                     if (!result.Succeeded)
                     {
-                        return Unit.Value;
+                        return Result<Unit>.Failure("Something went wrong");
                     }
                     else
                     {
@@ -96,7 +96,7 @@ namespace SpartanManageFootball.Application.Admin
                         await _userManager.AddToRoleAsync(user, "admin");
                     }
 
-                    return Unit.Value;
+                    return Result<Unit>.Success(Unit.Value);
                 }
             }
         }
