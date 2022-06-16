@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Card, Table } from "react-bootstrap";
 import "./teams.css";
 import { Container } from "react-bootstrap";
-import teamone from "../../images/istogulogo.png";
-import teamtwo from "../../images/prishtinalogo.png";
-import teamthree from "../../images/drenicalogo.png";
-import teamfour from "../../images/trepcalogo.png";
-import teamfive from "../../images/ulpianalogo.png";
-import teamsix from "../../images/malishevalogo.png";
 import Navigation from "../Navigation/navigation";
 import Footer from "../Footer/footer";
-
+import axios from "axios";
+import TeamComponent from "./TeamComponent";
+import TeamDetails from "./TeamDetails";
 function Teams() {
+  const [squads, setSquads] = useState([]);
+  const [gotSquad, setGotSquad] = useState(false);
+  //get squads
+  useEffect(() => {
+    axios.get(`https://localhost:7122/api/Squad`).then((res) => {
+      setSquads(res.data);
+      setGotSquad(true);
+      console.log("setsquads", squads);
+      console.log("RES0", res);
+    });
+  }, []);
+
+  function testing() {
+    console.log("res", squads);
+  }
+
   return (
     <div>
       <Navigation />
@@ -21,67 +32,18 @@ function Teams() {
           <h1>Teams</h1>
         </div>
       </div>
-
       <Container className="team__footer">
-        <Card
-          className="team__card"
-          style={{ width: "300px", alignItems: "center" }}
-        >
-          <img src={teamone} width="200px" />
-          <Card.Body>
-            <Card.Title>Istogu</Card.Title>
-          </Card.Body>
-        </Card>
-
-        <Card
-          className="team__card"
-          style={{ width: "300px", alignItems: "center" }}
-        >
-          <img src={teamtwo} width="200px" />
-          <Card.Body>
-            <Card.Title>Prishtina</Card.Title>
-          </Card.Body>
-        </Card>
-
-        <Card
-          className="team__card"
-          style={{ width: "300px", alignItems: "center" }}
-        >
-          <img src={teamthree} width="200px" />
-          <Card.Body>
-            <Card.Title>Drenica</Card.Title>
-          </Card.Body>
-        </Card>
-
-        <Card
-          className="team__card"
-          style={{ width: "300px", alignItems: "center" }}
-        >
-          <img src={teamfour} width="200px" />
-          <Card.Body>
-            <Card.Title>Trepca</Card.Title>
-          </Card.Body>
-        </Card>
-
-        <Card
-          className="team__card"
-          style={{ width: "300px", alignItems: "center" }}
-        >
-          <img src={teamfive} width="200px" />
-          <Card.Body>
-            <Card.Title>Ulpiana</Card.Title>
-          </Card.Body>
-        </Card>
-
-        <Card
-          className="team__card"
-          style={{ width: "300px", alignItems: "center" }}
-        >
-          <img src={teamsix} width="200px" />
-          <Card.Body>
-            <Card.Title>Malisheva</Card.Title>
-          </Card.Body>
-        </Card>
+        {gotSquad ? (
+          squads.map(({ name, photoUrl, teamId }) => {
+            return (
+              <div>
+                <TeamComponent teamName={name} image={photoUrl} id={teamId} />
+              </div>
+            );
+          })
+        ) : (
+          null
+        )}
       </Container>
       <Footer />
     </div>

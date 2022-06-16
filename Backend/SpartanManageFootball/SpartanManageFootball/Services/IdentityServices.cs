@@ -256,5 +256,12 @@ namespace SpartanManageFootball.Services
             return Unit.Value;
 
         }
+
+        public async Task<List<Player>> GetPlayersOfSquad(int SquadTeamId)
+        {
+            var players = await _smfcontext.Players.Where(x => x.SquadTeamId == SquadTeamId).ToListAsync();
+
+            return players;
+        }
     }
 }

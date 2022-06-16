@@ -21,5 +21,6 @@ namespace SpartanManageFootball.Interfaces
         Task<bool> DeleteUserAsync(string userId);
 
         Task<Unit> AddSquadsToLeague(LeagueSquadDto dto);
+        Task<List<Player>> GetPlayersOfSquad(int SquadTeamId);
     }
 }
