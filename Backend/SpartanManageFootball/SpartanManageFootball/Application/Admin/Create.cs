@@ -5,6 +5,7 @@ using SpartanManageFootball.Persistence;
 using System.Web;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Application.Core;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpartanManageFootball.Application.Admin
 {
@@ -19,7 +20,7 @@ namespace SpartanManageFootball.Application.Admin
             public string Password { get; set; }
             public string RoleId { get; set; }
 
-            public class Handler : IRequestHandler<Command,Result<Unit>>
+            public class Handler : IRequestHandler<Command, Result<Unit>>
             {
                 private readonly UserManager<RegisterUser> _userManager;
                 private readonly RoleManager<IdentityRole> _roleManager;
@@ -45,7 +46,7 @@ namespace SpartanManageFootball.Application.Admin
                 public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
                 {
                     var userExists = await _userManager.FindByNameAsync(request.Username);
-                    
+
 
                     if (userExists != null)
                     {
@@ -61,6 +62,7 @@ namespace SpartanManageFootball.Application.Admin
                         SecurityStamp = Guid.NewGuid().ToString(),
                         Id = Guid.NewGuid().ToString(),
                     };
+
 
                     var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -85,14 +87,6 @@ namespace SpartanManageFootball.Application.Admin
                         var senderEmail = _configuration["ReturnPaths:SenderEmail"];
 
                         await _emailSender.SendEmailAsync(senderEmail, userFromDb.Email, "Confirm your email address", urlString);
-                    }
-
-                    if (request.RoleId.ToLower() == "agent")
-                    {
-                        await _userManager.AddToRoleAsync(user, "agent");
-                    }
-                    else if (request.RoleId.ToLower() == "admin")
-                    {
                         await _userManager.AddToRoleAsync(user, "admin");
                     }
 

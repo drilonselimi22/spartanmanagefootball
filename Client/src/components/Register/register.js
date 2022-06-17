@@ -33,17 +33,25 @@ export default function Register() {
       },
     }).then(
       (response) => {
-        console.log("responseLogin", response);
+        console.log("responseLogin", response.data);
         setSubmitedRegister(true);
-      },
-      (error) => {
-        console.log("error", error);
-        setRegistered(true);
+      })
+      .catch((error) => {
+       
+        var emailerror= error.response.data.errors.Email[0] 
       }
-    );
-    setLoader(false);
-  }
+      )
+      
+      
 
+      // (error) => {
+      // console.log("error", error.response.data.errors);
+      // })
+     
+    
+    // setLoader(false);
+    };
+    
   return (
     <div>
       <Navigation />
