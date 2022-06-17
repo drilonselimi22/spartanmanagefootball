@@ -8,8 +8,6 @@ namespace SpartanManageFootball.Application.League
     {
         public class LeagueCommand : IRequest<Result<Unit>>
         {
-            // Ketu mund te perfshijme vetem atributet
-            // Ne menyre qe mos te shfaqet leagues[]
             public SpartanManageFootball.Models.League League { get; set; }
         }
 

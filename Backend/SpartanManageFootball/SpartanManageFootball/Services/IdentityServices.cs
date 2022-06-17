@@ -230,16 +230,17 @@ namespace SpartanManageFootball.Services
 
             foreach (var squad in squads)
             {
-                var team = _smfcontext.Squads.Where(x => x.TeamId == squad).FirstOrDefault();
+                var team = _smfcontext.Squads.Where(x => x.TeamId == squad.TeamId).FirstOrDefault();
                 league.Squads.Add(team);
             }
 
             if (league == null)
             {
                 throw new Exception("League not found");
-            }
+            };
 
             await _smfcontext.SaveChangesAsync();
+
             return Unit.Value;
         }
 
