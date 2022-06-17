@@ -1,4 +1,7 @@
-﻿using SpartanManageFootball.Models;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SpartanManageFootball.DTOs;
+using SpartanManageFootball.Models;
 
 namespace SpartanManageFootball.Interfaces
 {
@@ -18,6 +21,8 @@ namespace SpartanManageFootball.Interfaces
         Task<bool> UpdateUsersRole(string userName, IList<string> usersRole);
         Task<bool> DeleteUserAsync(string userId);
 
+        // LeagueSquads Methods
+        Task<Unit> AddSquadsToLeague(LeagueSquadDto dto);
+        Task<List<League>> GetSquadsInLeagues(int leagueId);
     }
-
 }

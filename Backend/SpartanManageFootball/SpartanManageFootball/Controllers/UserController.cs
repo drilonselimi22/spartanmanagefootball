@@ -132,12 +132,5 @@ namespace SpartanManageFootball.Controllers
             var result = await _mediator.Send(new DeleteUserCommand() { Id = userId });
             return Ok(result);
         }
-
-
-
-
-
-
-
     }
 }

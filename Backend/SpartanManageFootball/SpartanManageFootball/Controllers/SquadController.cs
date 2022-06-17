@@ -21,7 +21,7 @@ namespace SpartanManageFootball.Controllers
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         [HttpPost("addSquad")] 
-        public async Task<ActionResult<Squad>> CreateTeam([FromBody] TeamCommand command)
+        public async Task<ActionResult<Squad>> CreateTeam([FromForm] TeamCommand command)
         {
             return HandleResult(await Mediator.Send(command)); ;
         }
