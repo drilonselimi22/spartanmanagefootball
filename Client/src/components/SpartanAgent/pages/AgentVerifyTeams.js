@@ -11,9 +11,9 @@ export default function AgentVerifyTeams() {
 
   function getSquads(e) {
     e.preventDefault();
-    console.log("CALLINNGGGGGGGGGGGGGGGGGGGGG");
+    console.log("calling the function");
     const t = localStorage.getItem("token");
-    console.log("tokennnn", t);
+    console.log("token: ", t);
     axios({
       method: "get",
       url: "https://localhost:7122/api/Squad",
@@ -22,13 +22,9 @@ export default function AgentVerifyTeams() {
       },
     }).then((response) => {
       setAPIData(response.data);
-      console.log("responseeee123123123", response);
+      console.log("response: ", response);
     });
     setSquadsData(true);
-  }
-
-  function randomNum() {
-    return Math.floor(Math.random() * 100000);
   }
 
   return (
@@ -57,11 +53,9 @@ export default function AgentVerifyTeams() {
             </tr>
           </thead>
         </Table>
-        {/* id, stadium, name, city, isVerified */}
         {squadsData ? (
           APIData.map(
             ({ index, teamId, stadiumId, name, city, photoUrl, isVerified }) => (
-              //   console.log("indeeeeeeeeeeeeeeeeee12x", randomNum());
               <Team
                 key={teamId}
                 id={teamId}

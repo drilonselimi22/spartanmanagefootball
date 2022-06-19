@@ -70,6 +70,11 @@ function AdminAddSquad() {
             <Form.Control onChange={(e) => setCity(e.target.value)} type="text" placeholder="Enter Squad City" />
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="formExperience">
+            <Form.Label>Squad City</Form.Label>
+            <Form.Control onChange={(e) => setIsVerified(e.target.value)} type="text" placeholder="Enter Squad City" />
+          </Form.Group>
+
           <Form.Group className="mb-3" controlId="formFile">
             <Form.Label>Upload certificate</Form.Label>
             <Form.Control type="file" name="file" onChange={(e) => setFile(e.target.files[0])} />

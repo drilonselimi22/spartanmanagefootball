@@ -19,6 +19,7 @@ namespace SpartanManageFootball.Models
         public bool isVerified { get; set; }
         public string photoNum { get; set; }
         public string photoUrl { get; set; }
+        [JsonIgnore]
         public List<League> Leagues { get; set; }
     }
 }

@@ -6,7 +6,9 @@ using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
+using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SpartanManageFootball.Services
 {
@@ -33,7 +35,6 @@ namespace SpartanManageFootball.Services
         public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
-
             return (role.Id, role.Name);
         }
 
@@ -212,13 +213,11 @@ namespace SpartanManageFootball.Services
             if (user == null)
             {
                 throw new Exception("User not found");
-                //throw new Exception("User not found");
             }
 
             if (user.UserName == "system" || user.UserName == "admin")
             {
                 throw new Exception("You can not delete system or admin user");
-                //throw new BadRequestException("You can not delete system or admin user");
             }
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded;
@@ -238,6 +237,12 @@ namespace SpartanManageFootball.Services
                 var identitynumber = _smfcontext.Squads.Where(x => x.TeamId == userrole.TeamId).FirstOrDefault();
 
                 league.Squads.Add(userrole);
+            var squads = dto.SquadsTeamId;
+
+            foreach (var squad in squads)
+            {
+                var team = _smfcontext.Squads.Where(x => x.TeamId == squad.TeamId).FirstOrDefault();
+                league.Squads.Add(team);
             }
 
             if (league == null)
@@ -250,10 +255,12 @@ namespace SpartanManageFootball.Services
             /*league.Squads.AddAsync(squads);*/
 
             /*_smfcontext.AddAsync(dto);*/
+            };
 
             await _smfcontext.SaveChangesAsync();
 
             return Unit.Value;
+
 
         }
 
@@ -262,6 +269,16 @@ namespace SpartanManageFootball.Services
             var players = await _smfcontext.Players.Where(x => x.SquadTeamId == SquadTeamId).ToListAsync();
 
             return players;
+        }
+
+        public async Task<List<League>> GetSquadsInLeagues(int leagueId)
+        {
+            var squads = await _smfcontext.Leagues
+                .Where(x => x.LeagueId == leagueId)
+                .Include(x => x.Squads)
+                .ToListAsync();
+
+            return squads;
         }
     }
 }

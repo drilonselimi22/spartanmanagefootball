@@ -12,19 +12,25 @@ namespace SpartanManageFootball.Controllers
     [ApiController]
     public class LeagueController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet("getLeagues")]
         public async Task<ActionResult<List<League>>> GetLeagues()
         {
             return await Mediator.Send(new ListLeague.Query());
         }
 
-        [HttpPost("createleague")]
+        [HttpGet("getLeaguesById")]
+        public async Task<ActionResult<League>> GetSquadsInLeagues(int leagueId)
+        {
+            return Ok(await Mediator.Send(new Get.GetCommand { LeagueId = leagueId }));
+        }
+
+        [HttpPost("addLeague")]
         public async Task<IActionResult> CreateLeague(League league)
         {
             return Ok(await Mediator.Send(new CreateLeague.LeagueCommand { League = league}));
         }
 
-        [HttpPost("addsquadstoleague")]
+        [HttpPost("addSquadsToLeague")]
         public async Task<ActionResult<League>> AddSquadsToLeague(LeagueSquadDto dto)
         {
             return Ok(await Mediator.Send(new Add.Command { dto = dto }));
