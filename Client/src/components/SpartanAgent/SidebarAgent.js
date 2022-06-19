@@ -1,23 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AgentPages } from "./AgentPages";
 import "./SidebarAgent.css";
 import Logo from "../../images/textlogo.svg";
-import * as CgIcons from "react-icons/cg";
+import * as FaIcons from "react-icons/fa"
+import { Dropdown, Modal, Button } from "react-bootstrap";
+import axios from "axios";
 
 function SidebarAgent() {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
   const [logged, setlogged] = useState(false);
 
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, []);
+
+  useEffect(() => {
+    setEmail(localStorage.getItem("email"));
+  }, []);
+
+  console.log(username);
+  console.log(email);
+
   useEffect(() => {
     var items = null;
-    items = localStorage.getItem("email");
+    items = localStorage.getItem("username");
     if (items != null) {
       setlogged(true);
     }
     console.log("LOGGED???", logged);
   });
+
+  async function pswSendEmail(e) {
+    await axios({
+      method: "post",
+      url: `https://localhost:7122/api/User/ForgetPassword?email=${email}`,
+    }).then(
+      (response) => {
+        console.log("Email sent successfuly", response);
+        handleShow();
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
+  }
 
   function handleLogout() {
     localStorage.removeItem("username");
@@ -29,12 +65,50 @@ function SidebarAgent() {
 
   return (
     <div >
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Change password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          An email has been successfully sended, Please check the email to change the password
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button style={{ backgroundColor: "#009444" }} onClick={handleClose}>Understood</Button>
+        </Modal.Footer>
+      </Modal>
+
       <div className="sidebar__agent">
         <div>
           <img src={Logo} width="130px" />
         </div>
-        <div>
-          <h4>Agent Name</h4>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+        }}>
+          <h4 style={{ color: "white", margin: "0 1rem" }}>{username}</h4>
+          <Dropdown>
+            <Dropdown.Toggle style={{ backgroundColor: "#009444" }}>
+              <FaIcons.FaUserCircle style={{
+                fontSize: "1.5rem",
+                color: "#fff",
+                cursor: "pointer"
+              }} />
+            </Dropdown.Toggle>
+            <Dropdown.Menu variant="dark">
+              <Dropdown.Item onClick={pswSendEmail}>Change password</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={handleLogout} href="/login">Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </div>
       <nav
@@ -43,7 +117,6 @@ function SidebarAgent() {
         <ul className="nav-menu-items">
           <li className="navbar-toggle">
             <Link to="#" className="menu-bars">
-              {/* <img src={Logo} width='50px' /> */}
             </Link>
           </li>
           {AgentPages.map((item, index) => {
@@ -56,15 +129,9 @@ function SidebarAgent() {
               </li>
             );
           })}
-          <li onClick={handleLogout} className="nav-text" >
-            <Link to={"/login"}>
-              <CgIcons.CgLogOut />
-              <span>Logout</span>
-            </Link>
-          </li>
         </ul>
       </nav>
-    </div>
+    </div >
   );
 }
 

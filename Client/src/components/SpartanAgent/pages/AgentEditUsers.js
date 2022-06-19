@@ -45,61 +45,65 @@ function EditUserRoles() {
   return (
     <>
       <div>
-        <SidebarAgent /> 
-      <div style={{
-                position: "absolute",
-                top: '10%',
-                left: '30%'
-            }}>
-        <h2> There are {posts.length} Users </h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th width={"20%"}>Username</th>
-              <th width={"20%"}>Email</th>
-              <th width={"20%"}>Identity Number</th>
-              <th width={"20%"}>Role</th>
-              <th width={"10%"}>Update</th>
-              <th width={"10%"}>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {posts.map((post) => (
+        <SidebarAgent />
+        <div style={{
+          position: "absolute",
+          top: '10%',
+          left: '20%',
+          width: "1300px",
+          backgroundColor: "#fff",
+          padding: "30px",
+
+        }}>
+          <h2> There are {posts.length} Users </h2>
+          <table className="table">
+            <thead>
               <tr>
-                <td width={"20%"}> {post.username} </td>
-                <td width={"20%"}> {post.email} </td>
-                <td width={"20%"}> {post.identityNumber} </td>
-                <td width={"20%"}> {post.roleName} </td>
-                <td width={"10%"}>
-                  <UserModal usernameModal={post.username} />
+                <th width={"20%"}>Username</th>
+                <th width={"20%"}>Email</th>
+                <th width={"20%"}>Identity Number</th>
+                <th width={"20%"}>Role</th>
+                <th width={"10%"}>Update</th>
+                <th width={"10%"}>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.map((post) => (
+                <tr>
+                  <td width={"20%"}> {post.username} </td>
+                  <td width={"20%"}> {post.email} </td>
+                  <td width={"20%"}> {post.identityNumber} </td>
+                  <td width={"20%"}> {post.roleName} </td>
+                  <td width={"10%"}>
+                    <UserModal usernameModal={post.username} />
 
-                  {/* </Link>  */}
-                </td>
-                <td width={"10%"}>
-                  <>
-                  <button type="button" class="btn btn-danger" onClick={handleShow}>Delete</button>
-
-                  <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Modal heading</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Do u really want to delete this User?</Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleClose}>
-                        Close
-                      </Button>
+                    {/* </Link>  */}
+                  </td>
+                  <td width={"10%"}>
+                    <>
                       <button type="button" class="btn btn-danger" onClick={handleShow}>Delete</button>
-                    </Modal.Footer>
-                  </Modal>
-                </>
-                      
-                  
-                </td>
-        </tr>
-            ))}
-      </tbody>
-    </table>
-      </div >
+
+                      <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Modal heading</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Do u really want to delete this User?</Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={handleClose}>
+                            Close
+                          </Button>
+                          <button type="button" class="btn btn-danger" onClick={handleShow}>Delete</button>
+                        </Modal.Footer>
+                      </Modal>
+                    </>
+
+
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div >
       </div>
     </>
   );

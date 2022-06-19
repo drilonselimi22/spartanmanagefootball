@@ -91,7 +91,7 @@ namespace SpartanManageFootball.Controllers
 
                 if (result.IsSuccess)
                 {
-                    return Ok(result);
+                    return this.Redirect("http://localhost:3000/reset-password");
                 }
               
                 return BadRequest(result);

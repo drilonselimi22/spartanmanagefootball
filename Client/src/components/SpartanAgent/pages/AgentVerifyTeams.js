@@ -37,9 +37,12 @@ export default function AgentVerifyTeams() {
           top: "10%",
           left: "25%",
           width: "1000px",
+          backgroundColor: "#fff",
+          padding: "20px"
         }}
       >
-        <button onClick={getSquads}>GET SQUADSsss</button>
+        <h2>Verify squads</h2>
+        <button onClick={getSquads}>Get Squads</button>
         <Table bordered hover responsive>
           <thead>
             <tr>

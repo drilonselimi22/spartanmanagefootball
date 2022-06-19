@@ -49,9 +49,12 @@ function AdminAddSquad() {
       <SidebarAdmin />
       <div style={{
         position: "absolute",
-        top: '10%',
-        left: '40%',
-        width: '500px'
+        top: '50%',
+        left: '55%',
+        width: '700px',
+        backgroundColor: "#fff",
+        padding: "20px",
+        transform: "translate(-50%, -50%)"
       }}>
 
         <Form>
