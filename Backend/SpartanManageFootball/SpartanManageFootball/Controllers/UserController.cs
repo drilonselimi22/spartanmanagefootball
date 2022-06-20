@@ -132,5 +132,18 @@ namespace SpartanManageFootball.Controllers
             var result = await _mediator.Send(new DeleteUserCommand() { Id = userId });
             return Ok(result);
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var result = _signInManager.SignOutAsync();
+
+            if (result.IsCompletedSuccessfully)
+            {
+                return this.Redirect("http://localhost:3000/login");
+            }
+
+            return BadRequest();
+        }
     }
 }
