@@ -229,6 +229,17 @@ namespace SpartanManageFootball.Services
         public async Task<Unit> AddSquadsToLeague(LeagueSquadDto dto)
         {
             var league = await _smfcontext.Leagues.FindAsync(dto.LeaguesLeagueId);
+
+            /*var squads = await _smfcontext.Squads.Where(x => x.Squads == dto.SquadsTeamId).FirstOrDefaultAsync();*/
+
+            var userRoles = _smfcontext.Squads;
+
+            foreach (var userrole in userRoles)
+            {
+
+                var identitynumber = _smfcontext.Squads.Where(x => x.TeamId == userrole.TeamId).FirstOrDefault();
+
+                league.Squads.Add(userrole);
             var squads = dto.SquadsTeamId;
 
             foreach (var squad in squads)
@@ -240,11 +251,27 @@ namespace SpartanManageFootball.Services
             if (league == null)
             {
                 throw new Exception("League not found");
+            }
+
+            /*league.Squads.Add(squads);*/
+
+            /*league.Squads.AddAsync(squads);*/
+
+            /*_smfcontext.AddAsync(dto);*/
             };
 
             await _smfcontext.SaveChangesAsync();
 
             return Unit.Value;
+
+
+        }
+
+        public async Task<List<Player>> GetPlayersOfSquad(int SquadTeamId)
+        {
+            var players = await _smfcontext.Players.Where(x => x.SquadTeamId == SquadTeamId).ToListAsync();
+
+            return players;
         }
 
         public async Task<List<League>> GetSquadsInLeagues(int leagueId)

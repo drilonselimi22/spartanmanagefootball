@@ -13,6 +13,7 @@ import Register from './components/Register/register'
 import Login from './components/Login/login';
 import ConfirmEmail from './components/Register/confirmEmail'
 import SpartanAgent from './components/SpartanAgent/SpartanAgent';
+import AgentLeagues from "./components/SpartanAgent/pages/AgentLeagues";
 import AgentLeaguesSquads from './components/SpartanAgent/pages/AgentLeagueSquads';
 import AgentHome from './components/SpartanAgent/pages/AgentHome';
 import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
@@ -23,7 +24,7 @@ import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
 import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
 import AdminHome from './components/TeamAdmin/pages/AdminHome';
 import PageNotFound from './components/PageNotFound/PageNotFound';
-import AgentLeagues from './components/SpartanAgent/pages/AgentLeagues';
+import TeamDetails from "./components/Teams/TeamDetails";
 import AgentChangePassword from "./components/ChangePassword";
 
 export default function RoutesSMF() {
@@ -50,6 +51,7 @@ export default function RoutesSMF() {
           <Route exact path='/confirmEmail' element={<ConfirmEmail />} />
           <Route exact path='/agent' element={<SpartanAgent />} />
           <Route path='/agent' exact element={<AgentHome />} />
+          <Route path="/agent-leagues" exact element={<AgentLeagues />} />
           <Route path='/agent-league-squads' exact element={<AgentLeaguesSquads />} />
           <Route path='/agent-matches' exact element={<AgentMatches />} />
           <Route path='/agent-referees' exact element={<AgentReferees />} />
@@ -60,9 +62,11 @@ export default function RoutesSMF() {
           <Route path="/reset-password" exact element={<AgentChangePassword />} />
           <Route path='/admin' exact element={<AdminHome />} />
           <Route exact path='/admin-squad' element={<AdminAddSquad />} />
+          <Route exact path="/squadDetails" element={<TeamDetails />} />
+          {/* Not Found Page */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </div>
-  )
+  );
 }

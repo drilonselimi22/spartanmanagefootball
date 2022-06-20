@@ -59,7 +59,7 @@ namespace SpartanManageFootball.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(user);
+                return this.Redirect("http://localhost:3000/confirmemail");
             }
 
             return BadRequest();
