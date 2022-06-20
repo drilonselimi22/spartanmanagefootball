@@ -19,11 +19,5 @@ export const AdminPages = [
         path: '/admin-squad',
         icon: <AiIcons.AiFillFileAdd />,
         cName: 'nav-text'
-    },
-    {
-        title: 'Logout',
-        path: '/login',
-        icon: <CgIcons.CgLogOut />,
-        cName: 'nav-text'
     }
 ]

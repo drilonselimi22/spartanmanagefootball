@@ -102,12 +102,15 @@ namespace SpartanManageFootball.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{"http://localhost:7122}"}/ResetPassword?email={email}&token={validToken}";
+            string localHostUrl = "http://localhost:3000";
+            string url = $"{localHostUrl}/reset-password?email={email}&token={validToken}";
+
+
             var senderEmail = _configuration["ReturnPaths:SenderEmail"];
 
             await _userManager.FindByEmailAsync(email);
-            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "To reset the password click on the url" +
-              $"{url}");
+            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "To reset the password click on the url: " +
+              url);
 
             return new UserManagerResponse
             {

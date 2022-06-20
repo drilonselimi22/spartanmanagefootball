@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import SidebarAgent from "../SidebarAgent";
 
-<<<<<<<< HEAD:Client/src/components/SpartanAgent/pages/ChangeRole.js
+<<<<<<<< HEAD: Client / src / components / SpartanAgent / pages / ChangeRole.js
 function ChangeRole() {
-    return (
-        <div>
-            <SidebarAgent />
-            <div style={{
-                position: 'absolute',
-                top: '10%',
-                left: '25%',
-                width: '1000px',
-                backgroundColor: 'red',
-                border: '1px solid black'
-            }}>
-                <h1>Make Agent</h1>
-            </div>
+  return (
+    <div>
+      <SidebarAgent />
+      <div style={{
+        position: 'absolute',
+        top: '10%',
+        left: '25%',
+        width: '1000px',
+        backgroundColor: 'red',
+        border: '1px solid black'
+      }}>
+        <h1>Make Agent</h1>
+      </div>
 ========
 function Verify() {
   const [logged, setlogged] = useState(false);

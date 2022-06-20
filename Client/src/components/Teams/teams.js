@@ -25,7 +25,7 @@ function Teams() {
   }
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#aaaa" }}>
       <Navigation />
       <div className="teams__header">
         <div className="teams__header__container">

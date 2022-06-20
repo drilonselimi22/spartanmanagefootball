@@ -6,12 +6,12 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: #f6f6f7 !important;
+:root {
+    background-color: #aaaa;
 }
 
 .sidebar__agent {
-    background-color: #fff;
+    background-color: #191c1b;
     height: 55px;
     display: flex;
     justify-content: space-between;
@@ -20,8 +20,8 @@ body {
     padding: 0 65px;
     width: 100%;
     position: fixed;
-    z-index: 1;
-}   
+    z-index: 99;
+}
 
 .menu-bars {
     font-size: 2rem;

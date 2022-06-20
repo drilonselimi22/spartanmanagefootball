@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SidebarAgent from "../SidebarAgent";
@@ -31,12 +32,15 @@ function EditUserRoles() {
     getPosts();
   }, []);
 
-  const handleDelete = async (post) => {
-    await axios.delete(apiEndPoint + "/Delete/" + post.userId);
-    setPosts(posts.filter((p) => p.id !== post.id));
+  const handleDelete = (id) => {
+    // await axios.delete(apiEndPoint + "/Delete/" + post.userId);
+    // setPosts(posts.filter((p) => p.id !== post.id));
+    // console.log(post);
+    axios.delete(`https://localhost:7122/api/User/Delete/${id}`)
+      .then(() => {
+        posts();
+      })
   };
-
-  // if (posts.length === 0) return <h2> Loading Users... </h2>;
 
   return (
     <>
@@ -45,8 +49,13 @@ function EditUserRoles() {
         <div
           style={{
             position: "absolute",
-            top: "10%",
-            left: "30%",
+            top: "30%",
+            left: "55%",
+            width: "1000px",
+            backgroundColor: "#fff",
+            padding: "20px",
+            transform: "translate(-50%, -50%)",
+            zIndex: "-99"
           }}
         >
           <h2> There are {posts.length} Users </h2>
@@ -70,8 +79,6 @@ function EditUserRoles() {
                   <td width={"20%"}> {post.roleName} </td>
                   <td width={"10%"}>
                     <UserModal usernameModal={post.username} />
-
-                    {/* </Link>  */}
                   </td>
                   <td width={"10%"}>
                     <>
@@ -97,7 +104,7 @@ function EditUserRoles() {
                           <button
                             type="button"
                             class="btn btn-danger"
-                            onClick={handleShow}
+                            onClick={() => handleDelete(post.userId)}
                           >
                             Delete
                           </button>
