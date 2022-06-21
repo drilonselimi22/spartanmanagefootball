@@ -12,6 +12,8 @@ namespace SpartanManageFootball.Models
         public int StadiumId { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
+        public string SquadLogoNum { get; set; }
+        public string SquadLogoUrl { get; set; }
         public string Name { get; set; }
 
         [Required(ErrorMessage = "City is required")]

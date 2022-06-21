@@ -5,6 +5,7 @@ using SpartanManageFootball.Application.Teams;
 using SpartanManageFootball.Models;
 using static SpartanManageFootball.Application.Teams.CreateTeams;
 using static SpartanManageFootball.Application.Teams.EditTeams;
+using static SpartanManageFootball.Application.Teams.VerifyTeams;
 
 namespace SpartanManageFootball.Controllers
 {
@@ -53,6 +54,14 @@ namespace SpartanManageFootball.Controllers
         public async Task<ActionResult<Squad>> Edit(int id, [FromForm] TeamEditCommand command)
         {
             command.TeamId = id;
+            return await Mediator.Send(command);
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
+        [HttpPut("Verify/{squadId}")]
+        public async Task<ActionResult<Squad>> VerifyTeams(int squadId, [FromForm] VerifyTeamsCommand command)
+        {
+            command.TeamId = squadId;
             return await Mediator.Send(command);
         }
     }
