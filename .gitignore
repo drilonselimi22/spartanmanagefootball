@@ -20,3 +20,4 @@ packages
 */vs
 *vs/
 **/vs/*
+node_modules
