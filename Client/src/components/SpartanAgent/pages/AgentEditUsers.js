@@ -70,8 +70,7 @@ function EditUserRoles() {
                   <td width={"20%"}> {post.roleName} </td>
                   <td width={"10%"}>
                     <UserModal usernameModal={post.username} />
-
-                    {/* </Link>  */}
+ 
                   </td>
                   <td width={"10%"}>
                     <>

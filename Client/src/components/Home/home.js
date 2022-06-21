@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../Footer/footer";
 import Navigation from "../Navigation/navigation";
 import './home.css';
 
@@ -12,6 +13,8 @@ function Home() {
                     <h1>Spartan Manage Football</h1>
                 </div>
             </div>
+            <br />
+            <Footer />     
         </div>
     );
 }

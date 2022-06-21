@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SidebarAgent from "../SidebarAgent";
-
-<<<<<<<< HEAD:Client/src/components/SpartanAgent/pages/ChangeRole.js
+ 
 function ChangeRole() {
     return (
         <div>
@@ -15,9 +14,8 @@ function ChangeRole() {
                 border: '1px solid black'
             }}>
                 <h1>Make Agent</h1>
-            </div>
-========
-function Verify() {
+            </div> 
+{/* function Verify() {
   const [logged, setlogged] = useState(false);
 
   useEffect(() => {
@@ -49,10 +47,9 @@ function Verify() {
       ) : (
         <div>
           <h4>Agent Verify</h4>
-          <h1>Sorry you are Unauthorized for this page </h1>
->>>>>>>> develop:Client/src/components/SpartanAgent/pages/Verify.js
+          <h1>Sorry you are Unauthorized for this page </h1> 
         </div>
-      )}
+      )} */}
     </div>
   );
 }

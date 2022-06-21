@@ -18,9 +18,10 @@ import AgentLeagues from "./components/SpartanAgent/pages/AgentLeagues";
 import AgentLeaguesSquads from './components/SpartanAgent/pages/AgentLeagueSquads';
 import AgentHome from './components/SpartanAgent/pages/AgentHome';
 import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
-import AgentReferees from './components/SpartanAgent/pages/AgentReferees';
+import AgentRefereesList from './components/SpartanAgent/pages/AgentRefereesList';
 import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
 import AgentEditUsers from './components/SpartanAgent/pages/AgentEditUsers';
+import AgentRefereesAdd from './components/SpartanAgent/pages/AgentRefereesAdd';
 // Admin
 import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
 import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
@@ -28,8 +29,7 @@ import AdminHome from './components/TeamAdmin/pages/AdminHome';
 import Navigation from './components/Navigation/navigation';
 import Footer from './components/Footer/footer';
 import PageNotFound from './components/PageNotFound/PageNotFound';
-import TeamDetails from "./components/Teams/TeamDetails";
-import AgentLeagues from './components/SpartanAgent/pages/AgentLeagues';
+import TeamDetails from "./components/Teams/TeamDetails"; 
 
 export default function RoutesSMF() {
   const [logged, setlogged] = useState(false);
@@ -59,11 +59,12 @@ export default function RoutesSMF() {
           <Route path="/agent-leagues" exact element={<AgentLeagues />} />
           <Route path='/agent-league-squads' exact element={<AgentLeaguesSquads />} />
           <Route path='/agent-matches' exact element={<AgentMatches />} />
-          <Route path='/agent-referees' exact element={<AgentReferees />} />
+          <Route path='/referees-list' exact element={<AgentRefereesList />} />
           <Route path='/agent-stadiums' exact element={<AgentStadium />} />
           <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
           <Route path='/agent-squads-verify' exact element={<AgentVerifyTeams />} />
           <Route path="/agent-leagues" exact element={<AgentLeagues />} />
+          <Route path='/agent-referees' element={<AgentRefereesAdd />} />
           {/* Admin */}
           <Route path='/admin' exact element={<AdminHome />} />
           <Route exact path='/admin-squad' element={<AdminAddSquad />} />

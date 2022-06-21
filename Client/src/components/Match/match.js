@@ -90,7 +90,7 @@ function Match() {
           </Card.Body>
         </Card>
       </Container>
-       <Footer /> 
+      <Footer />
     </div>
   );
 }

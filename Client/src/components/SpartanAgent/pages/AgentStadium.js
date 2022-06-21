@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SidebarAgent from "../SidebarAgent";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
+import AgentRefereesList from "./AgentRefereesList";
 
 function AgentStadium() {
   const [name, setName] = useState("");
@@ -93,7 +94,7 @@ function AgentStadium() {
           <h4>Agent Stadium</h4>
           <h1>Sorry you are Unauthorized for this page </h1>
         </div>
-      )}
+      )} 
     </div>
   );
 }
