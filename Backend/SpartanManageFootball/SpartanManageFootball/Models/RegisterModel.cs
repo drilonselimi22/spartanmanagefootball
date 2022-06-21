@@ -11,17 +11,6 @@ namespace SpartanManageFootball.Models
         public string? Role { get; set; }
     }
 
-    public class RegisterModelValidator : AbstractValidator<RegisterModel>
-    {
-        public RegisterModelValidator()
-        {
-            RuleFor(u => u.Username).NotNull().NotEmpty().WithMessage("Username should not be null").OverridePropertyName("error");
-            RuleFor(u => u.Email).NotNull().NotEmpty().EmailAddress().WithMessage("Email is not valid").OverridePropertyName("error");
-            RuleFor(u => u.Password).NotNull().NotEmpty().OverridePropertyName("error");
-
-        }
-            
-    }
 }
 
 

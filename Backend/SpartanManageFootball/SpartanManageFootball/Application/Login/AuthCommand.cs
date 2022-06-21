@@ -7,6 +7,7 @@ using SpartanManageFootball.JwtToken;
 using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Application.Core;
+using FluentValidation;
 
 namespace SpartanManageFootball.Application.Login
 {
@@ -16,6 +17,14 @@ namespace SpartanManageFootball.Application.Login
         public string Password { get; set; }
     }
 
+    public class AuthCommandValidator : AbstractValidator<AuthCommand>
+    {
+        public AuthCommandValidator()
+        {
+            RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage("Username shouldn't be empty").OverridePropertyName("error");
+            RuleFor(x => x.Password).NotNull().NotEmpty().WithMessage("Password shouldn't be empty").OverridePropertyName("error");
+        }
+    }
     public class AuthCommandHandler : IRequestHandler<AuthCommand, Result<UserDTO>>
     {
         private readonly ITokenGenerator _tokenGenerator;
@@ -42,14 +51,13 @@ namespace SpartanManageFootball.Application.Login
         public async Task<Result<UserDTO>> Handle(AuthCommand request, CancellationToken cancellationToken)
         {
             var result = await _identityService.SigninUserAsync(request.Email, request.Password);
-
+           
             if (!result)
             {
                 return Result<UserDTO>.Failure("Please verify your email or check your credentials");
             }
-
+            
             var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.Email));
-
             string token = _tokenGenerator.GenerateJWTToken((userId: userId, userName: userName, roles: roles));
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
             var rolesOfUser = await _userManager.GetRolesAsync(user);
