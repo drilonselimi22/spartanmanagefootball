@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SpartanManageFootball.Application.Players;
+using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using static SpartanManageFootball.Application.Players.CreatePlayer;
 using static SpartanManageFootball.Application.Players.EditPlayer;
@@ -15,10 +16,11 @@ namespace SpartanManageFootball.Controllers
     public class PlayerOperations : BaseApiController
     {
         private readonly IMediator _mediator;
-
-        public PlayerOperations(IMediator mediator)
+        private readonly IIdentityService _identityService;
+        public PlayerOperations(IMediator mediator, IIdentityService identityService)
         {
             _mediator = mediator;
+            _identityService = identityService;
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
@@ -47,6 +49,13 @@ namespace SpartanManageFootball.Controllers
         public async Task<ActionResult<Player>> PlayerDetails(int id)
         {
             return HandleResult(await _mediator.Send(new PlayerDetails.Query { Id = id }));
+        }
+
+        [HttpGet]
+        [Route("/[controller]/[action]/{id}")]
+        public async Task<ActionResult<List<Player>>> GetPlayersOfSquad(int id)
+        {
+            return await _mediator.Send(new PlayersInTeams.GetCommand { SquadTeamId = id});
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]

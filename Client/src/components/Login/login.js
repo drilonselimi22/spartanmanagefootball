@@ -36,10 +36,12 @@ function Login() {
     }).then(
       (response) => {
         var result = response.data
-        localStorage.setItem('username', result.username);
+        localStorage.setItem('username', result.userName);
         localStorage.setItem('email', result.email);
         localStorage.setItem('token', result.token);
         localStorage.setItem('role', result.role);
+
+        console.log(result);
         if (response.data.role == "agent") {
           navigate("/agent");
         } else {

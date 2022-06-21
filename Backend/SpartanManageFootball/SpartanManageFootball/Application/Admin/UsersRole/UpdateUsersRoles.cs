@@ -1,4 +1,5 @@
 ﻿using MediatR;
+
 using SpartanManageFootball.Interfaces;
 
 namespace SpartanManageFootball.Application

@@ -6,22 +6,22 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: #f6f6f7 !important;
+:root {
+    background-color: #aaaa;
 }
 
 .sidebar__agent {
-    background-color: #fff;
+    background-color: #191c1b;
     height: 55px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-family: 'Open Sans', sans-serif !important;
     padding: 0 65px;
-    position: fixed;
     width: 100%;
-    z-index: 1;
-}   
+    position: fixed;
+    z-index: 99;
+}
 
 .menu-bars {
     font-size: 2rem;

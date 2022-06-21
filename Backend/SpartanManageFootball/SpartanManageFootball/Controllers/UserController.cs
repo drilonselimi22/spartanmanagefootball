@@ -61,7 +61,7 @@ namespace SpartanManageFootball.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(user);
+                return this.Redirect("http://localhost:3000/confirmemail");
             }
 
             return BadRequest();
@@ -93,7 +93,7 @@ namespace SpartanManageFootball.Controllers
 
                 if (result.IsSuccess)
                 {
-                    return Ok(result);
+                    return this.Redirect("http://localhost:3000/reset-password");
                 }
               
                 return BadRequest(result);
@@ -138,11 +138,17 @@ namespace SpartanManageFootball.Controllers
             return Ok(result);
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var result = _signInManager.SignOutAsync();
 
+            if (result.IsCompletedSuccessfully)
+            {
+                return this.Redirect("http://localhost:3000/login");
+            }
 
-
-
-
-
+            return BadRequest();
+        }
     }
 }

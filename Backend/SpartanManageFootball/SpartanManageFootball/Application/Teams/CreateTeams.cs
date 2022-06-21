@@ -12,6 +12,7 @@ namespace SpartanManageFootball.Application.Teams
         public class TeamCommand : IRequest<Result<Squad>>
         {
             public int StadiumId { get; set; }
+            public IFormFile Logo { get; set; }
             public string Name { get; set; }
             public string City { get; set; }
             public bool isVerified { get; set; }
@@ -36,11 +37,14 @@ namespace SpartanManageFootball.Application.Teams
                     var user = await _context.Users.Include(p => p.Photos)
                     .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
+                    var logoResult = await _photoAccessor.AddPhoto(request.Logo);
                     var photoResult = await _photoAccessor.AddPhoto(request.File);
 
                     var squad = new Squad
                     {
                         StadiumId = request.StadiumId,
+                        SquadLogoNum = logoResult.PublicNum,
+                        SquadLogoUrl = logoResult.VerifyUrl,
                         Name = request.Name,
                         City = request.City,
                         photoNum = photoResult.PublicNum,

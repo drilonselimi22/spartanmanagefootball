@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
+using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SpartanManageFootball.Services
 {
@@ -31,7 +35,6 @@ namespace SpartanManageFootball.Services
         public async Task<(string id, string roleName)> GetRoleByIdAsync(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
-
             return (role.Id, role.Name);
         }
 
@@ -99,12 +102,15 @@ namespace SpartanManageFootball.Services
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{"http://localhost:7122}"}/ResetPassword?email={email}&token={validToken}";
+            string localHostUrl = "http://localhost:3000";
+            string url = $"{localHostUrl}/reset-password?email={email}&token={validToken}";
+
+
             var senderEmail = _configuration["ReturnPaths:SenderEmail"];
 
             await _userManager.FindByEmailAsync(email);
-            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "To reset the password click on the url" +
-              $"{url}");
+            await _emailSender.SendEmailAsync(senderEmail, email, "Reset Password", "To reset the password click on the url: " +
+              url);
 
             return new UserManagerResponse
             {
@@ -225,16 +231,72 @@ namespace SpartanManageFootball.Services
             if (user == null)
             {
                 throw new Exception("User not found");
-                //throw new Exception("User not found");
             }
 
             if (user.UserName == "system" || user.UserName == "admin")
             {
                 throw new Exception("You can not delete system or admin user");
-                //throw new BadRequestException("You can not delete system or admin user");
             }
             var result = await _userManager.DeleteAsync(user);
             return result.Succeeded;
+        }
+
+        public async Task<Unit> AddSquadsToLeague(LeagueSquadDto dto)
+        {
+            var league = await _smfcontext.Leagues.FindAsync(dto.LeaguesLeagueId);
+
+            /*var squads = await _smfcontext.Squads.Where(x => x.Squads == dto.SquadsTeamId).FirstOrDefaultAsync();*/
+
+            var userRoles = _smfcontext.Squads;
+
+            foreach (var userrole in userRoles)
+            {
+
+                var identitynumber = _smfcontext.Squads.Where(x => x.TeamId == userrole.TeamId).FirstOrDefault();
+
+                league.Squads.Add(userrole);
+            var squads = dto.SquadsTeamId;
+
+            foreach (var squad in squads)
+            {
+                var team = _smfcontext.Squads.Where(x => x.TeamId == squad.TeamId).FirstOrDefault();
+                league.Squads.Add(team);
+            }
+
+            if (league == null)
+            {
+                throw new Exception("League not found");
+            }
+
+            /*league.Squads.Add(squads);*/
+
+            /*league.Squads.AddAsync(squads);*/
+
+            /*_smfcontext.AddAsync(dto);*/
+            };
+
+            await _smfcontext.SaveChangesAsync();
+
+            return Unit.Value;
+
+
+        }
+
+        public async Task<List<Player>> GetPlayersOfSquad(int SquadTeamId)
+        {
+            var players = await _smfcontext.Players.Where(x => x.SquadTeamId == SquadTeamId).ToListAsync();
+
+            return players;
+        }
+
+        public async Task<List<League>> GetSquadsInLeagues(int leagueId)
+        {
+            var squads = await _smfcontext.Leagues
+                .Where(x => x.LeagueId == leagueId)
+                .Include(x => x.Squads)
+                .ToListAsync();
+
+            return squads;
         }
     }
 }

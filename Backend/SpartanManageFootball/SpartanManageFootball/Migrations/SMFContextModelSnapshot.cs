@@ -22,6 +22,21 @@ namespace SpartanManageFootball.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("LeagueSquad", b =>
+                {
+                    b.Property<int>("LeaguesLeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SquadsTeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LeaguesLeagueId", "SquadsTeamId");
+
+                    b.HasIndex("SquadsTeamId");
+
+                    b.ToTable("LeagueSquad");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -279,9 +294,6 @@ namespace SpartanManageFootball.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LeagueId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -291,8 +303,6 @@ namespace SpartanManageFootball.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LeagueId");
 
                     b.ToTable("Referees");
                 });
@@ -380,10 +390,15 @@ namespace SpartanManageFootball.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LeagueId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SquadLogoNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SquadLogoUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -402,8 +417,6 @@ namespace SpartanManageFootball.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeamId");
-
-                    b.HasIndex("LeagueId");
 
                     b.ToTable("Squads");
                 });
@@ -430,6 +443,21 @@ namespace SpartanManageFootball.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stadiums");
+                });
+
+            modelBuilder.Entity("LeagueSquad", b =>
+                {
+                    b.HasOne("SpartanManageFootball.Models.League", null)
+                        .WithMany()
+                        .HasForeignKey("LeaguesLeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SpartanManageFootball.Models.Squad", null)
+                        .WithMany()
+                        .HasForeignKey("SquadsTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -515,27 +543,6 @@ namespace SpartanManageFootball.Migrations
                     b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany("Photos")
                         .HasForeignKey("RegisterUserId");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.Referee", b =>
-                {
-                    b.HasOne("SpartanManageFootball.Models.League", null)
-                        .WithMany("Referees")
-                        .HasForeignKey("LeagueId");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
-                {
-                    b.HasOne("SpartanManageFootball.Models.League", null)
-                        .WithMany("Squads")
-                        .HasForeignKey("LeagueId");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.League", b =>
-                {
-                    b.Navigation("Referees");
-
-                    b.Navigation("Squads");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.RegisterUser", b =>

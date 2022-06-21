@@ -9,7 +9,7 @@ import Footer from "../Footer/footer";
 
 function Results() {
   return (
-    <div>
+    <div style={{ backgroundColor: "#aaaa" }}>
       <Navigation />
       <div className="results__header">
         <div className="results__header__content">

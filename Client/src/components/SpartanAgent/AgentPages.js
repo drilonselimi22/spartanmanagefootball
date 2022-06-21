@@ -5,7 +5,7 @@ import * as BsIcons from "react-icons/bs"
 import * as FiIcons from "react-icons/fi"
 import * as MdIcon from "react-icons/md"
 import * as CgIcons from "react-icons/cg"
-import {IoIosPeople} from "react-icons/io";
+import { IoIosPeople } from "react-icons/io";
 
 export const AgentPages = [
     {
@@ -21,8 +21,14 @@ export const AgentPages = [
         cName: 'nav-text'
     },
     {
-        title: 'Leagues',
+        title: 'League',
         path: '/agent-leagues',
+        icon: <BiIcons.BiFootball />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Add squads in league',
+        path: '/agent-league-squads',
         icon: <BiIcons.BiFootball />,
         cName: 'nav-text'
     },
@@ -45,13 +51,11 @@ export const AgentPages = [
         cName: 'nav-text'
     },
     {
-        title:"Users",
-        path:'/agent-edit-users',
+        title: "Users",
+        path: '/agent-edit-users',
         icon: <IoIosPeople />,
-        cName:'nav-text'
-        
+        cName: 'nav-text'
+
     },
-   
-  
 
 ]

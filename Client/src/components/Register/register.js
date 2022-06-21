@@ -63,7 +63,7 @@ export default function Register() {
   }
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#aaaa" }}>
       <Navigation />
       <Container className="register__container">
         <div className="register__header">

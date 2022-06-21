@@ -58,14 +58,15 @@ namespace SpartanManageFootball.Application.Login
             }
             
             var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.Email));
-            string token = _tokenGenerator.GenerateJWTToken((userId: userId, userName: userName, roles: roles));
+
+            string token = _tokenGenerator.GenerateJWTToken((fullName: fullName, userName: userName, roles: roles));
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
             var rolesOfUser = await _userManager.GetRolesAsync(user);
             string role = rolesOfUser[0];
 
             return Result<UserDTO>.Success(new UserDTO()
             {
-                UserName = userId,
+                UserName = fullName,
                 Email = email,
                 Token = token,
                 Role = role,

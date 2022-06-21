@@ -1,34 +1,52 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Team from "./Team";
 import { Form, Button, Table } from "reactstrap";
 import { Link } from "react-router-dom";
 import SidebarAgent from "../SidebarAgent";
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
+import { saveAs } from 'file-saver'
 
-export default function AgentVerifyTeams() {
+export default function AgentVerifyTeams(props) {
+
+  const { squadLogoUrl, id, stadium, name, city, photoUrl, isVerified } = props;
   const [APIData, setAPIData] = useState([]);
-  const [squadsData, setSquadsData] = useState(false);
+  const [token, setToken] = useState("");
 
-  function getSquads(e) {
-    e.preventDefault();
-    console.log("CALLINNGGGGGGGGGGGGGGGGGGGGG");
-    const t = localStorage.getItem("token");
-    console.log("tokennnn", t);
-    axios({
-      method: "get",
-      url: "https://localhost:7122/api/Squad",
-      headers: {
-        Authorization: `bearer ${t}`,
-      },
-    }).then((response) => {
-      setAPIData(response.data);
-      console.log("responseeee123123123", response);
-    });
-    setSquadsData(true);
+  useEffect(() => {
+    axios.get(`https://localhost:7122/api/Squad`)
+      .then((response) => {
+        setAPIData(response.data);
+      })
+  }, [])
+
+  function downloadImage(photoUrl) {
+    saveAs(`${photoUrl}`, 'image.jpg');
   }
 
-  function randomNum() {
-    return Math.floor(Math.random() * 100000);
+  async function verifyTeam(teamId) {
+    const t = localStorage.getItem("token");
+    console.log("kida malli", t.length);
+    setToken(t);
+
+    axios({
+      method: "put",
+      url: `https://localhost:7122/api/Squad/Verify/${teamId}`,
+      data: {
+        isVerified: true
+      },
+      headers: {
+        Authorization: `bearer ${t}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((res) => {
+        console.log("succeded", res.data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("fucking failed", error);
+      });
   }
 
   return (
@@ -40,42 +58,60 @@ export default function AgentVerifyTeams() {
           position: "absolute",
           top: "10%",
           left: "25%",
-          width: "1000px",
+          width: "1100px",
+          backgroundColor: "#fff",
+          padding: "20px"
         }}
       >
-        <button onClick={getSquads}>GET SQUADSsss</button>
+        <h2>Verify squads</h2>
         <Table bordered hover responsive>
           <thead>
             <tr>
-              <th width={"10%"}>Squad Id</th>
-              <th width={"10%"}>Stadium Id</th>
-              <th width={"20%"}>Squad Name</th>
-              <th width={"20%"}>Squad City</th>
-              <th width={"20%"}>Is Verified</th>
-              <th width={"20%"}>Certification</th>
-              <th width={"20%"}>Verify</th>
+              <th>Sqyad logo</th>
+              <th>Squad Id</th>
+              <th>Stadium Id</th>
+              <th>Squad Name</th>
+              <th>Squad City</th>
+              <th>IsVerified</th>
+              <th>Certification</th>
+              <th>Download certificate</th>
+              <th>Verify</th>
             </tr>
           </thead>
+
+          <tbody style={{ alignItems: "center", textAlign: "center" }}>
+            {APIData.map((data) => {
+              return (
+                <tr>
+                  <td>
+                    <img src={data.squadLogoUrl} width="70px" />
+                  </td>
+                  <td>{data.teamId}</td>
+                  <td>{data.stadiumId}</td>
+                  <td>{data.name}</td>
+                  <td>{data.city}</td>
+                  <td>{data.isVerified ? "Verified" : "Not verified"}</td>
+                  <td>
+                    <Zoom>
+                      <picture>
+                        <source media="(max-width: 1000px)" srcSet={photoUrl} />
+                        <img src={data.photoUrl} width="120px" height="100px" />
+                      </picture>
+                    </Zoom>
+                  </td>
+                  <td>
+                    <button onClick={() => downloadImage(data.photoUrl)}>Download</button>
+                  </td>
+                  <td>
+                    <button onClick={() => verifyTeam(data.teamId)}>Verify</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+
+
         </Table>
-        {/* id, stadium, name, city, isVerified */}
-        {squadsData ? (
-          APIData.map(
-            ({ index, teamId, stadiumId, name, city, photoUrl, isVerified }) => (
-              //   console.log("indeeeeeeeeeeeeeeeeee12x", randomNum());
-              <Team
-                key={teamId}
-                id={teamId}
-                stadium={stadiumId}
-                name={name}
-                city={city}
-                photoUrl={photoUrl}
-                isVerified={isVerified}
-              />
-            )
-          )
-        ) : (
-          <h1></h1>
-        )}
       </div>
     </div>
   );

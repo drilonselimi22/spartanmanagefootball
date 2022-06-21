@@ -5,6 +5,7 @@ using SpartanManageFootball.Application.Teams;
 using SpartanManageFootball.Models;
 using static SpartanManageFootball.Application.Teams.CreateTeams;
 using static SpartanManageFootball.Application.Teams.EditTeams;
+using static SpartanManageFootball.Application.Teams.VerifyTeams;
 
 namespace SpartanManageFootball.Controllers
 {
@@ -21,9 +22,9 @@ namespace SpartanManageFootball.Controllers
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         [HttpPost("addSquad")] 
-        public async Task<ActionResult<Squad>> CreateTeam([FromBody] TeamCommand command)
+        public async Task<ActionResult<Squad>> CreateTeam([FromForm] TeamCommand command)
         {
-            return HandleResult(await Mediator.Send(command)); ;
+            return HandleResult(await Mediator.Send(command));
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
@@ -54,6 +55,14 @@ namespace SpartanManageFootball.Controllers
         {
             command.TeamId = id;
             return HandleResult(await Mediator.Send(command));
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
+        [HttpPut("Verify/{squadId}")]
+        public async Task<ActionResult<Squad>> VerifyTeams(int squadId, [FromForm] VerifyTeamsCommand command)
+        {
+            command.TeamId = squadId;
+            return await Mediator.Send(command);
         }
     }
 }
