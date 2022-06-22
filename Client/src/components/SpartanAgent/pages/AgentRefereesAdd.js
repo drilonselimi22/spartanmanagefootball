@@ -58,6 +58,7 @@ function AgentReferees() {
               width: "500px",
             }}
           >
+            <h1>Referee Form</h1>
             <Form>
               <Form.Group className="mb-3" controlId="formName">
                 <Form.Label>Referee Name</Form.Label>
