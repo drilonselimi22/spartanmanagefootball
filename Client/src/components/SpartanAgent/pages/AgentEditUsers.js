@@ -49,12 +49,11 @@ function EditUserRoles() {
         <div
           style={{
             position: "absolute",
-            top: "30%",
-            left: "55%",
+            top: "10%",
+            left: "28%",
             width: "1000px",
             backgroundColor: "#fff",
             padding: "20px",
-            transform: "translate(-50%, -50%)",
             zIndex: "-99"
           }}
         >

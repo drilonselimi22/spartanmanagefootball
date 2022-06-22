@@ -9,11 +9,11 @@ using static SpartanManageFootball.Application.Players.EditPlayer;
 
 namespace SpartanManageFootball.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
-    
-    public class PlayerOperations : ControllerBase
+
+    public class PlayerOperations : BaseApiController
     {
         private readonly IMediator _mediator;
         private readonly IIdentityService _identityService;
@@ -24,31 +24,31 @@ namespace SpartanManageFootball.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
-        [HttpPost("addPlayer")] 
+        [HttpPost("addPlayer")]
         public async Task<ActionResult<Player>> CreatePlayer([FromBody] PlayerAddCommand command)
         {
-            return await _mediator.Send(command);
+            return HandleResult(await _mediator.Send(command));
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
-        [HttpDelete("{id}")] 
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> DeletePlayer(int id)
         {
-            return await _mediator.Send(new DeletePlayer.Command { Id = id });
+            return HandleResult(await _mediator.Send(new DeletePlayer.Command { Id = id }));
         }
 
         [AllowAnonymous]
-        [HttpGet] 
+        [HttpGet]
         public async Task<ActionResult<List<Player>>> List()
         {
-            return await _mediator.Send(new ListPlayers.Query());
+            return HandleResult(await _mediator.Send(new ListPlayers.Query()));
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> PlayerDetails(int id)
         {
-            return await _mediator.Send(new PlayerDetails.Query { Id = id });
+            return HandleResult(await _mediator.Send(new PlayerDetails.Query { Id = id }));
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace SpartanManageFootball.Controllers
         public async Task<ActionResult<Player>> Edit(int id, PlayerEditCommand command)
         {
             command.Id = id;
-            return await _mediator.Send(command);
+            return HandleResult(await _mediator.Send(command));
         }
     }
 }

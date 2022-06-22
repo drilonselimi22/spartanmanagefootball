@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 
@@ -6,7 +7,7 @@ namespace SpartanManageFootball.Application.RefereesOperations
 {
     public class EditReferee
     {
-        public class RefereeEditCommand : IRequest<Referee>
+        public class RefereeEditCommand : IRequest<Result<Referee>>
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -15,7 +16,7 @@ namespace SpartanManageFootball.Application.RefereesOperations
             public string City { get; set; }
             public string Position { get; set; }
         }
-        public class CommandHandler : IRequestHandler<RefereeEditCommand, Referee>
+        public class CommandHandler : IRequestHandler<RefereeEditCommand, Result<Referee>>
         {
             private readonly SMFContext _context;
 
@@ -24,12 +25,12 @@ namespace SpartanManageFootball.Application.RefereesOperations
                 _context = context;
             }
 
-            public async Task<Referee> Handle(RefereeEditCommand request, CancellationToken cancellationToken)
+            public async Task<Result<Referee>> Handle(RefereeEditCommand request, CancellationToken cancellationToken)
             {
                 var referee = await _context.Referees.FindAsync(request.Id);
                 if (referee == null)
                 {
-                    throw new Exception("could not find player");
+                    Result<Referee>.Failure("Referee does not exist");
                 }
 
                 referee.Name = request.Name ?? referee.Name;
@@ -42,10 +43,10 @@ namespace SpartanManageFootball.Application.RefereesOperations
 
                 if (success)
                 {
-                    return referee;
+                    return Result<Referee>.Success(referee);
                 }
 
-                return null;
+                return Result<Referee>.Failure("There was a problem saving changes");
             }
         }
     }

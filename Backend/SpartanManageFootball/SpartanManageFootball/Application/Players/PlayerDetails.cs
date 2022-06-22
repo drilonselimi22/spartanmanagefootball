@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 
@@ -6,11 +7,11 @@ namespace SpartanManageFootball.Application.Players
 {
     public class PlayerDetails
     {
-        public class Query : IRequest<Player>
+        public class Query : IRequest<Result<Player>>
         {
             public int Id { get; set; }
         }
-        public class Handler : IRequestHandler<Query, Player>
+        public class Handler : IRequestHandler<Query, Result<Player>>
         {
             private readonly SMFContext _context;
 
@@ -19,11 +20,11 @@ namespace SpartanManageFootball.Application.Players
                 _context = context;
             }
 
-            public async Task<Player> Handle(Query request, CancellationToken cancellationToken)
+            public async Task <Result<Player>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var player = await _context.Players.FindAsync(request.Id);
 
-                return player;
+                return Result<Player>.Success(player);
             }
         }
     }

@@ -2,12 +2,13 @@
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Interfaces;
+using SpartanManageFootball.Application.Core;
 
 namespace SpartanManageFootball.Application.Teams
 {
     public class EditTeams
     {
-        public class TeamEditCommand : IRequest<Squad>
+        public class TeamEditCommand : IRequest<Result<Squad>>
         {
             public int TeamId { get; set; }
             public int? StadiumId { get; set; }
@@ -15,7 +16,7 @@ namespace SpartanManageFootball.Application.Teams
             public string City { get; set; }
             public bool? isVerified { get; set; }
         }
-        public class CommandHandler : IRequestHandler<TeamEditCommand, Squad>
+        public class CommandHandler : IRequestHandler<TeamEditCommand, Result<Squad>>
         {
             private readonly SMFContext _context;
             private readonly IPhotoAccessor _photoAccessor;
@@ -26,13 +27,13 @@ namespace SpartanManageFootball.Application.Teams
                 _photoAccessor = photoAccessor;
             }
 
-            public async Task<Squad> Handle(TeamEditCommand request, CancellationToken cancellationToken)
+            public async Task<Result<Squad>> Handle(TeamEditCommand request, CancellationToken cancellationToken)
             {
                 var team = await _context.Squads.FindAsync(request.TeamId);
 
                 if (team == null)
                 {
-                    throw new Exception("could not find player");
+                    return Result<Squad>.Failure("Could not find this squad");
                 }
 
                 team.StadiumId = request.StadiumId ?? team.StadiumId;
@@ -44,10 +45,10 @@ namespace SpartanManageFootball.Application.Teams
 
                 if (success)
                 {
-                    return team;
+                    return Result<Squad>.Success(team);
                 }
 
-                return null;
+                return Result<Squad>.Failure("Something went wrong");
             }
         }
     }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Spinner, Container, Nav } from "react-bootstrap";
 import Navigation from "../Navigation/navigation";
 import registerImage from "../../images/register.svg";
@@ -9,20 +9,30 @@ import Footer from "../Footer/footer";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [identityNumber, setIdentityNumber] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [identityNumber, setIdentityNumber] = useState(0);
+  const [birthDate, setBirthDate] = useState("2022-06-21T16:40:05.496Z");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("admin");
-  const [submitedRegister, setSubmitedRegister] = useState(false);
   const [loader, setLoader] = useState(false);
   const [registered, setRegistered] = useState(false);
+  const [errorback, seterrorback] = useState(false)
+  const [confirmPassword, setConfirmPassword]= useState("")
+  const [msg, setMsg] = useState([])
+  const [responses, setResponses] = useState('')
+  const [matchedPasswords, setMatchedPasswords] = useState(false)
 
+
+  const clearState = () => {
+    setMsg([]);
+  };
   async function registerData(e) {
-    e.preventDefault();
-    setLoader(true);
+    e.preventDefault();  
+    clearState()
+    setLoader(true) 
+
     await axios({
-      method: "POST",
-      url: "https://localhost:7122/api/User/register-admin",
+      method: 'POST',
+      url: 'https://localhost:7122/api/User/register-admin',
       data: {
         username: username,
         email: email,
@@ -30,18 +40,26 @@ export default function Register() {
         birthDate: birthDate,
         password: password,
         roleId: role,
-      },
-    }).then(
-      (response) => {
-        console.log("responseLogin", response);
-        setSubmitedRegister(true);
-      },
-      (error) => {
-        console.log("error", error);
-        setRegistered(true);
       }
-    );
-    setLoader(false);
+    }).then((response) => { 
+      setLoader(false)
+      window.location.reload();
+    }, (e) => {
+      console.log(e) 
+      try { 
+        setLoader(false)
+        // console.log("errorFromBack", e.response.data.errors.error);
+        var a = e.response.data.errors.error  
+        console.log("aaaaaaaaaaaaa1",a)
+        setMsg(a) 
+        console.log("msgaaaaaaaaaaaaaa",msg)
+        seterrorback(true);  
+      } catch (err) {
+        console.log("trycatchworking", err); 
+      } 
+    });
+    setLoader(false)
+
   }
 
   return (
@@ -57,7 +75,7 @@ export default function Register() {
             <Form className="register__form">
               {loader ? (
                 <div>
-                  <Spinner animation="border" variant="light" />
+                  <Spinner animation="border" variant="dark" />
                   <p>Loading...</p>
                 </div>
               ) : (
@@ -67,6 +85,14 @@ export default function Register() {
                   </div>
 
                   <Form.Group className="mb-3">
+                    { errorback ?
+                      msg.map((message) => {
+                        return ( 
+                            <p style={{ color: "red" }}>{message}</p>  
+                        ) 
+                      }) : null
+                    }
+                    {/* <p style={{ color: "red" }}>{responses}</p> */}
                     <Form.Label>Username</Form.Label>
                     <Form.Control
                       type="text"
@@ -87,7 +113,7 @@ export default function Register() {
                   <Form.Group className="mb-3">
                     <Form.Label>Identity Number</Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Enter your identity number"
                       onChange={(e) => setIdentityNumber(e.target.value)}
                     />
@@ -101,7 +127,7 @@ export default function Register() {
                       onChange={(e) => setBirthDate(e.target.value)}
                     />
                   </Form.Group>
-
+                    {matchedPasswords ? <p style={{color:"red"}}>Passwords do not match</p> : null}
                   <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
@@ -110,21 +136,20 @@ export default function Register() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </Form.Group>
-
                   <Form.Group className="mb-3">
-                    <Form.Label>Role</Form.Label>
+                    <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter your role"
-                      onChange={(e) => setRole(e.target.value)}
+                      type="password"
+                      placeholder="Enter your password"
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </Form.Group>
-
-                  {registered ? (
+                  {/* {registered ? (
                     <p style={{ color: "#ef9292" }}>
-                      Make sure the fields are not empty{" "}
+                      Make sure the fields are not empty
                     </p>
-                  ) : null}
+                  ) : null} */}
+
                   <Button type="submit" onClick={registerData}>
                     Register
                   </Button>
@@ -134,7 +159,6 @@ export default function Register() {
           </div>
         </div>
       </Container>
-
       <Footer />
     </div>
   );
