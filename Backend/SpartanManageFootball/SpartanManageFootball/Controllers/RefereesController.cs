@@ -10,7 +10,7 @@ namespace SpartanManageFootball.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RefereesController : ControllerBase
+    public class RefereesController : BaseApiController
     {
         private readonly IMediator _mediator;
 
@@ -20,31 +20,31 @@ namespace SpartanManageFootball.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
-        [HttpPost("addReferee")] 
-        public async Task<ActionResult<Referee>> CreateReferee([FromBody] RefereeCommand command)
+        [HttpPost("addReferee")]
+        public async Task<IActionResult> CreateReferee([FromBody] RefereeCommand command)
         {
-            return await _mediator.Send(command);
+            return HandleResult(await _mediator.Send(command));
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
-        [HttpDelete("{id}")] 
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> DeleteReferee(int id)
         {
-            return await _mediator.Send(new DeleteReferees.Command { Id = id });
+            return HandleResult(await _mediator.Send(new DeleteReferees.Command { Id = id }));
         }
 
         [AllowAnonymous]
-        [HttpGet] 
+        [HttpGet]
         public async Task<ActionResult<List<Referee>>> List()
         {
-            return await _mediator.Send(new ListReferees.Query());
+            return HandleResult(await _mediator.Send(new ListReferees.Query()));
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Referee>> RefereeDetails(int id)
         {
-            return await _mediator.Send(new RefereeDetails.Query { Id = id });
+            return HandleResult(await _mediator.Send(new RefereeDetails.Query { Id = id }));
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "agent")]
@@ -53,7 +53,7 @@ namespace SpartanManageFootball.Controllers
         {
             command.Id = id;
 
-            return await _mediator.Send(command);
+            return HandleResult(await _mediator.Send(command));
         }
     }
 }

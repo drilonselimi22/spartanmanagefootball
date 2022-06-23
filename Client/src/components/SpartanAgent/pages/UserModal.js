@@ -28,7 +28,7 @@ export default function UserModal(props) {
 
     return (
         <div>
-            <Button color="primary" onClick={toggle}><i class="far fa-edit"></i>edit</Button>
+            <Button color="primary" onClick={toggle}><i class="far fa-edit"></i>Edit</Button>
             <Modal isOpen={modal} toggle={toggle} style={{ width: "500px" }}>
                 <ModalHeader toggle={toggle}>Change User Role</ModalHeader>
                 <ModalBody>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SidebarAgent from "../SidebarAgent";
-
+import Footer from '../../Footer/footer'
 function AgentHome() {
   const [logged, setlogged] = useState(false);
 
@@ -32,7 +32,7 @@ function AgentHome() {
           <h4>Agent Home</h4>
           <h1>Sorry you are Unauthorized for this page </h1>
         </div>
-      )}
+      )} 
     </div>
   );
 }

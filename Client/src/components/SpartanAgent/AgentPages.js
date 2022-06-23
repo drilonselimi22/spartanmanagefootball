@@ -46,7 +46,7 @@ export const AgentPages = [
     },
     {
         title: 'Referees',
-        path: '/agent-referees',
+        path: '/referees-list',
         icon: <FiIcons.FiCreditCard />,
         cName: 'nav-text'
     },
@@ -56,6 +56,6 @@ export const AgentPages = [
         icon: <IoIosPeople />,
         cName: 'nav-text'
 
-    },
+    }
 
 ]

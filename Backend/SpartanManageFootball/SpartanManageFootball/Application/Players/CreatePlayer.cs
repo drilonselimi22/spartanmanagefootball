@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 
@@ -6,7 +8,7 @@ namespace SpartanManageFootball.Application.Players
 {
     public class CreatePlayer
     {
-        public class PlayerAddCommand : IRequest<Player>
+        public class PlayerAddCommand : IRequest<Result<Player>>
         {
             public string Name { get; set; }
             public string LastName { get; set; }
@@ -16,7 +18,18 @@ namespace SpartanManageFootball.Application.Players
             public int SuqadTeamId { get; set; }
             public object? SquadTeamId { get; internal set; }
 
-            public class CommandHandler : IRequestHandler<PlayerAddCommand, Player>
+            public class PlayerValidator : AbstractValidator<PlayerAddCommand>
+            {
+                public PlayerValidator()
+                {
+                    RuleFor(x => x.Name).NotNull().NotEmpty().WithMessage("Name shouldn't be empty").OverridePropertyName("error");
+                    RuleFor(x => x.LastName).NotNull().NotEmpty().WithMessage("Last Name number shouldn't be empty").OverridePropertyName("error");
+                    RuleFor(x => x.Age).NotNull().NotEmpty().WithMessage("Age shouldn't be empty").OverridePropertyName("error");
+                    RuleFor(x => x.Number).NotNull().NotEmpty().WithMessage("Number shouldn't be empty").OverridePropertyName("error");
+                    RuleFor(x => x.Position).NotNull().NotEmpty().WithMessage("Position shouldn't be empty").OverridePropertyName("error");
+                }
+            }
+            public class CommandHandler : IRequestHandler<PlayerAddCommand, Result<Player>>
             {
                 private readonly SMFContext _context;
 
@@ -25,7 +38,7 @@ namespace SpartanManageFootball.Application.Players
                     _context = context;
                 }
 
-                public async Task<Player> Handle(PlayerAddCommand request, CancellationToken cancellationToken)
+                public async Task<Result<Player>> Handle(PlayerAddCommand request, CancellationToken cancellationToken)
                 {
                     var player = new Player
                     {
@@ -44,9 +57,9 @@ namespace SpartanManageFootball.Application.Players
 
                     if (success)
                     {
-                        return player;
+                        return Result<Player>.Success(player);
                     }
-                    throw new Exception("Problem saving changes");
+                    return Result<Player>.Failure("There was a problem saving changes");
                 }
             }
         }

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SpartanManageFootball.Application.TeamStadiums;
 using SpartanManageFootball.Models;
@@ -12,7 +11,7 @@ namespace SpartanManageFootball.Controllers
     [Authorize(Roles = "agent")]
     [Route("api/[controller]")]
     [ApiController]
-    public class StadiumsController : ControllerBase
+    public class StadiumsController : BaseApiController
     {
         private readonly IMediator _mediator;
 
@@ -25,14 +24,14 @@ namespace SpartanManageFootball.Controllers
         [HttpPost("addStadium")]
         public async Task<ActionResult<Stadium>> CreateStadium([FromBody] StadiumCommand command)
         {
-            return await _mediator.Send(command);
+            return HandleResult(await _mediator.Send(command));
         }
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> DeleteStadium(int id)
         {
-            return await _mediator.Send(new DeleteStadiums.Command { Id = id });
+            return HandleResult(await _mediator.Send(new DeleteStadiums.Command { Id = id }));
         }
 
         [AllowAnonymous]
@@ -55,7 +54,7 @@ namespace SpartanManageFootball.Controllers
         {
             command.Id = id;
 
-            return await _mediator.Send(command);
+            return HandleResult(await _mediator.Send(command));
         }
     }
 }
