@@ -9,7 +9,7 @@ import Footer from "../Footer/footer";
 
 function Match() {
   return (
-    <div>
+    <div style={{ backgroundColor: "#aaaa" }}>
       <Navigation />
       <div className="match__header">
         <div className="match__header__content">

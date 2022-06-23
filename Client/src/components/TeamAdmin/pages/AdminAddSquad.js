@@ -9,24 +9,32 @@ function AdminAddSquad() {
   const [city, setCity] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [file, setFile] = useState(null);
+  const [logo, setLogo] = useState(null);
 
+  const [token, setToken] = useState("");
   const [submitedRegister, setSubmitedRegister] = useState(false);
   const [registered, setRegistered] = useState(false);
 
   async function registerSquad(e) {
     e.preventDefault();
+
+    const t = localStorage.getItem("token");
+    setToken(t);
+
     await axios({
       method: "POST",
       url: "https://localhost:7122/api/Squad/addSquad",
       data: {
         stadiumId: stadiumId,
+        logo: logo,
         name: name,
         city: city,
         isVerified: isVerified,
         file: file
       },
       headers: {
-        "Content-Type": "multipart/form-data"
+        Authorization: `bearer ${t}`,
+        "Content-Type": "multipart/form-data",
       }
     }).then(
       (response) => {
@@ -49,15 +57,25 @@ function AdminAddSquad() {
       <SidebarAdmin />
       <div style={{
         position: "absolute",
-        top: '10%',
-        left: '40%',
-        width: '500px'
+        top: '50%',
+        left: '55%',
+        width: '700px',
+        backgroundColor: "#fff",
+        padding: "20px",
+        transform: "translate(-50%, -50%)"
       }}>
 
         <Form>
+          <h2>Register Squad</h2>
+          <hr></hr>
           <Form.Group className="mb-3" controlId="formName">
             <Form.Label>Squad Stadium</Form.Label>
             <Form.Control onChange={(e) => setStadiumId(e.target.value)} type="number" placeholder="Enter Squad Stadium" />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formFile">
+            <Form.Label>Upload logo</Form.Label>
+            <Form.Control type="file" name="file" onChange={(e) => setLogo(e.target.files[0])} />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formLastName">
@@ -70,17 +88,17 @@ function AdminAddSquad() {
             <Form.Control onChange={(e) => setCity(e.target.value)} type="text" placeholder="Enter Squad City" />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formExperience">
-            <Form.Label>Squad City</Form.Label>
-            <Form.Control onChange={(e) => setIsVerified(e.target.value)} type="text" placeholder="Enter Squad City" />
-          </Form.Group>
+          {/* <Form.Group className="mb-3" controlId="formExperience">
+            <Form.Label>Is Verified</Form.Label>
+            <Form.Control onChange={(e) => setIsVerified(e.target.value)} type="text" placeholder="Is verified" />
+          </Form.Group> */}
 
           <Form.Group className="mb-3" controlId="formFile">
             <Form.Label>Upload certificate</Form.Label>
             <Form.Control type="file" name="file" onChange={(e) => setFile(e.target.files[0])} />
           </Form.Group>
 
-          <Button variant="primary" type="submit" onClick={registerSquad}>
+          <Button variant="primary" type="submit" onClick={registerSquad} style={{ width: "auto", backgroundColor: "#35AD79" }}>
             Register Squad
           </Button>
         </Form>

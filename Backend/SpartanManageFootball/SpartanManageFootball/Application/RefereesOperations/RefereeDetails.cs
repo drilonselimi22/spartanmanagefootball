@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 
@@ -6,11 +7,11 @@ namespace SpartanManageFootball.Application.RefereesOperations
 {
     public class RefereeDetails
     {
-        public class Query : IRequest<Referee>
+        public class Query : IRequest<Result<Referee>>
         {
             public int Id { get; set; }
         }
-        public class Handler : IRequestHandler<Query, Referee>
+        public class Handler : IRequestHandler<Query, Result<Referee>>
         {
             private readonly SMFContext _context;
 
@@ -19,11 +20,11 @@ namespace SpartanManageFootball.Application.RefereesOperations
                 _context = context;
             }
 
-            public async Task<Referee> Handle(Query request, CancellationToken cancellationToken)
+            public async Task <Result<Referee>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var referee = await _context.Referees.FindAsync(request.Id);
 
-                return referee;
+                return Result<Referee>.Success(referee);
             }
         }
     }

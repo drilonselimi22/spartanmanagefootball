@@ -6,16 +6,26 @@ using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.JwtToken;
 using SpartanManageFootball.Persistence;
 using SpartanManageFootball.Models;
+using SpartanManageFootball.Application.Core;
+using FluentValidation;
 
 namespace SpartanManageFootball.Application.Login
 {
-    public class AuthCommand : IRequest<UserDTO>
+    public class AuthCommand : IRequest<Result<UserDTO>>
     {
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
-    public class AuthCommandHandler : IRequestHandler<AuthCommand, UserDTO>
+    public class AuthCommandValidator : AbstractValidator<AuthCommand>
+    {
+        public AuthCommandValidator()
+        {
+            RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage("Username shouldn't be empty").OverridePropertyName("error");
+            RuleFor(x => x.Password).NotNull().NotEmpty().WithMessage("Password shouldn't be empty").OverridePropertyName("error");
+        }
+    }
+    public class AuthCommandHandler : IRequestHandler<AuthCommand, Result<UserDTO>>
     {
         private readonly ITokenGenerator _tokenGenerator;
         private readonly UserManager<RegisterUser> _userManager;
@@ -38,29 +48,30 @@ namespace SpartanManageFootball.Application.Login
             _context = context;
         }
 
-        public async Task<UserDTO> Handle(AuthCommand request, CancellationToken cancellationToken)
+        public async Task<Result<UserDTO>> Handle(AuthCommand request, CancellationToken cancellationToken)
         {
             var result = await _identityService.SigninUserAsync(request.Email, request.Password);
-
+           
             if (!result)
             {
-                throw new Exception("Invalid username or password");
+                return Result<UserDTO>.Failure("Please verify your email or check your credentials");
             }
-
+            
             var (userId, fullName, userName, email, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.Email));
 
-            string token = _tokenGenerator.GenerateJWTToken((userId: userId, userName: userName, roles: roles));
+            string token = _tokenGenerator.GenerateJWTToken((fullName: fullName, userName: userName, roles: roles));
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
             var rolesOfUser = await _userManager.GetRolesAsync(user);
             string role = rolesOfUser[0];
 
-            return new UserDTO()
+            return Result<UserDTO>.Success(new UserDTO()
             {
-                UserName = userId,
+                UserName = fullName,
                 Email = email,
                 Token = token,
                 Role = role,
-            };
+            }
+            );
         }
     }
 }

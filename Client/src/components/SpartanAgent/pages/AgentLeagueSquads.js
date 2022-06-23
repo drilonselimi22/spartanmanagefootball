@@ -70,6 +70,7 @@ function AgentLeaguesSquads() {
         }) => {
           return (
             <form onSubmit={handleSubmit} className="form__container">
+              <h2>Add squads to the league</h2>
               <div className="select__league">
                 <label>League</label>
                 <Field name="leaguesLeagueId" component="select" placeholder="League">

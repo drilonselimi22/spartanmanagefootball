@@ -50,12 +50,19 @@ function AgentStadium() {
           <div
             style={{
               position: "absolute",
-              top: "10%",
-              left: "40%",
-              width: "500px",
+              top: "50%",
+              left: "55%",
+              // width: "500px",
+              transform: "translate(-50%, -50%)"
             }}
           >
-            <Form>
+            <Form style={{
+              backgroundColor: "#fff",
+              padding: "20px",
+              width: "800px",
+            }}>
+              <h2>Add Stadium</h2>
+
               <Form.Group className="mb-3">
                 <Form.Label>Stadium Name</Form.Label>
                 <Form.Control

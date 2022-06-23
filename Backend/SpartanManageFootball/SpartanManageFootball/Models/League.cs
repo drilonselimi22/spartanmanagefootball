@@ -7,8 +7,6 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int LeagueId { get; set; }
-
-        [Required(ErrorMessage = "League name is required!")]
         public string LeagueName { get; set; }
 
         // Referee not need here

@@ -15,10 +15,16 @@ function Login() {
   const [errors, setErrors] = useState(false);
   const [username, setUsername] = useState(false);
   const [password, setPassword] = useState(false);
-
+  const [response, setResponse]=useState(""); 
   async function handleLogin(e) {
     e.preventDefault();
     console.log("CLICKED", clickedLoggin);
+    
+    if(username=="" || password==""){
+      setResponse("The fields can't be empty");
+      setErrors(true);
+      return;
+    }
     setClickedLoggin(true);
     await axios({
       method: "POST",
@@ -30,10 +36,12 @@ function Login() {
     }).then(
       (response) => {
         var result = response.data
-        localStorage.setItem('username', result.username);
+        localStorage.setItem('username', result.userName);
         localStorage.setItem('email', result.email);
         localStorage.setItem('token', result.token);
         localStorage.setItem('role', result.role);
+
+        console.log(result);
         if (response.data.role == "agent") {
           navigate("/agent");
         } else {
@@ -41,7 +49,10 @@ function Login() {
         }
       },
       (error) => {
-        console.log("error", error);
+      
+        setResponse(error.response.data);
+       console.log(response,"dsfdf");
+       console.log(error,"qen");
         setErrors(true);
       }
     );
@@ -78,6 +89,9 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
+               <div>
+                <p style={{color: "red"}}>{response}</p> 
+              </div>
                 {clickedLoggin ? <label>Logging in...</label> : <Button type="submit" onClick={handleLogin}>Log in</Button>}
 
               </div>

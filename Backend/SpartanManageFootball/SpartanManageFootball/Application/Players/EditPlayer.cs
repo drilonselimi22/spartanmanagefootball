@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
 using static SpartanManageFootball.Application.Players.CreatePlayer;
@@ -7,7 +8,7 @@ namespace SpartanManageFootball.Application.Players
 {
     public class EditPlayer
     {
-        public class PlayerEditCommand : IRequest<Player>
+        public class PlayerEditCommand : IRequest<Result<Player>>
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -17,7 +18,7 @@ namespace SpartanManageFootball.Application.Players
             public string Position { get; set; }
             public int? SquadTeamId { get; set; }
         }
-        public class CommandHandler : IRequestHandler<PlayerEditCommand, Player>
+        public class CommandHandler : IRequestHandler<PlayerEditCommand, Result<Player>>
         {
             private readonly SMFContext _context;
 
@@ -26,13 +27,13 @@ namespace SpartanManageFootball.Application.Players
                 _context = context;
             }
 
-            public async Task<Player> Handle(PlayerEditCommand request, CancellationToken cancellationToken)
+            public async Task<Result<Player>> Handle(PlayerEditCommand request, CancellationToken cancellationToken)
             {
                 var player = await _context.Players.FindAsync(request.Id);
 
                 if (player == null)
                 {
-                    throw new Exception("could not find player");
+                    return Result<Player>.Failure("There was a problem saving changes");
                 }
 
                 player.Name = request.Name ?? player.Name;
@@ -46,9 +47,9 @@ namespace SpartanManageFootball.Application.Players
 
                 if (success)
                 {
-                    return player;
+                    return Result<Player>.Success(player);
                 }
-                return null;
+                return Result<Player>.Failure("There was a problem saving changes");
             }
         }
     }
