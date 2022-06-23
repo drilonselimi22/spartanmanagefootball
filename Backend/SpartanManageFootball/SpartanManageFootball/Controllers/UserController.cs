@@ -138,6 +138,23 @@ namespace SpartanManageFootball.Controllers
             return Ok(result);
         }
 
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _identityServices.ChangePasswordAsync(model);
+
+                if (result.IsSuccess)
+                {
+                    return Ok("Password has been changed Successfully");
+                }
+
+                return BadRequest(result);
+            }
+
+            return BadRequest("Some properties are not valid");
+        }
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
