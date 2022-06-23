@@ -60,6 +60,7 @@ function AgentReferees() {
               padding: "20px"
             }}
           >
+            <h1>Referee Form</h1>
             <Form>
               <h2>Add referee</h2>
               <Form.Group className="mb-3" controlId="formName">

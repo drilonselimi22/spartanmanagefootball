@@ -53,7 +53,6 @@ function AgentLeaguesSquads() {
   return (
     <>
       <SidebarAgent />
-
       <Form
         onSubmit={onSubmit}
         mutators={{
