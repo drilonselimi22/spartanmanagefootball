@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { Form, Field } from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import { FieldArray } from "react-final-form-arrays";
+import { Button } from "react-bootstrap";
 import axios from "axios";
 import SidebarAgent from "../SidebarAgent";
 import "./AgentLeagueSquads.css";
@@ -72,6 +73,7 @@ function AgentLeaguesSquads() {
           return (
             <form onSubmit={handleSubmit} className="form__container">
               <h2>Add squads to the league</h2>
+              <hr></hr>
               <div className="select__league">
                 <label>League</label>
                 <Field name="leaguesLeagueId" component="select" placeholder="League">
@@ -86,15 +88,16 @@ function AgentLeaguesSquads() {
                 </Field>
               </div>
               <div className="buttons">
-                <button
+                <Button
+                  variant="dark"
                   type="button"
                   onClick={() => push("squadsTeamId", undefined)}
                 >
                   Add Squad
-                </button>
-                <button type="button" onClick={() => pop("squadsTeamId")}>
+                </Button>
+                <Button style={{ width: "auto" }} variant="dark" type="button" onClick={() => pop("squadsTeamId")}>
                   Remove Squad
-                </button>
+                </Button>
               </div>
               <FieldArray
                 name="squadsTeamId"
@@ -127,16 +130,17 @@ function AgentLeaguesSquads() {
               </FieldArray>
 
               <div className="buttons">
-                <button className="submit__btn" type="submit" disabled={submitting || pristine}>
+                <Button variant="success" className="submit__btn" type="submit" disabled={submitting || pristine}>
                   Submit
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="danger"
                   type="button"
                   onClick={form.reset}
                   disabled={submitting || pristine}
                 >
                   Reset
-                </button>
+                </Button>
               </div>
             </form>
           );

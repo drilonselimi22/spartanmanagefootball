@@ -34,10 +34,10 @@ function Teams() {
       </div>
       <Container className="team__footer">
         {gotSquad ? (
-          squads.map(({ name, photoUrl, teamId }) => {
+          squads.map(({ name, squadLogoUrl, teamId }) => {
             return (
               <div>
-                <TeamComponent teamName={name} image={photoUrl} id={teamId} />
+                <TeamComponent teamName={name} image={squadLogoUrl} id={teamId} />
               </div>
             );
           })

@@ -49,7 +49,7 @@ function EditUserRoles() {
         <div
           style={{
             position: "absolute",
-            top: "30%",
+            top: "50%",
             left: "55%",
             width: "1000px",
             backgroundColor: "#fff",
