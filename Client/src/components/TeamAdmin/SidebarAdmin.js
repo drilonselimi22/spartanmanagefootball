@@ -51,19 +51,9 @@ function SidebarAdmin() {
                                 margin: "5px"
                             }} />
                         </Dropdown.Toggle>
-<<<<<<< HEAD
-<<<<<<< HEAD
                         <Dropdown.Menu variant="dark">
                             <Dropdown.Item onClick={ChangePassword} href="/reset-password">Change password</Dropdown.Item>
-=======
-                        <Dropdown.Menu variant="dark" style={{ width: "auto" }}>
-                            <Dropdown.Item onClick={pswSendEmail}>Change password</Dropdown.Item>
->>>>>>> 18dfa8c85cd1f9f8ffbd5b3c9837e7064365bc63
-=======
-                        
-                        <Dropdown.Menu variant="dark" style={{ width: "auto" }}>
-                            <Dropdown.Item onClick={pswSendEmail}>Change password</Dropdown.Item>
->>>>>>> fccf6d1204281cf4b1c7e6bfc103738eb6f80eaa
+
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={handleLogout} href="/login">Logout</Dropdown.Item>
                         </Dropdown.Menu>
