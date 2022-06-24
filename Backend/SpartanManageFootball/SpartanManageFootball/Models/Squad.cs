@@ -20,10 +20,6 @@ namespace SpartanManageFootball.Models
         public string photoUrl { get; set; }
         [JsonIgnore]
         public List<League> Leagues { get; set; }
-
-        public Stadium Stadium { get; set; }
-
-        public RegisterUser RegisterUser { get; set; }
         public string RegisterUserId { get; set; }
     }
 }
