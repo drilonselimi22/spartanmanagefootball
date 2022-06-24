@@ -53,7 +53,6 @@ function SidebarAdmin() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu variant="dark">
                             <Dropdown.Item onClick={ChangePassword} href="/reset-password">Change password</Dropdown.Item>
-
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={handleLogout} href="/login">Logout</Dropdown.Item>
                         </Dropdown.Menu>
