@@ -54,7 +54,7 @@ function AgentReferees() {
             style={{
               position: "absolute",
               top: "10%",
-              left: "40%",
+              left: "35%",
               width: "700px",
               backgroundColor: "#fff",
               padding: "20px"
@@ -63,6 +63,7 @@ function AgentReferees() {
             <h1>Referee Form</h1>
             <Form>
               <h2>Add referee</h2>
+              <hr></hr>
               <Form.Group className="mb-3" controlId="formName">
                 <Form.Label>Referee Name</Form.Label>
                 <Form.Control
@@ -108,7 +109,7 @@ function AgentReferees() {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" onClick={registerReferee}>
+              <Button style={{ width: "auto" }} variant="success" type="submit" onClick={registerReferee}>
                 Register Referee
               </Button>
             </Form>

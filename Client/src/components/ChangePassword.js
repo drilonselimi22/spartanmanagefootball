@@ -1,74 +1,85 @@
 import { Form, Button, Modal } from 'react-bootstrap';
-import React, { useState } from 'react'
+import React, {Route, useState, useEffect, Redirect } from 'react'
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
+import login from './Login/login';
+
 
 function AgentChangePassword() {
-
+    const [msg, setMsg] = useState('');
+    const [errors, setErrors] = useState([]);
+    const [errorback, seterrorback] = useState(false)
+    const [res, setRes] = useState(false)
     const [password, setPassword] = useState('');
     const [confPass, setConfPass] = useState('');
-
+    const [currpass, setCurrPass] = useState('');
+    const [username, setUsername] = useState('');
+    const [message, setmessage] = useState('');
     const navigate = useNavigate();
-
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    
+    function returntrue(){
+        console.log("returnii");
+        navigate("/admin")
+    }
 
-    const location = useLocation()
-    const params = new URLSearchParams(location.search)
 
-    var email = params.get("email");
-    var token = params.get("token");
+    function handleLogout() {
+        localStorage.removeItem("username");
+        localStorage.removeItem("email");
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+    
 
-    async function changePassword(e) {
-        e.preventDefault();
+    }
+
+    useEffect(() => {
+        setUsername(localStorage.getItem("username"));
+        console.log(username)
+    }, []);
+  
+    async function ChangePasswordAPI(e) {
+       e.preventDefault();
         await axios({
             method: "post",
-            url: "https://localhost:7122/api/User/ResetPassword",
+            url: `https://localhost:7122/api/User/ChangePassword`,
             data: {
-                token: token,
-                Email: email,
+                userName: username,
+                CurrentPassword: currpass,
                 NewPassword: password,
-                ConfirmPassword: confPass,
+                ConfirmPassword: confPass
             },
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
         }).then(
             (response) => {
-                handleShow();
+                console.log("RRRESPONSEEE", response.data);
+                setRes(true);
+                setmessage(response.data);
+                handleLogout();
                 navigate("/login");
+                
             },
-            (error) => {
-                handleShow();
-                navigate("/login");
+            (e) => {
+                try { 
+                    console.log(e)
+                    var a = e.response.data.message
+                    setMsg(a) 
+                    var b =e.response.data.errors.errors
+                    setErrors(b) 
+                    
+                    console.log("msgaaaaaaaaaaaaaa",msg)
+                    seterrorback(true);  
+                  } catch (err) {
+                    console.log("trycatchworking", err); 
+                  } 
             }
         );
     }
 
     return (
         <div>
-
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Password has been changed successfuly</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Redirect
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button style={{ backgroundColor: "#009444" }} onClick={handleClose}>Understood</Button>
-                </Modal.Footer>
-            </Modal>
-
+            
             <div style={{
                 position: "absolute",
                 top: "50%",
@@ -77,7 +88,44 @@ function AgentChangePassword() {
                 backgroundColor: "#fff",
                 padding: "20px"
             }}>
+                <h1>Change your password</h1>
                 <Form style={{ width: "500px" }}>
+               
+                    <Form.Group className="mb-3">
+                    { errorback ?
+                      errors.map((error) => {
+                        return ( 
+                            <p style={{ color: "red" }}>{error}</p>  
+                        ) 
+                      }
+                      ) : null
+                    } 
+                        <p style={{ color: "red" }}>{msg}</p>
+                        { res ?
+
+                            <p style={{ color: "green" }}>{message}</p>
+                            
+
+                          : null
+                          }
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
+                            value={username}
+                            type="text"
+                            placeholder="Enter Username"
+                            
+                        />
+                    </Form.Group>
+
+                     <Form.Group className="mb-3">
+                        <Form.Label>Current password</Form.Label>
+                        <Form.Control
+                            onChange={(e) => setCurrPass(e.target.value)}
+                            type="password"
+                            placeholder="Enter current password"
+                        />
+                    </Form.Group>
+                   
                     <Form.Group className="mb-3">
                         <Form.Label>New password</Form.Label>
                         <Form.Control
@@ -96,8 +144,12 @@ function AgentChangePassword() {
                         />
                     </Form.Group>
 
-                    <Button style={{ backgroundColor: "#009444", width: "auto" }} type="submit" onClick={changePassword}>
+                    <Button style={{ backgroundColor: "#009444", width: "auto" }} type="submit" onClick={ChangePasswordAPI}>
                         Change Password
+                    </Button>
+
+                    <Button style={{ backgroundColor: "#009444", width: "auto" }} type="submit" onClick={returntrue}>
+                        Return to dashboard
                     </Button>
                 </Form>
 
