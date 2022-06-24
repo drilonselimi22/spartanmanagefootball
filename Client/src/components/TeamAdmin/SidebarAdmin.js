@@ -7,41 +7,19 @@ import Logo from '../../images/textlogo.svg';
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import * as FaIcons from "react-icons/fa"
 import axios from 'axios';
+import ChangePassword from './TeamAdmin';
+
 
 function SidebarAdmin() {
 
     const [sidebar, setSidebar] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
     useEffect(() => {
         setUsername(localStorage.getItem("username"));
     }, []);
-
-    useEffect(() => {
-        setEmail(localStorage.getItem("email"));
-    }, []);
-
-    console.log(email);
-
-    async function pswSendEmail(e) {
-        await axios({
-            method: "post",
-            url: `https://localhost:7122/api/User/ForgetPassword?email=${email}`,
-        }).then(
-            (response) => {
-                console.log("Email sent successfuly", response);
-                handleShow();
-            },
-            (error) => {
-                console.log("error", error);
-            }
-        );
-    }
 
     function handleLogout() {
         localStorage.removeItem("username");
@@ -50,32 +28,10 @@ function SidebarAdmin() {
         localStorage.removeItem("role");
         window.location.reload();
     }
-
-
     const showSidebar = () => setSidebar(!sidebar)
 
     return (
         <div>
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Change password</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    An email has been successfully sended, Please check the email to change the password
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button style={{ backgroundColor: "#009444" }} onClick={handleClose}>Understood</Button>
-                </Modal.Footer>
-            </Modal>
-
             <div className='sidebar__admin'>
                 <div>
                     <img src={Logo} width='130px' />
@@ -95,8 +51,19 @@ function SidebarAdmin() {
                                 margin: "5px"
                             }} />
                         </Dropdown.Toggle>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                        <Dropdown.Menu variant="dark">
+                            <Dropdown.Item onClick={ChangePassword} href="/reset-password">Change password</Dropdown.Item>
+=======
                         <Dropdown.Menu variant="dark" style={{ width: "auto" }}>
                             <Dropdown.Item onClick={pswSendEmail}>Change password</Dropdown.Item>
+>>>>>>> 18dfa8c85cd1f9f8ffbd5b3c9837e7064365bc63
+=======
+                        
+                        <Dropdown.Menu variant="dark" style={{ width: "auto" }}>
+                            <Dropdown.Item onClick={pswSendEmail}>Change password</Dropdown.Item>
+>>>>>>> fccf6d1204281cf4b1c7e6bfc103738eb6f80eaa
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={handleLogout} href="/login">Logout</Dropdown.Item>
                         </Dropdown.Menu>
@@ -107,7 +74,7 @@ function SidebarAdmin() {
                 <ul className='nav-menu-items'>
                     <li className='navbar-toggle'>
                         <Link to="#" className='menu-bars'>
-                            {/* <img src={Logo} width='50px' /> */}
+                            
                         </Link>
                     </li>
                     {AdminPages.map((item, index) => {

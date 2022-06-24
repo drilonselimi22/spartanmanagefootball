@@ -224,6 +224,47 @@ namespace SpartanManageFootball.Services
             }
             return UserRolesView;
         }
+        public async Task<UserManagerResponse> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user == null)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "User doesn't exist",
+                    IsSuccess = false,
+                };
+            }
+
+            if (string.Compare(model.NewPassword, model.ConfirmPassword) != 0)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "Passwords don't match",
+                    IsSuccess = false,
+                };
+            }
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                var errors = new List<string>();
+                foreach (var error in result.Errors)
+                {
+                    errors.Add(error.Description);
+                }
+                return new UserManagerResponse
+                {
+                    Message = errors[0],
+                    IsSuccess = false,
+                };
+
+            }
+            return new UserManagerResponse
+            {
+                Message = "Password has been changed successfully!",
+                IsSuccess = true,
+            };
+        }
 
         public async Task<bool> DeleteUserAsync(string userId)
         {
@@ -244,42 +285,30 @@ namespace SpartanManageFootball.Services
         public async Task<Unit> AddSquadsToLeague(LeagueSquadDto dto)
         {
             var league = await _smfcontext.Leagues.FindAsync(dto.LeaguesLeagueId);
-
-            /*var squads = await _smfcontext.Squads.Where(x => x.Squads == dto.SquadsTeamId).FirstOrDefaultAsync();*/
-
             var userRoles = _smfcontext.Squads;
 
             foreach (var userrole in userRoles)
             {
-
                 var identitynumber = _smfcontext.Squads.Where(x => x.TeamId == userrole.TeamId).FirstOrDefault();
 
                 league.Squads.Add(userrole);
-            var squads = dto.SquadsTeamId;
+                var squads = dto.SquadsTeamId;
 
-            foreach (var squad in squads)
-            {
-                var team = _smfcontext.Squads.Where(x => x.TeamId == squad.TeamId).FirstOrDefault();
-                league.Squads.Add(team);
-            }
+                foreach (var squad in squads)
+                {
+                    var team = _smfcontext.Squads.Where(x => x.TeamId == squad.TeamId).FirstOrDefault();
+                    league.Squads.Add(team);
+                }
 
-            if (league == null)
-            {
-                throw new Exception("League not found");
-            }
-
-            /*league.Squads.Add(squads);*/
-
-            /*league.Squads.AddAsync(squads);*/
-
-            /*_smfcontext.AddAsync(dto);*/
+                if (league == null)
+                {
+                    throw new Exception("League not found");
+                }
             };
 
             await _smfcontext.SaveChangesAsync();
 
             return Unit.Value;
-
-
         }
 
         public async Task<List<Player>> GetPlayersOfSquad(int SquadTeamId)
