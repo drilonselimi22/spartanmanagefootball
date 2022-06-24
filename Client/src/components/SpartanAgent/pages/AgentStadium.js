@@ -62,7 +62,7 @@ function AgentStadium() {
               width: "800px",
             }}>
               <h2>Add Stadium</h2>
-
+              <hr></hr>
               <Form.Group className="mb-3">
                 <Form.Label>Stadium Name</Form.Label>
                 <Form.Control
@@ -90,7 +90,7 @@ function AgentStadium() {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" onClick={registerStadium}>
+              <Button style={{ width: "auto" }} variant="success" type="submit" onClick={registerStadium}>
                 Register Squad
               </Button>
             </Form>

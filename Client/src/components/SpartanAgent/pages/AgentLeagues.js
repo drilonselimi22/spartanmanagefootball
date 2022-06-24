@@ -13,7 +13,6 @@ function AgentLeagues() {
     const [registered, setRegistered] = useState(false);
 
     async function registerLeague(e) {
-        e.preventDefault();
         await axios({
             method: "post",
             url: "https://localhost:7122/api/League/addLeague",
@@ -56,6 +55,8 @@ function AgentLeagues() {
             }}>
                 <div>
                     <Form>
+                        <h2>Create League</h2>
+                        <hr></hr>
                         <Form.Group className="mb-3">
                             <Form.Label>League Name</Form.Label>
                             <Form.Control
@@ -65,23 +66,21 @@ function AgentLeagues() {
                             />
                         </Form.Group>
 
-                        <button type="submit" onClick={registerLeague} style={{
-                            backgroundColor: "#009444",
-                            color: "#fff"
-                        }}>
+                        <Button variant='success' type="submit" onClick={registerLeague}>
                             Create league
-                        </button>
+                        </Button>
                     </Form>
                 </div>
                 <div>
-                    <Table bordered hover style={{
-                        width: "450px"
+                    <Table striped bordered hover style={{
+                        width: "500px",
+                        textAlign: "center"
                     }}>
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>League Name</th>
-                                <th>X</th>
+                                <th>Delete Leagues</th>
                             </tr>
                         </thead>
                         {leagueData.map((data) => {
@@ -90,7 +89,9 @@ function AgentLeagues() {
                                     <tr>
                                         <th>{data.leagueId}</th>
                                         <th>{data.leagueName}</th>
-                                        <th style={{ color: "red", cursor: "pointer" }}>Delete</th>
+                                        <th>
+                                            <Button variant='danger'>Delete</Button>
+                                        </th>
                                     </tr>
                                 </tbody>
                             )

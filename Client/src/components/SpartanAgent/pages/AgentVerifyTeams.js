@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Form, Button, Table } from "reactstrap";
+import { Form, Button, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SidebarAgent from "../SidebarAgent";
 import Zoom from 'react-medium-image-zoom'
@@ -64,15 +64,13 @@ export default function AgentVerifyTeams(props) {
         }}
       >
         <h2>Verify squads</h2>
-        <Table bordered hover responsive>
+        <hr></hr>
+        <Table bordered hover responsive style={{ alignItems: "center", textAlign: "center" }}>
           <thead>
             <tr>
-              <th>Sqyad logo</th>
-              <th>Squad Id</th>
-              <th>Stadium Id</th>
+              <th>Squad logo</th>
               <th>Squad Name</th>
               <th>Squad City</th>
-              <th>IsVerified</th>
               <th>Certification</th>
               <th>Download certificate</th>
               <th>Verify</th>
@@ -86,11 +84,8 @@ export default function AgentVerifyTeams(props) {
                   <td>
                     <img src={data.squadLogoUrl} width="70px" />
                   </td>
-                  <td>{data.teamId}</td>
-                  <td>{data.stadiumId}</td>
                   <td>{data.name}</td>
                   <td>{data.city}</td>
-                  <td>{data.isVerified ? "Verified" : "Not verified"}</td>
                   <td>
                     <Zoom>
                       <picture>
@@ -100,10 +95,10 @@ export default function AgentVerifyTeams(props) {
                     </Zoom>
                   </td>
                   <td>
-                    <button onClick={() => downloadImage(data.photoUrl)}>Download</button>
+                    <Button variant="dark" onClick={() => downloadImage(data.photoUrl)}>Download</Button>
                   </td>
                   <td>
-                    <button onClick={() => verifyTeam(data.teamId)}>Verify</button>
+                    {data.isVerified ? <div style={{ borderRadius: "5px", marginTop: "25px", color: "#fff", backgroundColor: "#aaa", padding: "5px 5px", width: "120px", margin: "0 auto" }}>Verified</div> : <Button variant="success" onClick={() => verifyTeam(data.teamId)}>Verify</Button>}
                   </td>
                 </tr>
               );

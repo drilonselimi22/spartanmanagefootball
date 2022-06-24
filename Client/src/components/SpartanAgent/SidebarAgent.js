@@ -94,13 +94,14 @@ function SidebarAgent() {
           display: "flex",
           alignItems: "center",
         }}>
-          <h4 style={{ color: "white", margin: "0 1rem" }}>{username}</h4>
           <Dropdown>
-            <Dropdown.Toggle style={{ backgroundColor: "#009444" }}>
+            <Dropdown.Toggle style={{ backgroundColor: "#009444", width: "auto" }}>
+              {username}
               <FaIcons.FaUserCircle style={{
                 fontSize: "1.5rem",
                 color: "#fff",
-                cursor: "pointer"
+                cursor: "pointer",
+                marginLeft: "5px"
               }} />
             </Dropdown.Toggle>
             <Dropdown.Menu variant="dark">
