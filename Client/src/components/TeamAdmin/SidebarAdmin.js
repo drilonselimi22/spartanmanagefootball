@@ -40,17 +40,24 @@ function SidebarAdmin() {
                     display: "flex",
                     alignItems: "center",
                 }}>
-                    <h4 style={{ color: "white", margin: "0 1rem" }}>{username}</h4>
+                    {/* <h4 style={{ color: "white", margin: "0 1rem" }}>{username}</h4> */}
                     <Dropdown>
-                        <Dropdown.Toggle style={{ backgroundColor: "#009444" }}>
+                        <Dropdown.Toggle style={{ backgroundColor: "#009444", width: "auto" }}>
+                            {username}
                             <FaIcons.FaUserCircle style={{
                                 fontSize: "1.5rem",
                                 color: "#fff",
-                                cursor: "pointer"
+                                cursor: "pointer",
+                                margin: "5px"
                             }} />
                         </Dropdown.Toggle>
+<<<<<<< HEAD
                         <Dropdown.Menu variant="dark">
                             <Dropdown.Item onClick={ChangePassword} href="/reset-password">Change password</Dropdown.Item>
+=======
+                        <Dropdown.Menu variant="dark" style={{ width: "auto" }}>
+                            <Dropdown.Item onClick={pswSendEmail}>Change password</Dropdown.Item>
+>>>>>>> 18dfa8c85cd1f9f8ffbd5b3c9837e7064365bc63
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={handleLogout} href="/login">Logout</Dropdown.Item>
                         </Dropdown.Menu>

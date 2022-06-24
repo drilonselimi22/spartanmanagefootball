@@ -8,13 +8,13 @@ import Button from "react-bootstrap/Button";
 import UserModal from "./UserModal";
 import PaginatedUsers from "./PaginationUsers/PaginatedUsers";
 
-function EditUserRoles() { 
- 
- 
+function EditUserRoles() {
+
+
 
   const [posts, setPosts] = useState([]);
   const apiEndPoint = "https://localhost:7122/api/User";
-  
+
   useEffect(() => {
     const getPosts = async () => {
       const { data: res } = await axios.get(apiEndPoint + "/GetUserDetails");
@@ -23,11 +23,11 @@ function EditUserRoles() {
     };
     getPosts();
   }, []);
- 
+
 
   return (
     <>
-       <PaginatedUsers data={posts}/>
+      <PaginatedUsers data={posts} />
     </>
   );
 }

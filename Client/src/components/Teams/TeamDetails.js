@@ -9,43 +9,37 @@ export default function TeamDetails(props) {
   const [middfielders, setMiddfielders] = useState([])
   const [attackers, setAttackers] = useState([])
   const [sortedPlayers, setSortedPlayers] = useState([])
-// useEffect(()=>{
-//   sortByPosition();
-//   console.log("calling")
-//   console.log("aiii aiii aiii", sortedPlayers)
-// })
-  function sortByPosition(){
-    // array1.forEach(element => console.log(element));
+
+  function sortByPosition() {
     console.log("testinggggg")
     setGoalKeepers([])
     setDefenders([])
     setMiddfielders([])
     setAttackers([])
     teamPlayers.forEach(element => {
-      if(element.position == "goalkeeper"){
+      if (element.position == "goalkeeper") {
         setGoalKeepers(goalKeepers => [...goalKeepers, element])
       }
-      else if(element.position == "defender") {
+      else if (element.position == "defender") {
         setDefenders(defenders => [...defenders, element])
-      }else if(element.position == "middfielder"){
+      } else if (element.position == "middfielder") {
         setMiddfielders(middfielders => [...middfielders, element])
-      }else(
+      } else (
         setAttackers(attackers => [...attackers, element])
       )
     });
     setSortedPlayers(goalKeepers.concat(defenders, middfielders, attackers))
   }
-  function openModal(){
+  function openModal() {
     setLgShow(true)
     sortByPosition()
   }
   return (
     <div>
       <div>
-      {/* onClick={() =>} */}
-        <Button color="link" onClick={openModal}>
+        <Button variant="success" color="link" onClick={openModal}>
           {squadName}
-        </Button> 
+        </Button>
         <Modal
           size="lg"
           show={lgShow}
@@ -68,7 +62,7 @@ export default function TeamDetails(props) {
                   <th>Position</th>
                 </tr>
               </thead>
-              {goalKeepers.map((playerMap) => { 
+              {goalKeepers.map((playerMap) => {
                 return (
                   <tbody>
                     <tr>
@@ -76,12 +70,12 @@ export default function TeamDetails(props) {
                       <td> {playerMap.lastName} </td>
                       <td> {playerMap.age} </td>
                       <td> {playerMap.number} </td>
-                      <td style={{backgroundColor:"#2e2e6b", color:"white"}}> {playerMap.position} </td>
+                      <td style={{ backgroundColor: "#2e2e6b", color: "white" }}> {playerMap.position} </td>
                     </tr>
                   </tbody>
                 );
               })}
-              {defenders.map((playerMap) => { 
+              {defenders.map((playerMap) => {
                 return (
                   <tbody>
                     <tr>
@@ -89,12 +83,12 @@ export default function TeamDetails(props) {
                       <td> {playerMap.lastName} </td>
                       <td> {playerMap.age} </td>
                       <td> {playerMap.number} </td>
-                      <td style={{backgroundColor:"red", color:"white"}}> {playerMap.position} </td>
+                      <td style={{ backgroundColor: "red", color: "white" }}> {playerMap.position} </td>
                     </tr>
                   </tbody>
                 );
               })}
-              {middfielders.map((playerMap) => { 
+              {middfielders.map((playerMap) => {
                 return (
                   <tbody>
                     <tr>
@@ -102,7 +96,7 @@ export default function TeamDetails(props) {
                       <td> {playerMap.lastName} </td>
                       <td> {playerMap.age} </td>
                       <td> {playerMap.number} </td>
-                      <td style={{backgroundColor:"blue", color:"white"}}> {playerMap.position} </td>
+                      <td style={{ backgroundColor: "blue", color: "white" }}> {playerMap.position} </td>
                     </tr>
                   </tbody>
                 );
@@ -115,7 +109,7 @@ export default function TeamDetails(props) {
                       <td> {playerMap.lastName} </td>
                       <td> {playerMap.age} </td>
                       <td> {playerMap.number} </td>
-                      <td style={{backgroundColor:"green", color:"white"}}> {playerMap.position} </td>
+                      <td style={{ backgroundColor: "green", color: "white" }}> {playerMap.position} </td>
                     </tr>
                   </tbody>
                 );
