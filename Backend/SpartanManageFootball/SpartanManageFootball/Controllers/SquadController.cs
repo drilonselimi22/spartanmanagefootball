@@ -18,7 +18,7 @@ namespace SpartanManageFootball.Controllers
         public SquadController(IMediator mediator)
         {
             _mediator = mediator;
-        }
+        } 
 
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         [HttpPost("addSquad")] 
