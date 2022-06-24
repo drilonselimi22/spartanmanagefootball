@@ -27,6 +27,7 @@ import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
 import AdminHome from './components/TeamAdmin/pages/AdminHome';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import TeamDetails from "./components/Teams/TeamDetails";
+
 import AgentChangePassword from "./components/ChangePassword";
 
 export default function RoutesSMF() {

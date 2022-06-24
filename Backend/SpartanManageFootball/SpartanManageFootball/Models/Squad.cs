@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace SpartanManageFootball.Models
@@ -19,5 +20,6 @@ namespace SpartanManageFootball.Models
         public string photoUrl { get; set; }
         [JsonIgnore]
         public List<League> Leagues { get; set; }
+        public string RegisterUserId { get; set; }
     }
 }

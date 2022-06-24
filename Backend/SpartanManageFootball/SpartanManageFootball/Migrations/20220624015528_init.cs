@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SpartanManageFootball.Migrations
 {
-    public partial class SMFInitCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -96,24 +96,6 @@ namespace SpartanManageFootball.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Referees", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Squads",
-                columns: table => new
-                {
-                    TeamId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StadiumId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isVerified = table.Column<bool>(type: "bit", nullable: false),
-                    photoNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    photoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Squads", x => x.TeamId);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,6 +239,39 @@ namespace SpartanManageFootball.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Squads",
+                columns: table => new
+                {
+                    TeamId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StadiumId = table.Column<int>(type: "int", nullable: false),
+                    SquadLogoNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SquadLogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isVerified = table.Column<bool>(type: "bit", nullable: false),
+                    photoNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    photoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegisterUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Squads", x => x.TeamId);
+                    table.ForeignKey(
+                        name: "FK_Squads_AspNetUsers_RegisterUserId",
+                        column: x => x.RegisterUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Squads_Stadiums_StadiumId",
+                        column: x => x.StadiumId,
+                        principalTable: "Stadiums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LeagueSquad",
                 columns: table => new
                 {
@@ -377,6 +392,16 @@ namespace SpartanManageFootball.Migrations
                 name: "IX_Photos_RegisterUserId",
                 table: "Photos",
                 column: "RegisterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Squads_RegisterUserId",
+                table: "Squads",
+                column: "RegisterUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Squads_StadiumId",
+                table: "Squads",
+                column: "StadiumId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -409,9 +434,6 @@ namespace SpartanManageFootball.Migrations
                 name: "Players");
 
             migrationBuilder.DropTable(
-                name: "Stadiums");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -425,6 +447,9 @@ namespace SpartanManageFootball.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Stadiums");
         }
     }
 }

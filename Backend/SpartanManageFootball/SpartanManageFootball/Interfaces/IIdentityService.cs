@@ -13,6 +13,7 @@ namespace SpartanManageFootball.Interfaces
         Task<string> GetUserIdAsync(string userName);
         Task<bool> SigninUserAsync(string email, string password);
         Task<UserManagerResponse> ForgetPasswordAsync(string email);
+        Task<UserManagerResponse> ChangePasswordAsync(ChangePasswordModel model);
         Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model);
         Task<List<UserRoleViewModel>> GetUsersDetailsAsync();
         Task<bool> IsInRoleAsync(string userId, string role);

@@ -12,8 +12,8 @@ using SpartanManageFootball.Persistence;
 namespace SpartanManageFootball.Migrations
 {
     [DbContext(typeof(SMFContext))]
-    [Migration("20220620104532_LogoImageUpload")]
-    partial class LogoImageUpload
+    [Migration("20220624015528_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -396,6 +396,10 @@ namespace SpartanManageFootball.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RegisterUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SquadLogoNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -419,6 +423,10 @@ namespace SpartanManageFootball.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeamId");
+
+                    b.HasIndex("RegisterUserId");
+
+                    b.HasIndex("StadiumId");
 
                     b.ToTable("Squads");
                 });
@@ -545,6 +553,25 @@ namespace SpartanManageFootball.Migrations
                     b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany("Photos")
                         .HasForeignKey("RegisterUserId");
+                });
+
+            modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>
+                {
+                    b.HasOne("SpartanManageFootball.Models.RegisterUser", "RegisterUser")
+                        .WithMany()
+                        .HasForeignKey("RegisterUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SpartanManageFootball.Models.Stadium", "Stadium")
+                        .WithMany()
+                        .HasForeignKey("StadiumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RegisterUser");
+
+                    b.Navigation("Stadium");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.RegisterUser", b =>
