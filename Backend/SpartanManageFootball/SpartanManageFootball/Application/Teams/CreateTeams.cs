@@ -4,6 +4,7 @@ using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Persistence;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SpartanManageFootball.Application.Teams
 {
@@ -12,11 +13,13 @@ namespace SpartanManageFootball.Application.Teams
         public class TeamCommand : IRequest<Result<Squad>>
         {
             public int StadiumId { get; set; }
+
             public IFormFile Logo { get; set; }
             public string Name { get; set; }
             public string City { get; set; }
             public bool isVerified { get; set; }
             public IFormFile File { get; set; }
+            public string RegisterUserId { get; set; } 
 
             public class CommandHandler : IRequestHandler<TeamCommand, Result<Squad>>
             {
@@ -48,7 +51,8 @@ namespace SpartanManageFootball.Application.Teams
                         Name = request.Name,
                         City = request.City,
                         photoNum = photoResult.PublicNum,
-                        photoUrl = photoResult.VerifyUrl
+                        photoUrl = photoResult.VerifyUrl,
+                        RegisterUserId = request.RegisterUserId,
                     };
 
                     await _context.Squads.AddAsync(squad);

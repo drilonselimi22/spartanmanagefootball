@@ -8,7 +8,7 @@ using static SpartanManageFootball.Application.TeamStadiums.EditStadium;
 
 namespace SpartanManageFootball.Controllers
 {
-    [Authorize(Roles = "agent")]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class StadiumsController : BaseApiController
