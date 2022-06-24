@@ -20,21 +20,14 @@ import AgentMatches from './components/SpartanAgent/pages/AgentMatches';
 import AgentRefereesList from './components/SpartanAgent/pages/AgentRefereesList';
 import AgentStadium from './components/SpartanAgent/pages/AgentStadium';
 import AgentEditUsers from './components/SpartanAgent/pages/AgentEditUsers';
-<<<<<<< HEAD
 import AgentRefereesAdd from './components/SpartanAgent/pages/AgentRefereesAdd';
 // Admin
-=======
->>>>>>> develop
 import AgentVerifyTeams from './components/SpartanAgent/pages/AgentVerifyTeams';
 import AdminAddSquad from './components/TeamAdmin/pages/AdminAddSquad';
 import AdminHome from './components/TeamAdmin/pages/AdminHome';
 import PageNotFound from './components/PageNotFound/PageNotFound';
-<<<<<<< HEAD
-import TeamDetails from "./components/Teams/TeamDetails"; 
-=======
 import TeamDetails from "./components/Teams/TeamDetails";
 import AgentChangePassword from "./components/ChangePassword";
->>>>>>> develop
 
 export default function RoutesSMF() {
   const [logged, setlogged] = useState(false);
