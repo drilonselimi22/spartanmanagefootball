@@ -19,5 +19,12 @@ export const AdminPages = [
         path: '/admin-squad',
         icon: <AiIcons.AiFillFileAdd />,
         cName: 'nav-text'
+    },
+    {
+        title: 'Add Players',
+        path: '/admin-addPlayer',
+        icon: <AiIcons.AiFillEdit />,
+        cName: 'nav-text'
     }
+    
 ]

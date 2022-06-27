@@ -17,5 +17,6 @@ namespace SpartanManageFootball.DTOs
         public string Token { get; set; }
         [Required(ErrorMessage = "Role is required")]
         public string Role { get; set; }
+        public string UserId { get; set; }
     }
 }

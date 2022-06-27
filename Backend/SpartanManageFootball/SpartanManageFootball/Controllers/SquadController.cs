@@ -20,7 +20,7 @@ namespace SpartanManageFootball.Controllers
             _mediator = mediator;
         } 
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
+        //[Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
         [HttpPost("addSquad")] 
         public async Task<ActionResult<Squad>> CreateTeam([FromForm] TeamCommand command)
         {
@@ -46,6 +46,19 @@ namespace SpartanManageFootball.Controllers
         public async Task<ActionResult<Squad>> TeamDetails(int id)
         {
             return await Mediator.Send(new TeamsDetails.Query { Id = id });
+        }
+
+        //This controller returns the squad of the user who created it
+        [HttpGet]
+        [Route("/[controller]/[action]/{id}")]
+        public async Task<ActionResult<Squad>> AdminTeamDetails(string id)
+        {
+            var squad = await Mediator.Send(new TeamOfAdmin.Query { Id = id });
+            if(squad == null)
+            {
+                return BadRequest("There is no squad added with this ID");
+            }
+            return squad;
         }
 
         //AGENT only verifies the team nothing else

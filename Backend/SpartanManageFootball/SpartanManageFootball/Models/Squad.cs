@@ -8,6 +8,7 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int TeamId { get; set; }
+        //Stadium id foreign key
         public int StadiumId { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
@@ -19,7 +20,8 @@ namespace SpartanManageFootball.Models
         public string photoNum { get; set; }
         public string photoUrl { get; set; }
         [JsonIgnore]
-        public List<League> Leagues { get; set; }
+        public List<League> Leagues { get; set; } 
+        //User id foreign key
         public string RegisterUserId { get; set; }
     }
 }

@@ -17,7 +17,8 @@ function AdminAddSquad() {
 
   async function registerSquad(e) {
     e.preventDefault();
-
+    const userId = localStorage.getItem("userId")
+    console.log("USERID",userId)
     const t = localStorage.getItem("token");
     setToken(t);
 
@@ -30,7 +31,8 @@ function AdminAddSquad() {
         name: name,
         city: city,
         isVerified: isVerified,
-        file: file
+        file: file,
+        RegisterUserId: userId
       },
       headers: {
         Authorization: `bearer ${t}`,
@@ -42,7 +44,7 @@ function AdminAddSquad() {
         setSubmitedRegister(true);
       },
       (error) => {
-        console.log("error", error);
+        console.log("errorLemonPepper", error);
         setRegistered(true);
       }
     );
