@@ -6,6 +6,7 @@ using System.Web;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Application.Core;
 using FluentValidation;
+using System.Text.RegularExpressions;
 
 namespace SpartanManageFootball.Application.Admin
 {
@@ -13,7 +14,8 @@ namespace SpartanManageFootball.Application.Admin
     {
         public class Command : IRequest<Result<Unit>>
         {
-
+            public string FullName { get; set; }
+            public string PhoneNumber { get; set; }
             public string Username { get; set; }
             public string FullName { get; set; }
             public string Email { get; set; }
@@ -27,11 +29,17 @@ namespace SpartanManageFootball.Application.Admin
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
-            {       
-                RuleFor(x => x.Username).NotNull().NotEmpty().WithMessage("Username shouldn't be empty").OverridePropertyName("error");
+            {
+                RuleFor(x => x.Username).NotNull().NotEmpty().WithMessage("Username shouldn't be empty").MinimumLength(10).WithMessage("Username must contain 10 or more characters").OverridePropertyName("error");
+                RuleFor(x => x.FullName).NotNull().NotEmpty().WithMessage("Name shouldn't be empty").OverridePropertyName("error");
+                RuleFor(x => x.PhoneNumber)
+                .NotEmpty().WithMessage("Phone Number shouldn't be empty").OverridePropertyName("error")
+                .MinimumLength(10).WithMessage("Phone Number must not be less than 10 characters.").OverridePropertyName("error")
+                .MaximumLength(20).WithMessage("Phone Number must not exceed 50 characters.").OverridePropertyName("error");                
+               
                 RuleFor(x => x.Email).NotEmpty().WithMessage("Email shouldn't be empty").EmailAddress().WithMessage("Invalid Email").OverridePropertyName("error");
                 RuleFor(x => x.IdentityNumber).NotNull().NotEmpty().WithMessage("Identity number shouldn't be empty").OverridePropertyName("error");
-                RuleFor(x => x.Birthdate).NotNull().NotEmpty().WithMessage("Birthdate shouldn't be empty").OverridePropertyName("error");
+                RuleFor(x => x.Birthdate).NotNull().NotEmpty().WithMessage("Birthdate shouldn't be empty").OverridePropertyName("error");     
                 RuleFor(request => request.Password)
                 .NotEmpty().WithMessage("Password must not be empty")
                 .MinimumLength(8).WithMessage("Password must contain 8 or more characters.").OverridePropertyName("error")
@@ -41,7 +49,6 @@ namespace SpartanManageFootball.Application.Admin
                 .Matches(@"[][""!@$%^&*(){}:;<>,.?/+_=|'~\\-]").WithMessage("Password must contain one or more special characters.").OverridePropertyName("error")
                 .Matches("^[^£# “”]*$").WithMessage("Password must not contain the following characters £ # “” or spaces.").OverridePropertyName("error");
             }
-
         }
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
@@ -78,6 +85,8 @@ namespace SpartanManageFootball.Application.Admin
 
                 RegisterUser user = new()
                 {
+                    FullName = request.FullName,
+                    PhoneNumber=request.PhoneNumber,
                     UserName = request.Username,
                     FullName = request.FullName,
                     PhoneNumber = request.PhoneNumber,
