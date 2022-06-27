@@ -40,6 +40,7 @@ function Login() {
         localStorage.setItem('email', result.email);
         localStorage.setItem('token', result.token);
         localStorage.setItem('role', result.role);
+        localStorage.setItem('userId', result.userId)
 
         console.log(result);
         if (response.data.role == "agent") {

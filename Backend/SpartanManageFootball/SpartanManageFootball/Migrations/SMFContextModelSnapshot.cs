@@ -271,6 +271,8 @@ namespace SpartanManageFootball.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SquadTeamId");
+
                     b.ToTable("Players");
                 });
 
@@ -329,6 +331,10 @@ namespace SpartanManageFootball.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("IdentityNumber")
                         .HasColumnType("int");
 
@@ -350,6 +356,7 @@ namespace SpartanManageFootball.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -551,6 +558,17 @@ namespace SpartanManageFootball.Migrations
                     b.HasOne("SpartanManageFootball.Models.RegisterUser", null)
                         .WithMany("Photos")
                         .HasForeignKey("RegisterUserId");
+                });
+
+            modelBuilder.Entity("SpartanManageFootball.Models.Player", b =>
+                {
+                    b.HasOne("SpartanManageFootball.Models.Squad", "Squad")
+                        .WithMany()
+                        .HasForeignKey("SquadTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Squad");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Squad", b =>

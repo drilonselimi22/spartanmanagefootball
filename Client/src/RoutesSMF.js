@@ -28,6 +28,7 @@ import AdminHome from './components/TeamAdmin/pages/AdminHome';
 import PageNotFound from './components/PageNotFound/PageNotFound'; 
 import TeamDetails from "./components/Teams/TeamDetails";  
 import AgentChangePassword from "./components/ChangePassword";
+import AddPlayer from './components/TeamAdmin/pages/AddPlayer';
 
 export default function RoutesSMF() {
   const [logged, setlogged] = useState(false);
@@ -67,6 +68,7 @@ export default function RoutesSMF() {
           <Route path='/admin' exact element={<AdminHome />} />
           <Route exact path='/admin-squad' element={<AdminAddSquad />} />
           <Route exact path="/squadDetails" element={<TeamDetails />} />
+          <Route exact path="admin-addPlayer" element={<AddPlayer /> } />
           {/* Not Found Page */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>

@@ -70,6 +70,7 @@ namespace SpartanManageFootball.Application.Login
                 Email = email,
                 Token = token,
                 Role = role,
+                UserId = userId,
             }
             );
         }
