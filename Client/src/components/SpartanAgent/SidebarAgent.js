@@ -27,17 +27,14 @@ function SidebarAgent() {
   useEffect(() => {
     setEmail(localStorage.getItem("email"));
   }, []);
-
-  console.log(username);
-  console.log(email);
+ 
 
   useEffect(() => {
     var items = null;
     items = localStorage.getItem("username");
     if (items != null) {
       setlogged(true);
-    }
-    console.log("LOGGED???", logged);
+    } 
   });
 
   async function pswSendEmail(e) {

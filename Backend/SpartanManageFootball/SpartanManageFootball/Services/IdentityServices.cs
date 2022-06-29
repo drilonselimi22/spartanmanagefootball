@@ -327,5 +327,67 @@ namespace SpartanManageFootball.Services
 
             return squads;
         }
+
+        //id parameter is the id of the league
+        public async Task<UserManagerResponse> GenerateGames(int id)
+        {
+            var squads = await _smfcontext.Leagues
+                .Where(x => x.LeagueId == id)
+                .Include(x => x.Squads)
+                .ToListAsync();
+            if (squads == null)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "There is no team in this league",
+                    IsSuccess = false,
+                };
+            }
+            //string bla = squads[0].Squads[0].Name;
+
+            var squadNames = new List<string>();
+
+            //Iterating to the list to get only the names of the squads
+            for (int i = 0; i < squads[0].Squads.Count; i++)
+            {
+                Console.WriteLine("The length of array is " + squads[0].Squads.Count);
+                squadNames.Add(squads[0].Squads[i].Name);
+                Console.WriteLine(squads[0].Squads[i].Name);
+                Console.WriteLine("TESTIIIING" + squads[0].Squads[squads.Count].Name);
+            }
+
+            //Checks if the list of the squads is odd otherwise it cant generate games
+            if(4 % 2 != 0)
+            {
+                return new UserManagerResponse
+                {
+                    Message ="Teams in a league should be ODD!",
+                    IsSuccess = false,
+                };
+            }
+
+            int p = 1;
+            int lengthOfArray = squadNames.Count;
+            for (int i = 0; i < lengthOfArray; i++)
+            {
+                for (int j = i + 1 ; j < lengthOfArray; j++)
+                { 
+                    Console.WriteLine("Loja-" + p + ": Ekipi Vendas : " + squadNames[i] + " vs " + squadNames[j] + " : Ekipi Musafir");
+                    p++;
+                }
+            }
+
+            int k = 1;
+            for (int i = 0; i < lengthOfArray; i++)
+            {
+                for (int j = i + 1; j < lengthOfArray; j++)
+                {
+                    Console.WriteLine("Loja-" + k + ": Ekipi Musafir :" + squadNames[i] + " vs " + squadNames[j] + " : Ekipi Vendas");
+                    k++;
+                }
+            }
+
+            return null;
+        }
     }
 }

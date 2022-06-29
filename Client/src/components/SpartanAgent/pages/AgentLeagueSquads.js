@@ -11,9 +11,9 @@ import "./AgentLeagueSquads.css";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const onSubmit = async (values) => {
-  await sleep(100);
+  // await sleep(100);
   var data = JSON.stringify(values, 0, 2);
-  console.log(data);
+  console.log("dataaaaaaaaaaaaaaaaaaaa",data);
 
   await axios({
     method: "POST",
