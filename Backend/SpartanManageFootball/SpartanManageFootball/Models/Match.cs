@@ -7,9 +7,12 @@ namespace SpartanManageFootball.Models
     {
         [Key]
         public int MatchId { get; set; }
-        public Squad HomeTeam { get; set; }
-        public Squad AwayTeam { get; set; }
-        public Referee Referee { get; set; }
+        public int HomeTeamTeamId { get; set; }
+        public int AwayTeamTeamId { get; set; }
+        public int RefereeId { get; set; }
         public DateTime MatchDate { get; set; }
+        public string Result { get; set; }
+        public bool IsPlayed { get; set; }
+
     }
 }

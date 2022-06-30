@@ -335,6 +335,8 @@ namespace SpartanManageFootball.Services
                 .Where(x => x.LeagueId == id)
                 .Include(x => x.Squads)
                 .ToListAsync();
+
+            var referees = await _smfcontext.Referees.ToListAsync();
             if (squads == null)
             {
                 return new UserManagerResponse
@@ -345,34 +347,75 @@ namespace SpartanManageFootball.Services
             }
             //string bla = squads[0].Squads[0].Name;
 
-            var squadNames = new List<string>();
+            var squadNames = new List<int>();
 
             //Iterating to the list to get only the names of the squads
             for (int i = 0; i < squads[0].Squads.Count; i++)
             {
-                Console.WriteLine("The length of array is " + squads[0].Squads.Count);
-                squadNames.Add(squads[0].Squads[i].Name);
-                Console.WriteLine(squads[0].Squads[i].Name);
-                Console.WriteLine("TESTIIIING" + squads[0].Squads[squads.Count].Name);
+                squadNames.Add(squads[0].Squads[i].TeamId);
             }
 
             //Checks if the list of the squads is odd otherwise it cant generate games
-            if(4 % 2 != 0)
+            if (squads[0].Squads.Count % 2 != 0)
             {
                 return new UserManagerResponse
                 {
-                    Message ="Teams in a league should be ODD!",
+                    Message = "Teams in a league should be ODD!",
                     IsSuccess = false,
                 };
             }
 
             int p = 1;
+            int numberOdDays = 0;
+            bool days = true;
             int lengthOfArray = squadNames.Count;
+            int count = 0;
+            int matchesPerWeek = lengthOfArray / 2;
+            var matches = 0;
+            if (matchesPerWeek % 2 == 0)
+            {
+                matches = matchesPerWeek / 2;
+            }
+            else
+            {
+                matches = matchesPerWeek / 2 + 1;
+            }
             for (int i = 0; i < lengthOfArray; i++)
             {
-                for (int j = i + 1 ; j < lengthOfArray; j++)
-                { 
-                    Console.WriteLine("Loja-" + p + ": Ekipi Vendas : " + squadNames[i] + " vs " + squadNames[j] + " : Ekipi Musafir");
+                for (int j = i + 1; j < lengthOfArray; j++)
+                {
+                    count++;
+                    DateTime d = new DateTime(2022, 7, 2, 9, 0, 0);
+                    //calendar
+                    if (!(count < matches))
+                    {
+                      
+                        if (days)
+                        {
+                            count = 0;
+                            numberOdDays += 1;
+                            days = false;
+                        }
+                        else
+                        {
+                            numberOdDays += 6;
+                            days = true;
+                            count = 1;
+                        }
+                    }
+
+                    var match = new Match
+                    {
+                        HomeTeamTeamId = squadNames[i],
+                        AwayTeamTeamId = squadNames[j],
+                        RefereeId = referees[0].Id,
+                        IsPlayed = false,
+                        MatchDate = d.AddDays(numberOdDays),
+                        Result = "",
+                    };
+                    await _smfcontext.Matches.AddAsync(match);
+
+                    var success = await _smfcontext.SaveChangesAsync() > 0;
                     p++;
                 }
             }
