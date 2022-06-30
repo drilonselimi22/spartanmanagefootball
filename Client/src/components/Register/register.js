@@ -3,10 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Spinner, Container, Nav } from "react-bootstrap";
 import Navigation from "../Navigation/navigation";
 import registerImage from "../../images/register.svg";
-import {useNavigate} from "react-router-dom";
 import "./register.css";
 import Footer from "../Footer/footer";
-import { Navigate } from "react-router";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -16,15 +14,13 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("admin");
   const [loader, setLoader] = useState(false);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [registered, setRegistered] = useState(false);
   const [errorback, seterrorback] = useState(false)
   const [confirmPassword, setConfirmPassword]= useState("")
   const [msg, setMsg] = useState([])
   const [responses, setResponses] = useState('')
   const [matchedPasswords, setMatchedPasswords] = useState(false)
-  const navigate = useNavigate();
+
 
   const clearState = () => {
     setMsg([]);
@@ -38,8 +34,6 @@ export default function Register() {
       method: 'POST',
       url: 'https://localhost:7122/api/User/register-admin',
       data: {
-        fullname: name,
-        phonenumber: phone,
         username: username,
         email: email,
         identityNumber: identityNumber,
@@ -49,7 +43,6 @@ export default function Register() {
       }
     }).then((response) => { 
       setLoader(false)
-      navigate("/login")
       window.location.reload();
     }, (e) => {
       console.log(e) 
@@ -107,24 +100,6 @@ export default function Register() {
                       onChange={(e) => setUsername(e.target.value)}
                     />
                   </Form.Group>
-                    
-                  <Form.Group className="mb-3">
-                    <Form.Label>Full Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter your name"
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Enter your number"
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                  </Form.Group>   
 
                   <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
@@ -138,7 +113,7 @@ export default function Register() {
                   <Form.Group className="mb-3">
                     <Form.Label>Identity Number</Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Enter your identity number"
                       onChange={(e) => setIdentityNumber(e.target.value)}
                     />

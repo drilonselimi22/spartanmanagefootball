@@ -6,7 +6,6 @@ import * as FiIcons from "react-icons/fi"
 import * as MdIcon from "react-icons/md"
 import * as CgIcons from "react-icons/cg"
 import { IoIosPeople } from "react-icons/io";
-
 export const AgentPages = [
     {
         title: 'Home',
