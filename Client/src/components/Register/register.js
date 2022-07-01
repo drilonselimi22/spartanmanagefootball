@@ -20,7 +20,8 @@ export default function Register() {
   const [msg, setMsg] = useState([])
   const [responses, setResponses] = useState('')
   const [matchedPasswords, setMatchedPasswords] = useState(false)
-
+  const [fullname, setFullName]= useState("")
+  const [phone, setPhone]=useState("");
 
   const clearState = () => {
     setMsg([]);
@@ -34,6 +35,8 @@ export default function Register() {
       method: 'POST',
       url: 'https://localhost:7122/api/User/register-admin',
       data: {
+        fullName: fullname,
+        phoneNumber:phone,
         username: username,
         email: email,
         identityNumber: identityNumber,
@@ -93,6 +96,24 @@ export default function Register() {
                       }) : null
                     }
                     {/* <p style={{ color: "red" }}>{responses}</p> */}
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter your name"
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Enter your phone"
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
                     <Form.Label>Username</Form.Label>
                     <Form.Control
                       type="text"
@@ -113,7 +134,7 @@ export default function Register() {
                   <Form.Group className="mb-3">
                     <Form.Label>Identity Number</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Enter your identity number"
                       onChange={(e) => setIdentityNumber(e.target.value)}
                     />
