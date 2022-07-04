@@ -327,7 +327,31 @@ namespace SpartanManageFootball.Services
 
             return squads;
         }
-
+        public async Task<UserManagerResponse> AddRefereeToMatch(MatchRefereeDTO matchrefereeDTO)
+        {
+            if(matchrefereeDTO == null)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "No null values allowed!",
+                    IsSuccess = false,
+                };
+            }
+            foreach(var referee in matchrefereeDTO.RefListId)
+            {
+                var refereeToMatch = new MatchReferee
+                {
+                    IDOfMatch = matchrefereeDTO.MatchId,
+                    RefOfMatch = referee.Id
+                };
+                _smfcontext.MatchReferee.Add(refereeToMatch);
+            }
+            return new UserManagerResponse
+            {
+                Message = "Referees added to game",
+                IsSuccess = false,
+            };
+        }
         //id parameter is the id of the league
         public async Task<UserManagerResponse> GenerateGames(int id)
         {
@@ -346,9 +370,9 @@ namespace SpartanManageFootball.Services
                 };
             }
             //string bla = squads[0].Squads[0].Name;
-
+            var listOfReferees = await _smfcontext.Referees.ToListAsync();
             var squadNames = new List<int>();
-
+            var refereesToBeAddedToGame = new List<Referee>();
             //Iterating to the list to get only the names of the squads
             for (int i = 0; i < squads[0].Squads.Count; i++)
             {
@@ -413,6 +437,28 @@ namespace SpartanManageFootball.Services
                         MatchDate = d.AddDays(numberOdDays),
                         Result = "",
                     };
+                    var checkSquadNameHome = squadNames[i];
+                    var checkSquadNameAway = squadNames[j];
+
+                    //Generates referees for the games
+                    int whileIterator = 0;
+                    int refereesAdded = 0;
+                    while (refereesAdded < 5)
+                    {
+                        whileIterator++;
+                        if(!(listOfReferees[whileIterator].City.Equals(checkSquadNameAway)
+                            || listOfReferees[whileIterator].City.Equals(checkSquadNameAway)))
+                        {
+                            refereesToBeAddedToGame.Add(listOfReferees[whileIterator]);
+                            refereesAdded++;
+                        }
+                    }
+                    var matchReferee = new MatchRefereeDTO
+                    {
+                        MatchId = match.MatchId,
+                        RefListId = refereesToBeAddedToGame
+                    };
+                    AddRefereeToMatch(matchReferee);
                     await _smfcontext.Matches.AddAsync(match);
 
                     var success = await _smfcontext.SaveChangesAsync() > 0;

@@ -58,6 +58,7 @@ function SidebarAgent() {
     localStorage.removeItem("email");
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("userId");
     window.location.reload();
   }
 
