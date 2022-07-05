@@ -327,5 +327,90 @@ namespace SpartanManageFootball.Services
 
             return squads;
         }
+   
+        public async Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto)
+        {
+            bool Succeded = false;
+            foreach (var teams in dto) {
+                var team = _smfcontext.Standings.Where(x => x.SquadTeamId == teams.SquadTeamId).FirstOrDefault();
+                if (teams.Result == 'w')
+                {
+                    team.Wins++;
+                    team.Points+=3;
+                }
+                else if (teams.Result == 'd')
+                {
+                    team.Draws++;
+                    team.Points++;
+                }
+                else
+                {
+                    team.Losses++;
+                }
+                var success = await _smfcontext.SaveChangesAsync() > 0;
+                if (success)
+                {
+                    Succeded = true;
+                }
+            }
+            if (Succeded)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "Succeded",
+                };
+
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Something went wrong",
+            };
+
+        }
+        
+        public async Task<UserManagerResponse> DefaultPointsStandings(int leagueId)
+        {
+            bool Success = false;
+            var squads = await _smfcontext.Leagues
+                  .Where(x => x.LeagueId == leagueId)
+                  .Include(x => x.Squads)
+                  .ToListAsync();
+
+            for (int i = 0; i < squads[0].Squads.Count; i++)
+            {
+                //squadNames.Add();
+                var sdto = new Standings
+                {
+                    SquadTeamId = squads[0].Squads[i].TeamId,
+                    Leagueid = leagueId,
+                    Points = 0,
+                    Wins=0,
+                    Losses=0,
+                    Draws=0,
+                };
+                 _smfcontext.Standings.Add(sdto);
+                var result= await _smfcontext.SaveChangesAsync() > 0;
+                Success = result;
+            }
+            if (Success)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "League has started",
+                };
+
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Something went wrong",
+            };
+
+        }
+    
+    
     }
 }

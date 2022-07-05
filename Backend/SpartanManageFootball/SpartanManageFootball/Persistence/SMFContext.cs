@@ -17,5 +17,7 @@ namespace SpartanManageFootball.Persistence
         
         public DbSet<League> Leagues { get; set; }
         public DbSet<Squad> Squads { get; set; }
+
+        public DbSet<Standings> Standings { get; set; }
     }
 }

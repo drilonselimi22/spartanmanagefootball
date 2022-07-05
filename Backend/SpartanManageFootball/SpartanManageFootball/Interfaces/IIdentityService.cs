@@ -26,5 +26,8 @@ namespace SpartanManageFootball.Interfaces
         // LeagueSquads Methods
         Task<Unit> AddSquadsToLeague(LeagueSquadDto dto);
         Task<List<League>> GetSquadsInLeagues(int leagueId);
+        Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto);
+        Task<UserManagerResponse> DefaultPointsStandings(int leaugeid);
+
     }
 }
