@@ -327,9 +327,9 @@ namespace SpartanManageFootball.Services
 
             return squads;
         }
-        public async Task<UserManagerResponse> AddRefereeToMatch(MatchRefereeDTO matchrefereeDTO)
+        private async Task<UserManagerResponse> AddRefereeToMatch(MatchRefereeDTO matchrefereeDTO)
         {
-            if(matchrefereeDTO == null)
+            if (matchrefereeDTO == null)
             {
                 return new UserManagerResponse
                 {
@@ -337,21 +337,24 @@ namespace SpartanManageFootball.Services
                     IsSuccess = false,
                 };
             }
-            foreach(var referee in matchrefereeDTO.RefListId)
+
+            foreach (var referee in matchrefereeDTO.RefListId)
             {
                 var refereeToMatch = new MatchReferee
                 {
                     IDOfMatch = matchrefereeDTO.MatchId,
                     RefOfMatch = referee.Id
                 };
-                _smfcontext.MatchReferee.Add(refereeToMatch);
+                await _smfcontext.MatchReferee.AddAsync(refereeToMatch);
             }
+
             return new UserManagerResponse
             {
                 Message = "Referees added to game",
                 IsSuccess = false,
             };
         }
+
         //id parameter is the id of the league
         public async Task<UserManagerResponse> GenerateGames(int id)
         {
@@ -361,6 +364,7 @@ namespace SpartanManageFootball.Services
                 .ToListAsync();
 
             var referees = await _smfcontext.Referees.ToListAsync();
+
             if (squads == null)
             {
                 return new UserManagerResponse
@@ -369,15 +373,11 @@ namespace SpartanManageFootball.Services
                     IsSuccess = false,
                 };
             }
+
             //string bla = squads[0].Squads[0].Name;
             var listOfReferees = await _smfcontext.Referees.ToListAsync();
-            var squadNames = new List<int>();
+            var squadIds = new List<int>();
             var refereesToBeAddedToGame = new List<Referee>();
-            //Iterating to the list to get only the names of the squads
-            for (int i = 0; i < squads[0].Squads.Count; i++)
-            {
-                squadNames.Add(squads[0].Squads[i].TeamId);
-            }
 
             //Checks if the list of the squads is odd otherwise it cant generate games
             if (squads[0].Squads.Count % 2 != 0)
@@ -389,10 +389,16 @@ namespace SpartanManageFootball.Services
                 };
             }
 
+            //Iterating to the list to get only the names of the squads
+            for (int i = 0; i < squads[0].Squads.Count; i++)
+            {
+                squadIds.Add(squads[0].Squads[i].TeamId);
+            }
+
             int p = 1;
             int numberOdDays = 0;
             bool days = true;
-            int lengthOfArray = squadNames.Count;
+            int lengthOfArray = squadIds.Count;
             int count = 0;
             int matchesPerWeek = lengthOfArray / 2;
             var matches = 0;
@@ -404,8 +410,12 @@ namespace SpartanManageFootball.Services
             {
                 matches = matchesPerWeek / 2 + 1;
             }
+            
+            int matchWeek = 1;
             for (int i = 0; i < lengthOfArray; i++)
             {
+                var listOfTeamPerWeek = new List<Match>();
+                
                 for (int j = i + 1; j < lengthOfArray; j++)
                 {
                     count++;
@@ -413,7 +423,7 @@ namespace SpartanManageFootball.Services
                     //calendar
                     if (!(count < matches))
                     {
-                      
+
                         if (days)
                         {
                             count = 0;
@@ -430,39 +440,61 @@ namespace SpartanManageFootball.Services
 
                     var match = new Match
                     {
-                        HomeTeamTeamId = squadNames[i],
-                        AwayTeamTeamId = squadNames[j],
-                        RefereeId = referees[0].Id,
+                        HomeTeamTeamId = squadIds[i],
+                        AwayTeamTeamId = squadIds[j],
                         IsPlayed = false,
-                        MatchDate = d.AddDays(numberOdDays),
+                        MatchDate = DateTime.Now,
                         Result = "",
+                        MatchWeek = matchWeek
                     };
-                    var checkSquadNameHome = squadNames[i];
-                    var checkSquadNameAway = squadNames[j];
+
+                    if(listOfTeamPerWeek.Any(x=> x.HomeTeamTeamId == match.HomeTeamTeamId ||
+                         x.HomeTeamTeamId == match.AwayTeamTeamId ) ||
+                        listOfTeamPerWeek.Any(x => x.AwayTeamTeamId == match.AwayTeamTeamId ||
+                        x.AwayTeamTeamId == match.HomeTeamTeamId))
+                    {
+                        continue;
+                    }
+                    listOfTeamPerWeek.Add(match);
+                    var checkSquadNameHome = match.HomeTeamTeamId;
+                    var checkSquadNameAway = match.AwayTeamTeamId;
 
                     //Generates referees for the games
-                    int whileIterator = 0;
+                    /*int whileIterator = 0;
                     int refereesAdded = 0;
                     while (refereesAdded < 5)
                     {
                         whileIterator++;
-                        if(!(listOfReferees[whileIterator].City.Equals(checkSquadNameAway)
-                            || listOfReferees[whileIterator].City.Equals(checkSquadNameAway)))
+                        if(whileIterator > listOfReferees.Count)
+                        {
+                            whileIterator = 0;
+                        }
+                        if (!listOfReferees[whileIterator].City.Equals(checkSquadNameAway)
+                            || !listOfReferees[whileIterator].City.Equals(checkSquadNameAway))
                         {
                             refereesToBeAddedToGame.Add(listOfReferees[whileIterator]);
                             refereesAdded++;
                         }
                     }
+                    */
                     var matchReferee = new MatchRefereeDTO
                     {
                         MatchId = match.MatchId,
                         RefListId = refereesToBeAddedToGame
                     };
-                    AddRefereeToMatch(matchReferee);
+                    await AddRefereeToMatch(matchReferee);
+
                     await _smfcontext.Matches.AddAsync(match);
 
                     var success = await _smfcontext.SaveChangesAsync() > 0;
-                    p++;
+
+                    if (success)
+                    {
+                        p++;
+                        
+                        
+                    }
+                    matchWeek++;
                 }
             }
 
@@ -471,7 +503,7 @@ namespace SpartanManageFootball.Services
             {
                 for (int j = i + 1; j < lengthOfArray; j++)
                 {
-                    Console.WriteLine("Loja-" + k + ": Ekipi Musafir :" + squadNames[i] + " vs " + squadNames[j] + " : Ekipi Vendas");
+                    Console.WriteLine("Loja-" + k + ": Ekipi Musafir :" + squadIds[i] + " vs " + squadIds[j] + " : Ekipi Vendas");
                     k++;
                 }
             }

@@ -14,5 +14,7 @@ namespace SpartanManageFootball.Models
         public string Result { get; set; }
         public bool IsPlayed { get; set; }
 
+        public int MatchWeek { get; set; } 
+
     }
 }
