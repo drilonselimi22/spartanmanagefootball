@@ -287,7 +287,7 @@ namespace SpartanManageFootball.Migrations
                     HomeTeamTeamId = table.Column<int>(type: "int", nullable: false),
                     AwayTeamTeamId = table.Column<int>(type: "int", nullable: false),
                     RefereeId = table.Column<int>(type: "int", nullable: false),
-                    MatchDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    MatchDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

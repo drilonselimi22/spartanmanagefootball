@@ -13,6 +13,8 @@ namespace SpartanManageFootball.Models
         public DateTime MatchDate { get; set; }
         public string Result { get; set; }
         public bool IsPlayed { get; set; }
+        public int MatchWeek { get; set; }
+
 
     }
 }
