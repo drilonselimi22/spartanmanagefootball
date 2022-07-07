@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpartanManageFootball.Persistence;
 
@@ -11,9 +12,10 @@ using SpartanManageFootball.Persistence;
 namespace SpartanManageFootball.Migrations
 {
     [DbContext(typeof(SMFContext))]
-    partial class SMFContextModelSnapshot : ModelSnapshot
+    [Migration("20220702184035_ChangedMigration")]
+    partial class ChangedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,9 +217,6 @@ namespace SpartanManageFootball.Migrations
                     b.Property<DateTime>("MatchDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MatchWeek")
-                        .HasColumnType("int");
-
                     b.Property<int>("RefereeId")
                         .HasColumnType("int");
 
@@ -232,11 +231,15 @@ namespace SpartanManageFootball.Migrations
 
             modelBuilder.Entity("SpartanManageFootball.Models.MatchReferee", b =>
                 {
-                    b.Property<int>("IDOfMatch")
+                    b.Property<int>("IDOfMatchMatchId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RefOfMatch")
+                    b.Property<int>("RefOfMatchId")
                         .HasColumnType("int");
+
+                    b.HasIndex("IDOfMatchMatchId");
+
+                    b.HasIndex("RefOfMatchId");
 
                     b.ToTable("MatchReferee");
                 });
@@ -477,46 +480,6 @@ namespace SpartanManageFootball.Migrations
                     b.ToTable("Stadiums");
                 });
 
-            modelBuilder.Entity("SpartanManageFootball.Models.Standings", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("Draws")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsConceded")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsDifference")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsScored")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Leagueid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Losses")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SquadTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wins")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Standings");
-                });
-
             modelBuilder.Entity("LeagueSquad", b =>
                 {
                     b.HasOne("SpartanManageFootball.Models.League", null)
@@ -581,6 +544,25 @@ namespace SpartanManageFootball.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SpartanManageFootball.Models.MatchReferee", b =>
+                {
+                    b.HasOne("SpartanManageFootball.Models.Match", "IDOfMatch")
+                        .WithMany()
+                        .HasForeignKey("IDOfMatchMatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SpartanManageFootball.Models.Referee", "RefOfMatch")
+                        .WithMany()
+                        .HasForeignKey("RefOfMatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IDOfMatch");
+
+                    b.Navigation("RefOfMatch");
                 });
 
             modelBuilder.Entity("SpartanManageFootball.Models.Photo", b =>

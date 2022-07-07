@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Models;
 
 namespace SpartanManageFootball.Persistence
@@ -17,6 +18,8 @@ namespace SpartanManageFootball.Persistence
         
         public DbSet<League> Leagues { get; set; }
         public DbSet<Squad> Squads { get; set; }
+        public DbSet<LeagueSquadDto> LeagueSquads { get; set; }
+        public DbSet<MatchReferee> MatchReferee { get; set; }
 
         public DbSet<Standings> Standings { get; set; }
     }

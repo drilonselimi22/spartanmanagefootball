@@ -8,6 +8,7 @@ using SpartanManageFootball.Interfaces;
 using SpartanManageFootball.Models;
 using SpartanManageFootball.Services;
 using static SpartanManageFootball.Application.LeagueSquad.Add;
+using static SpartanManageFootball.Application.League.EditLeague;
 
 namespace SpartanManageFootball.Controllers
 {
@@ -51,6 +52,19 @@ namespace SpartanManageFootball.Controllers
         public async Task<ActionResult<League>> AddSquadsToLeague(LeagueSquadDto dto)
         {
             return Ok(await Mediator.Send(new Add.Command { dto = dto }));
+        }
+
+        [HttpDelete("{leagueId}")]
+        public async Task<IActionResult> DeleteLeague(int leagueId)
+        {
+            return Ok(await Mediator.Send(new DeleteLeague.DeleteCommand { LeagueId = leagueId }));
+        }
+
+        [HttpPut("{leagueId}")]
+        public async Task<ActionResult<League>> EditLeague(int leagueId, EditLeaugeCommand command)
+        {
+            command.LeagueId = leagueId;
+            return HandleResult(await Mediator.Send(command));
         }
 
         [HttpPost("UpdatePoints")]

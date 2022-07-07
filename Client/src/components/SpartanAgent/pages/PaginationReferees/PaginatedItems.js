@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router-dom";
 import SidebarAgent from "../../SidebarAgent";
 import "./app.css";
 export default function PaginatedItems(props) {
+  const navigate=useNavigate();
   const { data } = props;
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
@@ -19,8 +21,12 @@ export default function PaginatedItems(props) {
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
     setItemOffset(newOffset);
-  };
 
+    
+  };
+    function AddReferee(){
+      navigate("/agent-referees")
+    }
   return (
     <div>
       <SidebarAgent />
@@ -39,7 +45,7 @@ export default function PaginatedItems(props) {
           justifyContent:"space-between"
         }}>
           <h1>Referees</h1>
-          <Button variant="dark">Add referee</Button>
+          <Button variant="dark" onClick={AddReferee}>Add referee</Button>
         </div> 
         <Table striped>
           <thead>

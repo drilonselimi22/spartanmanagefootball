@@ -85,7 +85,7 @@ namespace SpartanManageFootball.Application.Admin
                 {
                     FullName = request.FullName,
                     PhoneNumber=request.PhoneNumber,
-                    UserName = request.Username,
+                    UserName = request.Username,  
                     Email = request.Email,
                     IdentityNumber = request.IdentityNumber,
                     BirthDate = request.Birthdate,

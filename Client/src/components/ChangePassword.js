@@ -22,7 +22,9 @@ function AgentChangePassword() {
     
     function returntrue(){
         console.log("returnii");
-        navigate("/admin")
+        var role=localStorage.getItem("role");
+
+        navigate(`/${role}`)
     }
 
 
