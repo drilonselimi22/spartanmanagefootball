@@ -1,3 +1,12 @@
+
+import React, { useState } from 'react'
+import SidebarAdmin from '../SidebarAdmin'
+import axios from 'axios';
+import { Form, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import SidebarAdmin from "../SidebarAdmin";
+import axios from "axios";
+import { Form, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import SidebarAdmin from "../SidebarAdmin";
 import axios from "axios";
@@ -48,6 +57,18 @@ function AdminAddSquad() {
     );
   }
 
+  const [stadium, setStadium] = useState([]);
+  useEffect(() => {
+    fetch("https://localhost:7122/api/Stadium/get-stadium", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => setStadium(resp));
+  }, []);
+
   const handleFileSelect = (event) => {
     setFile(event.target.files[0]);
   };
@@ -69,6 +90,20 @@ function AdminAddSquad() {
         <Form>
           <h2>Register Squad</h2>
           <hr></hr>
+
+          <Form.Group className="mb-3" controlId="formName">
+            <Form.Label>Squad Stadium</Form.Label>
+            <Form.Control onChange={(e) => setStadiumId(e.target.value)} type="number" placeholder="Enter Squad Stadium" />
+
+          <Form.Group className='mb-3'>
+            <Form.Label>Stadium</Form.Label>
+            <Form.Select>
+              <option unselectable='true'>Choose Stadium</option>
+              {stadium.map((x) => {
+                return <option value={x.id}>{x.name}</option>;
+              })}
+            </Form.Select>
+
           <Form.Group className='mb-3' controlId='formName'>
             <Form.Label>Squad Stadium</Form.Label>
             <Form.Control
@@ -76,6 +111,7 @@ function AdminAddSquad() {
               type='number'
               placeholder='Enter Squad Stadium'
             />
+
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='formFile'>
@@ -105,11 +141,13 @@ function AdminAddSquad() {
             />
           </Form.Group>
 
+
           {/* <Form.Group className="mb-3" controlId="formExperience">
             <Form.Label>Is Verified</Form.Label>
             <Form.Control onChange={(e) => setIsVerified(e.target.value)} type="text" placeholder="Is verified" />
           </Form.Group> */}
-
+          <Form.Group className="mb-3" controlId="formFile">
+          <Form.Group className='mb-3' controlId='formFile'>
           <Form.Group className='mb-3' controlId='formFile'>
             <Form.Label>Upload certificate</Form.Label>
             <Form.Control

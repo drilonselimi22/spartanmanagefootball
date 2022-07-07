@@ -11,33 +11,35 @@ import "./AgentLeagueSquads.css";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const onSubmit = async (values) => {
-  // await sleep(100);
+
+  await sleep(100);
   var data = JSON.stringify(values, 0, 2);
-  console.log("dataaaaaaaaaaaaaaaaaaaa",data);
+  console.log(data);
+  var data = JSON.stringify(values, 0, 2);
+  var data = JSON.stringify(values, 0, 2);
 
   await axios({
     method: "POST",
     url: "https://localhost:7122/api/League/addSquadsToLeague",
     data: data,
     headers: {
-      "Content-Type": "application/json"
-    }
-  })
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 function AgentLeaguesSquads() {
-
   const [league, setLeague] = useState([]);
   useEffect(() => {
     fetch("https://localhost:7122/api/League/getLeagues", {
       method: "get",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     })
-      .then(resp => resp.json())
-      .then(resp => setLeague(resp))
-  }, [])
+      .then((resp) => resp.json())
+      .then((resp) => setLeague(resp));
+  }, []);
 
   const [squads, setSquads] = useState([]);
   useEffect(() => {
@@ -45,11 +47,11 @@ function AgentLeaguesSquads() {
       method: "get",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     })
-      .then(resp => resp.json())
-      .then(resp => setSquads(resp))
-  }, [])
+      .then((resp) => resp.json())
+      .then((resp) => setSquads(resp));
+  }, []);
 
   return (
     <>
@@ -57,67 +59,71 @@ function AgentLeaguesSquads() {
       <Form
         onSubmit={onSubmit}
         mutators={{
-          ...arrayMutators
+          ...arrayMutators,
         }}
         render={({
           handleSubmit,
           form: {
-            mutators: { push, pop }
+            mutators: { push, pop },
           },
           pristine,
           form,
           submitting,
-          values
+          values,
         }) => {
           return (
-            <form onSubmit={handleSubmit} className="form__container">
+            <form onSubmit={handleSubmit} className='form__container'>
               <h2>Add squads to the league</h2>
               <hr></hr>
-              <div className="select__league">
+              <div className='select__league'>
                 <label>League</label>
-                <Field name="leaguesLeagueId" component="select" placeholder="League">
-                  <option selected >Select league</option>
-                  {
-                    league.map(x => {
-                      return (
-                        <option value={x.leagueId}>{x.leagueName}</option>
-                      )
-                    })
-                  }
+                <Field
+                  name='leaguesLeagueId'
+                  component='select'
+                  placeholder='League'
+                >
+                  <option selected>Select league</option>
+                  {league.map((x) => {
+                    return <option value={x.leagueId}>{x.leagueName}</option>;
+                  })}
                 </Field>
               </div>
-              <div className="buttons">
+              <div className='buttons'>
                 <Button
-                  variant="dark"
-                  type="button"
+                  variant='dark'
+                  type='button'
                   onClick={() => push("squadsTeamId", undefined)}
                 >
                   Add Squad
                 </Button>
-                <Button style={{ width: "auto" }} variant="dark" type="button" onClick={() => pop("squadsTeamId")}>
+                <Button
+                  style={{ width: "auto" }}
+                  variant='dark'
+                  type='button'
+                  onClick={() => pop("squadsTeamId")}
+                >
                   Remove Squad
                 </Button>
               </div>
-              <FieldArray
-                name="squadsTeamId"
-              >
+              <FieldArray name='squadsTeamId'>
                 {({ fields }) =>
                   fields.map((name, index) => (
-                    <div key={name} className="select__squad">
+                    <div key={name} className='select__squad'>
                       <label>Squad #{index + 1}</label>
                       <Field
                         name={`${name}.teamId`}
-                        component="select"
-                        placeholder="Choose an existed squad ID"
+                        component='select'
+                        placeholder='Choose an existed squad ID'
                       >
                         <option selected>Select squad</option>
-                        {
-                          squads.map(x => {
-                            return (
-                              <option value={x.teamId}>{x.name}: ({x.isVerified ? "Verified" : "Unverifed"})</option>
-                            )
-                          })
-                        }
+                        {squads.map((x) => {
+                          return (
+                            <option value={x.teamId}>
+                              {x.name}: (
+                              {x.isVerified ? "Verified" : "Unverifed"})
+                            </option>
+                          );
+                        })}
                       </Field>
                       <span
                         onClick={() => fields.remove(index)}
@@ -128,13 +134,18 @@ function AgentLeaguesSquads() {
                 }
               </FieldArray>
 
-              <div className="buttons">
-                <Button variant="success" className="submit__btn" type="submit" disabled={submitting || pristine}>
+              <div className='buttons'>
+                <Button
+                  variant='success'
+                  className='submit__btn'
+                  type='submit'
+                  disabled={submitting || pristine}
+                >
                   Submit
                 </Button>
                 <Button
-                  variant="danger"
-                  type="button"
+                  variant='danger'
+                  type='button'
                   onClick={form.reset}
                   disabled={submitting || pristine}
                 >
@@ -147,6 +158,6 @@ function AgentLeaguesSquads() {
       />
     </>
   );
-};
+}
 
 export default AgentLeaguesSquads;

@@ -29,12 +29,48 @@ export default function Register() {
     setMsg([]);
   };
   async function registerData(e) {
+    e.preventDefault();  
+    clearState()
+    setLoader(true) 
+
+    await axios({
+      method: 'POST',
+      url: 'https://localhost:7122/api/User/register-admin',
+      data: {
+        fullname: name,
+        phonenumber: phone,
+        username: username,
+        email: email,
+        identityNumber: identityNumber,
+        birthDate: birthDate,
+        password: password,
+        roleId: role,
+      }
+    }).then((response) => { 
+      setLoader(false)
+      navigate("/login")
+      window.location.reload();
+    }, (e) => {
+      console.log(e) 
+      try { 
+        setLoader(false)
+        // console.log("errorFromBack", e.response.data.errors.error);
+        var a = e.response.data.errors.error  
+        console.log("aaaaaaaaaaaaa1",a)
+        setMsg(a) 
+        console.log("msgaaaaaaaaaaaaaa",msg)
+        seterrorback(true);  
+      } catch (err) {
+        console.log("trycatchworking", err); 
+      } 
+    });
+    setLoader(false)
+
     e.preventDefault();
     clearState();
     setLoader(true);
 
     if (password !== confirmPassword) {
-      // alert("Password dont match");
       setError(true);
     } else {
       setError(false);
@@ -72,7 +108,6 @@ export default function Register() {
         }
       );
     }
-
     setLoader(false);
   }
 
@@ -156,12 +191,20 @@ export default function Register() {
                       onChange={(e) => setBirthDate(e.target.value)}
                     />
                   </Form.Group>
+
+                    {matchedPasswords ? <p style={{color:"red"}}>Passwords do not match</p> : null}
+                  <Form.Group className="mb-3">
+
+                  {error ? (
+                    <p style={{ color: "red" }}>Passwords do not match!</p>
+
                   {error ? (
                     <p style={{ color: "red" }}>Password do not match!</p>
                   ) : (
                     ""
                   )}
                   <Form.Group className='mb-3'>
+
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type='password'
