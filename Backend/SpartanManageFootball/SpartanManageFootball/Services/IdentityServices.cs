@@ -488,7 +488,119 @@ namespace SpartanManageFootball.Services
 
             return secondHalf;
         }
+
+        public async Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto, string resultsOfTheGame)
+        {
+            bool Succeded = false;
+            string[] goalsScored = resultsOfTheGame.Split("-");
+            int[] goals = new int[2];
+
+            goals[0] = Int32.Parse(goalsScored[0]);
+            goals[1] = Int32.Parse(goalsScored[1]);
+
+            int biggestgoals = goals[0] > goals[1] ? goals[0] : goals[1];
+            int lowestgoals = goals[0] < goals[1] ? goals[0] : goals[1];
+            bool win = goals[0] > goals[1];
+
+            foreach (var teams in dto)
+            {
+                var team = _smfcontext.Standings.Where(x => x.SquadTeamId == teams.SquadTeamId).FirstOrDefault();
+
+                if (win)
+                {
+                    win = false;
+                    team.Wins++;
+                    team.Points += 3;
+                    team.GoalsScored += biggestgoals;
+                    team.GoalsConceded += lowestgoals;
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                }
+                else if (biggestgoals == lowestgoals)
+                {
+                    team.Draws++;
+                    team.Points++;
+                    team.GoalsScored = goals[0];
+                    team.GoalsConceded = goals[1];
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                }
+                else
+                {
+                    team.Losses++;
+                    team.GoalsConceded += biggestgoals;
+                    team.GoalsScored += lowestgoals;
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                    win = true;
+                }
+
+                var success = await _smfcontext.SaveChangesAsync() > 0;
+
+                if (success)
+                {
+                    Succeded = true;
+                }
+            }
+
+            if (Succeded)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "Succeded",
+                };
+
+            }
+
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Something went wrong",
+            };
+
+        }
+
+        public async Task<UserManagerResponse> DefaultPointsStandings(int leagueId)
+        {
+            bool Success = false;
+            var squads = await _smfcontext.Leagues
+                  .Where(x => x.LeagueId == leagueId)
+                  .Include(x => x.Squads)
+                  .ToListAsync();
+
+            for (int i = 0; i < squads[0].Squads.Count; i++)
+            {
+                //squadNames.Add();
+                var sdto = new Standings
+                {
+                    SquadTeamId = squads[0].Squads[i].TeamId,
+                    Leagueid = leagueId,
+                    Points = 0,
+                    Wins = 0,
+                    Losses = 0,
+                    Draws = 0,
+                    GoalsScored = 0,
+                    GoalsConceded = 0,
+                    GoalsDifference = 0,
+                };
+                _smfcontext.Standings.Add(sdto);
+                var result = await _smfcontext.SaveChangesAsync() > 0;
+                Success = result;
+            }
+            if (Success)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "League has started",
+                };
+
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Something went wrong",
+            };
+
+        }
     }
 }
-
 

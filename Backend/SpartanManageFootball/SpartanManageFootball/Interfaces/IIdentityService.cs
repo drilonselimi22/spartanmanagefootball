@@ -29,5 +29,8 @@ namespace SpartanManageFootball.Interfaces
 
         //Algorithm to generate games
         Task<UserManagerResponse> GenerateGames(int id);//id is the id of the league
+        Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto, string results);
+        Task<UserManagerResponse> DefaultPointsStandings(int leaugeid);
+
     }
 }
