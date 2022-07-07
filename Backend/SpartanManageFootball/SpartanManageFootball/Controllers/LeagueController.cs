@@ -54,9 +54,10 @@ namespace SpartanManageFootball.Controllers
         }
 
         [HttpPost("UpdatePoints")]
-        public async Task<IActionResult> UpdatePoints(List<StandingsDTO> dto)
+        public async Task<IActionResult> UpdatePoints(List<StandingsDTO> dto,string r)
         {
-            var result = await _identityServices.AddPointsStandings(dto);
+         
+            var result = await _identityServices.AddPointsStandings(dto,r);
             
             if (result.IsSuccess)
             {

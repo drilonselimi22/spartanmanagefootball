@@ -327,32 +327,58 @@ namespace SpartanManageFootball.Services
 
             return squads;
         }
-   
-        public async Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto)
+
+        public async Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto, string resultsOfTheGame)
         {
             bool Succeded = false;
-            foreach (var teams in dto) {
+            string[] goalsScored = resultsOfTheGame.Split("-");
+            int[] goals = new int[2];
+
+            goals[0] = Int32.Parse(goalsScored[0]);
+            goals[1] = Int32.Parse(goalsScored[1]);
+
+            int biggestgoals = goals[0] > goals[1] ? goals[0] : goals[1];
+            int lowestgoals = goals[0] < goals[1] ? goals[0] : goals[1];
+            bool win = goals[0] > goals[1];
+
+            foreach (var teams in dto)
+            {
                 var team = _smfcontext.Standings.Where(x => x.SquadTeamId == teams.SquadTeamId).FirstOrDefault();
-                if (teams.Result == 'w')
+
+                if (win)
                 {
+                    win = false;
                     team.Wins++;
-                    team.Points+=3;
+                    team.Points += 3;
+                    team.GoalsScored += biggestgoals;
+                    team.GoalsConceded += lowestgoals;
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
                 }
-                else if (teams.Result == 'd')
+                else if (biggestgoals == lowestgoals)
                 {
                     team.Draws++;
                     team.Points++;
+                    team.GoalsScored = goals[0];
+                    team.GoalsConceded = goals[1];
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
                 }
                 else
                 {
                     team.Losses++;
+                    team.GoalsConceded += biggestgoals;
+                    team.GoalsScored += lowestgoals;
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                    win = true;
                 }
+
                 var success = await _smfcontext.SaveChangesAsync() > 0;
+
                 if (success)
                 {
                     Succeded = true;
                 }
             }
+
             if (Succeded)
             {
                 return new UserManagerResponse
@@ -362,6 +388,7 @@ namespace SpartanManageFootball.Services
                 };
 
             }
+
             return new UserManagerResponse
             {
                 IsSuccess = false,
@@ -369,7 +396,7 @@ namespace SpartanManageFootball.Services
             };
 
         }
-        
+
         public async Task<UserManagerResponse> DefaultPointsStandings(int leagueId)
         {
             bool Success = false;
@@ -386,12 +413,15 @@ namespace SpartanManageFootball.Services
                     SquadTeamId = squads[0].Squads[i].TeamId,
                     Leagueid = leagueId,
                     Points = 0,
-                    Wins=0,
-                    Losses=0,
-                    Draws=0,
+                    Wins = 0,
+                    Losses = 0,
+                    Draws = 0,
+                    GoalsScored = 0,
+                    GoalsConceded = 0,
+                    GoalsDifference = 0,
                 };
-                 _smfcontext.Standings.Add(sdto);
-                var result= await _smfcontext.SaveChangesAsync() > 0;
+                _smfcontext.Standings.Add(sdto);
+                var result = await _smfcontext.SaveChangesAsync() > 0;
                 Success = result;
             }
             if (Success)
@@ -410,7 +440,7 @@ namespace SpartanManageFootball.Services
             };
 
         }
-    
-    
+
+
     }
 }
