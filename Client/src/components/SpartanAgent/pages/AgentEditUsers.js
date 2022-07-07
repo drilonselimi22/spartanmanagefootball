@@ -1,17 +1,8 @@
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import SidebarAgent from "../SidebarAgent";
-
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import UserModal from "./UserModal";
 import PaginatedUsers from "./PaginationUsers/PaginatedUsers";
 
 function EditUserRoles() {
-
-
-
   const [posts, setPosts] = useState([]);
   const apiEndPoint = "https://localhost:7122/api/User";
 
@@ -23,7 +14,6 @@ function EditUserRoles() {
     };
     getPosts();
   }, []);
-
 
   return (
     <>

@@ -13,20 +13,19 @@ import AgentLeagues from "./components/SpartanAgent/pages/AgentLeagues";
 import AgentLeaguesSquads from "./components/SpartanAgent/pages/AgentLeagueSquads";
 import AgentHome from "./components/SpartanAgent/pages/AgentHome";
 import AgentMatches from "./components/SpartanAgent/pages/AgentMatches";
-import AgentRefereesList from "./components/SpartanAgent/pages/AgentRefereesList";
-import AgentStadium from "./components/SpartanAgent/pages/AgentStadium";
 import AgentEditUsers from "./components/SpartanAgent/pages/AgentEditUsers";
-import AgentRefereesAdd from "./components/SpartanAgent/pages/AgentRefereesAdd";
-
 import AgentEditStadium from "./components/SpartanAgent/pages/AgentEditStadium";
-// Admin
 import AgentVerifyTeams from "./components/SpartanAgent/pages/AgentVerifyTeams";
 import AdminAddSquad from "./components/TeamAdmin/pages/AdminAddSquad";
 import AdminHome from "./components/TeamAdmin/pages/AdminHome";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import TeamDetails from "./components/Teams/TeamDetails";
 import AgentChangePassword from "./components/ChangePassword";
-import AddPlayer from './components/TeamAdmin/pages/AddPlayer';
+import AddPlayer from "./components/TeamAdmin/pages/AddPlayer";
+import AgentEditLeague from "./components/SpartanAgent/pages/AgentEditLeague";
+import AgentStadium from "./components/SpartanAgent/pages/AgentStadium";
+import AgentReferee from "./components/SpartanAgent/pages/AgentReferee";
+import AgentEditReferee from "./components/SpartanAgent/pages/AgentEditReferee";
 
 export default function RoutesSMF() {
   const [logged, setlogged] = useState(false);
@@ -59,12 +58,20 @@ export default function RoutesSMF() {
             element={<AgentLeaguesSquads />}
           />
           <Route path='/agent-matches' exact element={<AgentMatches />} />
-          <Route path='/referees-list' exact element={<AgentRefereesList />} />
-          <Route path='/agent-stadiums' exact element={<AgentStadium />} />
           <Route
             path='/agent-edit-stadium'
             exact
             element={<AgentEditStadium />}
+          />
+          <Route
+            path='/agent-edit-league'
+            exact
+            element={<AgentEditLeague />}
+          />
+          <Route
+            path='/agent-edit-referee'
+            exact
+            element={<AgentEditReferee />}
           />
           <Route path='/agent-edit-users' exact element={<AgentEditUsers />} />
           <Route
@@ -73,7 +80,8 @@ export default function RoutesSMF() {
             element={<AgentVerifyTeams />}
           />
           <Route path='/agent-leagues' exact element={<AgentLeagues />} />
-          <Route path='/agent-referees' element={<AgentRefereesAdd />} />
+          <Route path='/agent-stadiums' exact element={<AgentStadium />} />
+          <Route path='/agent-referee' exact element={<AgentReferee />} />
           {/* Admin */}
           <Route
             path='/reset-password'
@@ -82,8 +90,8 @@ export default function RoutesSMF() {
           />
           <Route path='/admin' exact element={<AdminHome />} />
           <Route exact path='/admin-squad' element={<AdminAddSquad />} />
-          <Route exact path="/squadDetails" element={<TeamDetails />} />
-          <Route exact path="admin-addPlayer" element={<AddPlayer /> } />
+          <Route exact path='/squadDetails' element={<TeamDetails />} />
+          <Route exact path='admin-addPlayer' element={<AddPlayer />} />
           {/* Not Found Page */}
           <Route path='*' element={<PageNotFound />} />
         </Routes>

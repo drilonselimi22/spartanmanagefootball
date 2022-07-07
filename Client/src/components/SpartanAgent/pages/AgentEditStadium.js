@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import SidebarAgent from "../SidebarAgent";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function AgentEditStadium() {
+  const navigate = useNavigate();
   const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -16,34 +18,16 @@ function AgentEditStadium() {
     setCapacity(localStorage.getItem("Capacity"));
   }, []);
 
-  //   const updateStadium = (e) => {
-  //     e.prevent.default();
-  //     axios.put(`https://localhost:7122/api/Stadium/${id}`, {
-  //       name,
-  //       location,
-  //       capacity,
-  //     });
-  //   };
-
-  async function updateStadium(e) {
-    e.prevent.default();
-    await axios({
-      method: "PUT",
-      url: `https://localhost:7122/api/Stadium/${id}`,
-      data: {
-        name: name,
-        location: location,
-        capacity: capacity,
-      },
-    }).then(
-      (response) => {
-        console.log("response register referee", response);
-      },
-      (error) => {
-        console.log("error", error);
-      }
-    );
-  }
+  const updateStadium = () => {
+    axios
+      .put(`https://localhost:7122/api/Stadium/${id}`, {
+        id,
+        name,
+        location,
+        capacity,
+      })
+      .then(navigate("/agent-stadiums"), window.location.reload());
+  };
 
   return (
     <div>

@@ -2,18 +2,26 @@ import React, { useState, useEffect } from "react";
 import SidebarAgent from "../SidebarAgent";
 import axios from "axios";
 import { Form, Button, Table, Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function AgentLeagues() {
-  const [league, setLeague] = useState();
-  const [dta, setDta] = useState();
+  const [leagueId, setLeagueId] = useState(null);
+  const [name, setName] = useState();
+
   const [submitedRegister, setSubmitedRegister] = useState(false);
   const [registered, setRegistered] = useState(false);
 
   const [logged, setlogged] = useState(false);
 
+  const [selectedItem, setSelectedItem] = useState({});
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [deleteShow, setDeleteShow] = useState(false);
+  const handleDeleteClose = () => setDeleteShow(false);
+  const handleDeleteShow = () => setDeleteShow(true);
 
   const [leagueData, setLeagueData] = useState([]);
 
@@ -30,7 +38,7 @@ function AgentLeagues() {
       method: "POST",
       url: "https://localhost:7122/api/League/addLeague",
       data: {
-        leagueName: league,
+        leagueName: name,
       },
     }).then(
       (response) => {
@@ -47,7 +55,7 @@ function AgentLeagues() {
     );
   }
 
-  // GET rewquest
+  // GET request
   useEffect(() => {
     axios
       .get(`https://localhost:7122/api/League/getLeagues`)
@@ -63,6 +71,14 @@ function AgentLeagues() {
         window.location.reload();
       }, 500)
     );
+  };
+
+  const setData = (data) => {
+    let { leagueId, leagueName } = data;
+    localStorage.setItem("League Id", leagueId);
+    localStorage.setItem("League Name", leagueName);
+
+    console.log(data);
   };
 
   return (
@@ -81,7 +97,7 @@ function AgentLeagues() {
                 <Form.Group className='mb-3'>
                   <Form.Label>League Name</Form.Label>
                   <Form.Control
-                    onChange={(e) => setLeague(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                     type='text'
                     placeholder='Enter League Name'
                   />
@@ -97,6 +113,21 @@ function AgentLeagues() {
                 </Button>
               </Form>
             </Modal.Body>
+          </Modal>
+
+          <Modal show={deleteShow} onHide={handleDeleteClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Delete</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Are you sure you want to delete</Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant='danger'
+                onClick={() => onDelete(selectedItem.leagueId)}
+              >
+                Delete
+              </Button>
+            </Modal.Footer>
           </Modal>
 
           <div
@@ -134,12 +165,22 @@ function AgentLeagues() {
                       <td>{data.leagueId}</td>
                       <td>{data.leagueName}</td>
                       <td>
-                        <Button variant='success'>Edit</Button>
+                        <Link to='/agent-edit-league'>
+                          <Button
+                            variant='success'
+                            onClick={() => setData(data)}
+                          >
+                            Edit
+                          </Button>
+                        </Link>
                       </td>
                       <td>
                         <Button
-                          onClick={() => onDelete(data.leagueId)}
                           variant='dark'
+                          onClick={() => {
+                            handleDeleteShow(true);
+                            setSelectedItem(data);
+                          }}
                         >
                           Delete
                         </Button>
