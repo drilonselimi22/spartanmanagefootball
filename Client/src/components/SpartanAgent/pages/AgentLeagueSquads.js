@@ -11,13 +11,12 @@ import "./AgentLeagueSquads.css";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const onSubmit = async (values) => {
-<<<<<<< Updated upstream
+
   await sleep(100);
   var data = JSON.stringify(values, 0, 2);
   console.log(data);
-=======
   var data = JSON.stringify(values, 0, 2);
->>>>>>> Stashed changes
+  var data = JSON.stringify(values, 0, 2);
 
   await axios({
     method: "POST",

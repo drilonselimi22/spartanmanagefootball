@@ -327,5 +327,280 @@ namespace SpartanManageFootball.Services
 
             return squads;
         }
+        public async Task<UserManagerResponse> AddRefereeToMatch(MatchRefereeDTO matchrefereeDTO)
+        {
+            if (matchrefereeDTO == null)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "No null values allowed!",
+                    IsSuccess = false,
+                };
+            }
+            foreach (var referee in matchrefereeDTO.RefListId)
+            {
+                var refereeToMatch = new MatchReferee
+                {
+                    IDOfMatch = matchrefereeDTO.MatchId,
+                    RefOfMatch = referee.Id
+                };
+                _smfcontext.MatchReferee.Add(refereeToMatch);
+            }
+            return new UserManagerResponse
+            {
+                Message = "Referees added to game",
+                IsSuccess = false,
+            };
+        }
+        //id parameter is the id of the league
+        public async Task<UserManagerResponse> GenerateGames(int id)
+        {
+            var squads = await _smfcontext.Leagues
+                .Where(x => x.LeagueId == id)
+                .Include(x => x.Squads)
+                .ToListAsync();
+
+            var referees = await _smfcontext.Referees.ToListAsync();
+            if (squads == null)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "There is no team in this league",
+                    IsSuccess = false,
+                };
+            }
+            //string bla = squads[0].Squads[0].Name;
+            var listOfReferees = await _smfcontext.Referees.ToListAsync();
+            var squadNames = new List<int>();
+            var refereesToBeAddedToGame = new List<Referee>();
+
+            //Iterating to the list to get only the names of the squads
+            for (int i = 0; i < squads[0].Squads.Count; i++)
+            {
+                squadNames.Add(squads[0].Squads[i].TeamId);
+            }
+
+            //Checks if the list of the squads is odd otherwise it cant generate games
+            if (squads[0].Squads.Count % 2 != 0)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "Teams in a league should be ODD!",
+                    IsSuccess = false,
+                };
+            }
+            Random rnd = new Random();
+            var shuffledSquads = squadNames.OrderBy(a => rnd.Next()).ToList();
+
+            var matchesToBeAdded = new List<Match>();
+            var firstHalf = GenerateFirstHalfMatches(squadNames);
+            var secondHalf = GenerateSecondtHalfMatches(firstHalf, shuffledSquads.Count);
+
+            matchesToBeAdded.AddRange(firstHalf);
+            matchesToBeAdded.AddRange(secondHalf);
+
+            foreach (var item in matchesToBeAdded)
+            {
+                Match match = new Match
+                {
+                    HomeTeamTeamId = item.HomeTeamTeamId,
+                    AwayTeamTeamId = item.AwayTeamTeamId,
+                    MatchWeek = item.MatchWeek,
+                    Result = "",
+                    MatchDate = DateTime.UtcNow,
+                };
+                await _smfcontext.Matches.AddAsync(match);
+
+                var success = await _smfcontext.SaveChangesAsync() > 0;
+
+            }
+            return null;
+        }
+
+        private List<Match> GenerateFirstHalfMatches(List<int> squads)
+        {
+            var listOfMatches = new List<Match>();
+            var firstTeam = squads[0];
+
+            int matchWeek = 1;
+            while (listOfMatches.Count < squads.Count * (squads.Count - 1) / 2)
+            {
+                for (int i = 0; i < squads.Count; i += 2)
+                {
+                    var match = new Match
+                    {
+                        HomeTeamTeamId = squads[i],
+                        AwayTeamTeamId = squads[i + 1],
+                        MatchWeek = matchWeek
+                    };
+
+                    listOfMatches.Add(match);
+
+                    if (listOfMatches.Count % (squads.Count / 2) == 0)
+                    {
+                        matchWeek++;
+                    }
+                }
+
+                for (int i = squads.Count - 1; i > 1; i--)
+                {
+                    var tempSquad = squads[i - 1];
+                    squads[i - 1] = squads[i];
+                    squads[i] = tempSquad;
+                }
+            }
+
+            for (int i = 2; i < squads.Count; i += 2)
+            {
+                var matchesFromMatchweek = listOfMatches?.Where(x => x.MatchWeek == i).ToList();
+                var matchToSwap = matchesFromMatchweek?.FirstOrDefault(x => x.HomeTeamTeamId == firstTeam);
+
+                int indexOfMatchToBeSwaped = listOfMatches.IndexOf(matchToSwap);
+
+                var match = new Match
+                {
+                    AwayTeamTeamId = matchToSwap.HomeTeamTeamId,
+                    HomeTeamTeamId = matchToSwap.AwayTeamTeamId,
+                    MatchWeek = matchToSwap.MatchWeek
+                };
+
+                listOfMatches[indexOfMatchToBeSwaped] = match;
+            }
+
+            return listOfMatches;
+        }
+
+        private List<Match> GenerateSecondtHalfMatches(List<Match> firstHalf, int numOfSquads)
+        {
+            var secondHalf = new List<Match>();
+
+            for (int i = 0; i < firstHalf.Count; i++)
+            {
+                var match = new Match
+                {
+                    HomeTeamTeamId = firstHalf[i].AwayTeamTeamId,
+                    AwayTeamTeamId = firstHalf[i].HomeTeamTeamId,
+                    MatchWeek = firstHalf[i].MatchWeek + numOfSquads - 1
+                };
+
+                secondHalf.Add(match);
+            }
+
+            return secondHalf;
+        }
+
+        public async Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto, string resultsOfTheGame)
+        {
+            bool Succeded = false;
+            string[] goalsScored = resultsOfTheGame.Split("-");
+            int[] goals = new int[2];
+
+            goals[0] = Int32.Parse(goalsScored[0]);
+            goals[1] = Int32.Parse(goalsScored[1]);
+
+            int biggestgoals = goals[0] > goals[1] ? goals[0] : goals[1];
+            int lowestgoals = goals[0] < goals[1] ? goals[0] : goals[1];
+            bool win = goals[0] > goals[1];
+
+            foreach (var teams in dto)
+            {
+                var team = _smfcontext.Standings.Where(x => x.SquadTeamId == teams.SquadTeamId).FirstOrDefault();
+
+                if (win)
+                {
+                    win = false;
+                    team.Wins++;
+                    team.Points += 3;
+                    team.GoalsScored += biggestgoals;
+                    team.GoalsConceded += lowestgoals;
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                }
+                else if (biggestgoals == lowestgoals)
+                {
+                    team.Draws++;
+                    team.Points++;
+                    team.GoalsScored = goals[0];
+                    team.GoalsConceded = goals[1];
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                }
+                else
+                {
+                    team.Losses++;
+                    team.GoalsConceded += biggestgoals;
+                    team.GoalsScored += lowestgoals;
+                    team.GoalsDifference = team.GoalsScored - team.GoalsConceded;
+                    win = true;
+                }
+
+                var success = await _smfcontext.SaveChangesAsync() > 0;
+
+                if (success)
+                {
+                    Succeded = true;
+                }
+            }
+
+            if (Succeded)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "Succeded",
+                };
+
+            }
+
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Something went wrong",
+            };
+
+        }
+
+        public async Task<UserManagerResponse> DefaultPointsStandings(int leagueId)
+        {
+            bool Success = false;
+            var squads = await _smfcontext.Leagues
+                  .Where(x => x.LeagueId == leagueId)
+                  .Include(x => x.Squads)
+                  .ToListAsync();
+
+            for (int i = 0; i < squads[0].Squads.Count; i++)
+            {
+                //squadNames.Add();
+                var sdto = new Standings
+                {
+                    SquadTeamId = squads[0].Squads[i].TeamId,
+                    Leagueid = leagueId,
+                    Points = 0,
+                    Wins = 0,
+                    Losses = 0,
+                    Draws = 0,
+                    GoalsScored = 0,
+                    GoalsConceded = 0,
+                    GoalsDifference = 0,
+                };
+                _smfcontext.Standings.Add(sdto);
+                var result = await _smfcontext.SaveChangesAsync() > 0;
+                Success = result;
+            }
+            if (Success)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = true,
+                    Message = "League has started",
+                };
+
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = false,
+                Message = "Something went wrong",
+            };
+
+        }
     }
 }
+

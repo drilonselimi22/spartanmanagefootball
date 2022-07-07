@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpartanManageFootball.Persistence;
 
@@ -11,9 +12,10 @@ using SpartanManageFootball.Persistence;
 namespace SpartanManageFootball.Migrations
 {
     [DbContext(typeof(SMFContext))]
-    partial class SMFContextModelSnapshot : ModelSnapshot
+    [Migration("20220705205825_Matchesadded")]
+    partial class Matchesadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,46 +477,6 @@ namespace SpartanManageFootball.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stadiums");
-                });
-
-            modelBuilder.Entity("SpartanManageFootball.Models.Standings", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("Draws")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsConceded")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsDifference")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsScored")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Leagueid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Losses")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SquadTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wins")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Standings");
                 });
 
             modelBuilder.Entity("LeagueSquad", b =>

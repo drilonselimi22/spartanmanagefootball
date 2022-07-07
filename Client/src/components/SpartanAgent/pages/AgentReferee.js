@@ -4,33 +4,32 @@ import axios from "axios";
 import { Form, Button, Table, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-function AgentStadium() {
+function AgentReferee() {
   const [id, setId] = useState(null);
   const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [experience, setExperience] = useState("");
+  const [city, setCity] = useState("");
+  const [position, setPosition] = useState("");
   const [submitedRegister, setSubmitedRegister] = useState(false);
   const [registered, setRegistered] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState({});
 
-  // Checking if the user is logged in
   const [logged, setlogged] = useState(false);
 
-  // Showing the modal to add the stadium
+  const [RefereeData, setRefereeData] = useState([]);
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // Showing the modal to delete the stadium
   const [deleteShow, setDeleteShow] = useState(false);
   const handleDeleteClose = () => setDeleteShow(false);
   const handleDeleteShow = () => setDeleteShow(true);
 
-  // Creating the state which contain the incomming data
-  const [APIData, setAPIData] = useState([]);
+  const [token, setToken] = useState("");
 
-  // Checking if the user is looged in and getting their email
   useEffect(() => {
     var items = null;
     items = localStorage.getItem("email");
@@ -39,15 +38,30 @@ function AgentStadium() {
     }
   });
 
-  // Function to register the stadium
-  async function registerStadium() {
+  // GET request
+  useEffect(() => {
+    axios.get(`https://localhost:7122/api/Referees`).then((response) => {
+      setRefereeData(response.data);
+    });
+  }, []);
+
+  // Function to register referee
+  async function registerReferee() {
+    const t = localStorage.getItem("token");
+    setToken(t);
+
     await axios({
       method: "POST",
-      url: "https://localhost:7122/api/Stadium/create-stadium",
+      url: "https://localhost:7122/api/Referees/addReferee",
       data: {
         name: name,
-        location: location,
-        capacity: capacity,
+        lastName: lastName,
+        experience: experience,
+        city: city,
+        position: position,
+      },
+      headers: {
+        Authorization: `bearer ${t}`,
       },
     }).then(
       (response) => {
@@ -59,30 +73,30 @@ function AgentStadium() {
     );
   }
 
-  // Sending the get request
-  useEffect(() => {
-    axios
-      .get(`https://localhost:7122/api/Stadium/get-stadium`)
-      .then((response) => {
-        setAPIData(response.data);
-      });
-  }, []);
-
-  // Sending the delete request to the respective stadium id
-  const onDelete = (id) => {
-    axios
-      .delete(`https://localhost:7122/api/Stadium/${id}`)
-      .then(window.location.reload());
-  };
-
   // Edit
   const setData = (data) => {
-    let { id, name, location, capacity } = data;
-    localStorage.setItem("ID", id);
-    localStorage.setItem("Name", name);
-    localStorage.setItem("Location", location);
-    localStorage.setItem("Capacity", capacity);
+    let { id, name, lastName, experience, city, position } = data;
+    localStorage.setItem("RId", id);
+    localStorage.setItem("RName", name);
+    localStorage.setItem("RLastName", lastName);
+    localStorage.setItem("RExperience", experience);
+    localStorage.setItem("RCity", city);
+    localStorage.setItem("RPosition", position);
   };
+
+  // Delete request
+  async function onDelete(id) {
+    const t = localStorage.getItem("token");
+    setToken(t);
+
+    await axios({
+      method: "DELETE",
+      url: `https://localhost:7122/api/Referees/${id}`,
+      headers: {
+        Authorization: `bearer ${t}`,
+      },
+    }).then(window.location.reload());
+  }
 
   return (
     <div>
@@ -92,35 +106,53 @@ function AgentStadium() {
 
           <Modal show={show} onHide={handleClose} animation={false} size='lg'>
             <Modal.Header closeButton>
-              <Modal.Title>Create League</Modal.Title>
+              <Modal.Title>Register Referee</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
               <Form>
                 <Form.Group className='mb-3'>
-                  <Form.Label>Stadium Name</Form.Label>
+                  <Form.Label>Referee Name</Form.Label>
                   <Form.Control
                     onChange={(e) => setName(e.target.value)}
                     type='text'
-                    placeholder='Enter Stadium Name'
+                    placeholder='Enter Referee Name'
                   />
                 </Form.Group>
 
                 <Form.Group className='mb-3'>
-                  <Form.Label>Stadium Location</Form.Label>
+                  <Form.Label>Referee Last Name</Form.Label>
                   <Form.Control
-                    onChange={(e) => setLocation(e.target.value)}
+                    onChange={(e) => setLastName(e.target.value)}
                     type='text'
-                    placeholder='Enter Stadium Location'
+                    placeholder='Enter Referee Last Names'
                   />
                 </Form.Group>
 
                 <Form.Group className='mb-3'>
-                  <Form.Label>Stadium Capacity</Form.Label>
+                  <Form.Label>Referee Experience</Form.Label>
                   <Form.Control
-                    onChange={(e) => setCapacity(e.target.value)}
-                    type='number'
-                    placeholder='Enter Stadium Capacity'
+                    onChange={(e) => setExperience(e.target.value)}
+                    type='text'
+                    placeholder='Enter Referee Experience'
+                  />
+                </Form.Group>
+
+                <Form.Group className='mb-3'>
+                  <Form.Label>Referee City</Form.Label>
+                  <Form.Control
+                    onChange={(e) => setCity(e.target.value)}
+                    type='text'
+                    placeholder='Enter Referee City'
+                  />
+                </Form.Group>
+
+                <Form.Group className='mb-3'>
+                  <Form.Label>Referee Position</Form.Label>
+                  <Form.Control
+                    onChange={(e) => setPosition(e.target.value)}
+                    type='text'
+                    placeholder='Enter Referee Position'
                   />
                 </Form.Group>
 
@@ -128,9 +160,9 @@ function AgentStadium() {
                   style={{ width: "auto" }}
                   variant='success'
                   type='submit'
-                  onClick={registerStadium}
+                  onClick={registerReferee}
                 >
-                  Create Stadium
+                  Register Referee
                 </Button>
               </Form>
             </Modal.Body>
@@ -140,7 +172,7 @@ function AgentStadium() {
             <Modal.Header closeButton>
               <Modal.Title>Delete</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to delete</Modal.Body>
+            <Modal.Body>Are you sure you want to delete?</Modal.Body>
             <Modal.Footer>
               <Button
                 variant='danger'
@@ -166,30 +198,35 @@ function AgentStadium() {
               variant='success'
               onClick={handleShow}
             >
-              Create Stadium
+              Create Referee
             </Button>
 
             <Table striped bordered size='sm' style={{ textAlign: "center" }}>
               <thead>
                 <tr>
-                  <th>Stadium Name</th>
-                  <th>Stadium Location</th>
-                  <th>Stadium Capacity</th>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Lastname</th>
+                  <th>Experience</th>
+                  <th>City</th>
+                  <th>Position</th>
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
               </thead>
-
               <tbody>
-                {APIData.map((data) => {
+                {RefereeData.map((data) => {
                   return (
                     <>
                       <tr>
+                        <td>{data.id}</td>
                         <td>{data.name}</td>
-                        <td>{data.location}</td>
-                        <td>{data.capacity}</td>
+                        <td>{data.lastName}</td>
+                        <td>{data.experience}</td>
+                        <td>{data.city}</td>
+                        <td>{data.position}</td>
                         <td>
-                          <Link to='/agent-edit-stadium'>
+                          <Link to='/agent-edit-referee'>
                             <Button
                               variant='success'
                               onClick={() => setData(data)}
@@ -227,4 +264,4 @@ function AgentStadium() {
   );
 }
 
-export default AgentStadium;
+export default AgentReferee;

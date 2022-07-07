@@ -6,7 +6,7 @@ import Logo from "../../images/textlogo.svg";
 import * as FaIcons from "react-icons/fa";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 import axios from "axios";
-
+import ChangePasswordAPI from "../ChangePassword";
 function SidebarAgent() {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
@@ -27,12 +27,10 @@ function SidebarAgent() {
   useEffect(() => {
     setEmail(localStorage.getItem("email"));
   }, []);
-<<<<<<< Updated upstream
-
   console.log(username);
   console.log(email);
-=======
->>>>>>> Stashed changes
+
+ 
 
   useEffect(() => {
     var items = null;
@@ -40,7 +38,6 @@ function SidebarAgent() {
     if (items != null) {
       setlogged(true);
     }
-<<<<<<< Updated upstream
     console.log("LOGGED???", logged);
   });
 
@@ -57,13 +54,29 @@ function SidebarAgent() {
         console.log("error", error);
       }
     );
-=======
   });
 
   async function pswSendEmail(e) {
     navigate("/reset-password");
     // await axios({
->>>>>>> Stashed changes
+
+    } 
+  });
+
+  async function pswSendEmail(e) {
+    navigate('/reset-password');
+    // await axios({
+    //   method: "post",
+    //   url: `https://localhost:7122/api/User/ForgetPassword?email=${email}`,
+    // }).then(
+    //   (response) => {
+    //     console.log("Email sent successfuly", response);
+    //     handleShow();
+    //   },
+    //   (error) => {
+    //     console.log("error", error);
+    //   }
+    // );
   }
 
   function handleLogout() {
@@ -71,6 +84,7 @@ function SidebarAgent() {
     localStorage.removeItem("email");
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("userId");
     window.location.reload();
   }
 
