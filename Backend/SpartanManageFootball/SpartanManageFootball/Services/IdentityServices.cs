@@ -329,7 +329,7 @@ namespace SpartanManageFootball.Services
         }
         public async Task<UserManagerResponse> AddRefereeToMatch(MatchRefereeDTO matchrefereeDTO)
         {
-            if(matchrefereeDTO == null)
+            if (matchrefereeDTO == null)
             {
                 return new UserManagerResponse
                 {
@@ -337,7 +337,7 @@ namespace SpartanManageFootball.Services
                     IsSuccess = false,
                 };
             }
-            foreach(var referee in matchrefereeDTO.RefListId)
+            foreach (var referee in matchrefereeDTO.RefListId)
             {
                 var refereeToMatch = new MatchReferee
                 {
@@ -373,6 +373,7 @@ namespace SpartanManageFootball.Services
             var listOfReferees = await _smfcontext.Referees.ToListAsync();
             var squadNames = new List<int>();
             var refereesToBeAddedToGame = new List<Referee>();
+
             //Iterating to the list to get only the names of the squads
             for (int i = 0; i < squads[0].Squads.Count; i++)
             {
@@ -388,95 +389,106 @@ namespace SpartanManageFootball.Services
                     IsSuccess = false,
                 };
             }
+            Random rnd = new Random();
+            var shuffledSquads = squadNames.OrderBy(a => rnd.Next()).ToList();
 
-            int p = 1;
-            int numberOdDays = 0;
-            bool days = true;
-            int lengthOfArray = squadNames.Count;
-            int count = 0;
-            int matchesPerWeek = lengthOfArray / 2;
-            var matches = 0;
-            if (matchesPerWeek % 2 == 0)
+            var matchesToBeAdded = new List<Match>();
+            var firstHalf = GenerateFirstHalfMatches(squadNames);
+            var secondHalf = GenerateSecondtHalfMatches(firstHalf, shuffledSquads.Count);
+
+            matchesToBeAdded.AddRange(firstHalf);
+            matchesToBeAdded.AddRange(secondHalf);
+
+            foreach (var item in matchesToBeAdded)
             {
-                matches = matchesPerWeek / 2;
-            }
-            else
-            {
-                matches = matchesPerWeek / 2 + 1;
-            }
-            for (int i = 0; i < lengthOfArray; i++)
-            {
-                for (int j = i + 1; j < lengthOfArray; j++)
+                Match match = new Match
                 {
-                    count++;
-                    DateTime d = new DateTime(2022, 7, 2, 9, 0, 0);
-                    //calendar
-                    if (!(count < matches))
-                    {
-                      
-                        if (days)
-                        {
-                            count = 0;
-                            numberOdDays += 1;
-                            days = false;
-                        }
-                        else
-                        {
-                            numberOdDays += 6;
-                            days = true;
-                            count = 1;
-                        }
-                    }
+                    HomeTeamTeamId = item.HomeTeamTeamId,
+                    AwayTeamTeamId = item.AwayTeamTeamId,
+                    MatchWeek = item.MatchWeek,
+                    Result = "",
+                    MatchDate = DateTime.UtcNow,
+                };
+                await _smfcontext.Matches.AddAsync(match);
 
+                var success = await _smfcontext.SaveChangesAsync() > 0;
+
+            }
+            return null;
+        }
+
+        private List<Match> GenerateFirstHalfMatches(List<int> squads)
+        {
+            var listOfMatches = new List<Match>();
+            var firstTeam = squads[0];
+
+            int matchWeek = 1;
+            while (listOfMatches.Count < squads.Count * (squads.Count - 1) / 2)
+            {
+                for (int i = 0; i < squads.Count; i += 2)
+                {
                     var match = new Match
                     {
-                        HomeTeamTeamId = squadNames[i],
-                        AwayTeamTeamId = squadNames[j],
-                        RefereeId = referees[0].Id,
-                        IsPlayed = false,
-                        MatchDate = d.AddDays(numberOdDays),
-                        Result = "",
+                        HomeTeamTeamId = squads[i],
+                        AwayTeamTeamId = squads[i + 1],
+                        MatchWeek = matchWeek
                     };
-                    var checkSquadNameHome = squadNames[i];
-                    var checkSquadNameAway = squadNames[j];
 
-                    //Generates referees for the games
-                    int whileIterator = 0;
-                    int refereesAdded = 0;
-                    while (refereesAdded < 5)
+                    listOfMatches.Add(match);
+
+                    if (listOfMatches.Count % (squads.Count / 2) == 0)
                     {
-                        whileIterator++;
-                        if(!(listOfReferees[whileIterator].City.Equals(checkSquadNameAway)
-                            || listOfReferees[whileIterator].City.Equals(checkSquadNameAway)))
-                        {
-                            refereesToBeAddedToGame.Add(listOfReferees[whileIterator]);
-                            refereesAdded++;
-                        }
+                        matchWeek++;
                     }
-                    var matchReferee = new MatchRefereeDTO
-                    {
-                        MatchId = match.MatchId,
-                        RefListId = refereesToBeAddedToGame
-                    };
-                    AddRefereeToMatch(matchReferee);
-                    await _smfcontext.Matches.AddAsync(match);
-
-                    var success = await _smfcontext.SaveChangesAsync() > 0;
-                    p++;
                 }
-            }
 
-            int k = 1;
-            for (int i = 0; i < lengthOfArray; i++)
-            {
-                for (int j = i + 1; j < lengthOfArray; j++)
+                for (int i = squads.Count - 1; i > 1; i--)
                 {
-                    Console.WriteLine("Loja-" + k + ": Ekipi Musafir :" + squadNames[i] + " vs " + squadNames[j] + " : Ekipi Vendas");
-                    k++;
+                    var tempSquad = squads[i - 1];
+                    squads[i - 1] = squads[i];
+                    squads[i] = tempSquad;
                 }
             }
 
-            return null;
+            for (int i = 2; i < squads.Count; i += 2)
+            {
+                var matchesFromMatchweek = listOfMatches?.Where(x => x.MatchWeek == i).ToList();
+                var matchToSwap = matchesFromMatchweek?.FirstOrDefault(x => x.HomeTeamTeamId == firstTeam);
+
+                int indexOfMatchToBeSwaped = listOfMatches.IndexOf(matchToSwap);
+
+                var match = new Match
+                {
+                    AwayTeamTeamId = matchToSwap.HomeTeamTeamId,
+                    HomeTeamTeamId = matchToSwap.AwayTeamTeamId,
+                    MatchWeek = matchToSwap.MatchWeek
+                };
+
+                listOfMatches[indexOfMatchToBeSwaped] = match;
+            }
+
+            return listOfMatches;
+        }
+
+        private List<Match> GenerateSecondtHalfMatches(List<Match> firstHalf, int numOfSquads)
+        {
+            var secondHalf = new List<Match>();
+
+            for (int i = 0; i < firstHalf.Count; i++)
+            {
+                var match = new Match
+                {
+                    HomeTeamTeamId = firstHalf[i].AwayTeamTeamId,
+                    AwayTeamTeamId = firstHalf[i].HomeTeamTeamId,
+                    MatchWeek = firstHalf[i].MatchWeek + numOfSquads - 1
+                };
+
+                secondHalf.Add(match);
+            }
+
+            return secondHalf;
         }
     }
 }
+
+
