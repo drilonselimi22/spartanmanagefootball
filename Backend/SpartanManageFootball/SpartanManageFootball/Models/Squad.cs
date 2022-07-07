@@ -23,5 +23,6 @@ namespace SpartanManageFootball.Models
         public List<League> Leagues { get; set; } 
         //User id foreign key
         public string RegisterUserId { get; set; }
+         
     }
 }

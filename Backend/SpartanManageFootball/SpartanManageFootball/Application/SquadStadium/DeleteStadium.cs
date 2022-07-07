@@ -2,15 +2,16 @@
 using SpartanManageFootball.Application.Core;
 using SpartanManageFootball.Persistence;
 
-namespace SpartanManageFootball.Application.TeamStadiums
+namespace SpartanManageFootball.Application.SquadStadium
 {
-    public class DeleteStadiums
+    public class DeleteStadium
     {
-        public class Command : IRequest<Result<Unit>>
+        public class DeleteCommand : IRequest<Result<Unit>>
         {
-            public int Id { get; set; }
+            public int StadiumId { get; set; }
         }
-        public class Handler : IRequestHandler<Command,Result<Unit>>
+
+        public class Handler : IRequestHandler<DeleteCommand, Result<Unit>>
         {
             private readonly SMFContext _context;
 
@@ -18,26 +19,25 @@ namespace SpartanManageFootball.Application.TeamStadiums
             {
                 _context = context;
             }
-
-            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(DeleteCommand request, CancellationToken cancellationToken)
             {
-                var stadium = await _context.Stadiums.FindAsync(request.Id);
+                var stadium = await _context.Stadiums.FindAsync(request.StadiumId);
 
                 if (stadium == null)
                 {
-                    return Result<Unit>.Failure("Could not find stadium with this id");
+                    return Result<Unit>.Failure("Could not find the stadium with this id.");
                 }
 
                 _context.Remove(stadium);
-                
+
                 var success = await _context.SaveChangesAsync() > 0;
-                
+
                 if (success)
                 {
                     return Result<Unit>.Success(Unit.Value);
                 }
 
-                return Result<Unit>.Failure("There was a problem saving changes");
+                return Result<Unit>.Failure("Something failed when trying to add the stadium.");
             }
         }
     }

@@ -26,6 +26,8 @@ function SidebarAdmin() {
         localStorage.removeItem("email");
         localStorage.removeItem("token");
         localStorage.removeItem("role");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("teamId");
         window.location.reload();
     }
     const showSidebar = () => setSidebar(!sidebar)
@@ -53,6 +55,7 @@ function SidebarAdmin() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu variant="dark">
                             <Dropdown.Item onClick={ChangePassword} href="/reset-password">Change password</Dropdown.Item>
+
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={handleLogout} href="/login">Logout</Dropdown.Item>
                         </Dropdown.Menu>
@@ -68,11 +71,12 @@ function SidebarAdmin() {
                     </li>
                     {AdminPages.map((item, index) => {
                         return (
-                            <li key={index} className={item.cName}>
-                                <Link to={item.path}>
+                            <li key={index} className={item.cName}> 
+                            
+                                    <Link to={item.path}>
                                     {item.icon}
                                     <span>{item.title}</span>
-                                </Link>
+                                </Link> 
                             </li>
                         )
                     })}
