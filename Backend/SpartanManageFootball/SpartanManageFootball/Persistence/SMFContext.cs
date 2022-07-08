@@ -15,12 +15,10 @@ namespace SpartanManageFootball.Persistence
         public DbSet<Referee> Referees { get; set; }
         public DbSet<Stadium> Stadiums { get; set; }
         public DbSet<Photo> Photos { get; set; }
-        
         public DbSet<League> Leagues { get; set; }
         public DbSet<Squad> Squads { get; set; }
         public DbSet<LeagueSquadDto> LeagueSquads { get; set; }
         public DbSet<MatchReferee> MatchReferee { get; set; }
-
         public DbSet<Standings> Standings { get; set; }
     }
 }

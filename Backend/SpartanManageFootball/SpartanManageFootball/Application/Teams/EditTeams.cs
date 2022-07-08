@@ -36,7 +36,7 @@ namespace SpartanManageFootball.Application.Teams
                     return Result<Squad>.Failure("Could not find this squad");
                 }
 
-                team.StadiumId = request.StadiumId ?? team.StadiumId;
+                team.StadiumIdsId = request.StadiumId ?? team.StadiumIdsId;
                 team.Name = request.Name ?? team.Name;
                 team.City = request.City ?? team.City;
                 team.isVerified = request.isVerified ?? team.isVerified;

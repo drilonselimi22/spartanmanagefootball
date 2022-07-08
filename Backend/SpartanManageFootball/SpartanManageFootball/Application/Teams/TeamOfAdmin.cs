@@ -22,7 +22,7 @@ namespace SpartanManageFootball.Application.Teams
 
             public async Task<Squad> Handle(Query request, CancellationToken cancellationToken)
             {
-                var squad = await _context.Squads.Where(x => x.RegisterUserId == request.Id).FirstOrDefaultAsync();
+                var squad = await _context.Squads.Where(x => x.RegisterUserIdsId == request.Id).FirstOrDefaultAsync();
 
                 return squad;
             }

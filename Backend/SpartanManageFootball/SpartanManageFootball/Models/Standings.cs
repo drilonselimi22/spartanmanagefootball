@@ -3,7 +3,7 @@
     public class Standings
     {
         public int id {get; set;}
-        public int SquadTeamId {get; set;}
+        public string SquadTeamName {get; set;}
         public int Leagueid {get; set;}
         public int Points { get; set;} 
         public int Wins {get; set;}

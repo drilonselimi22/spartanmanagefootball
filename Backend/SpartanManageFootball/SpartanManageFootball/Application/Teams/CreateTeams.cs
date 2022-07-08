@@ -45,14 +45,14 @@ namespace SpartanManageFootball.Application.Teams
 
                     var squad = new Squad
                     {
-                        StadiumId = request.StadiumId,
+                        StadiumIdsId = request.StadiumId,
                         SquadLogoNum = logoResult.PublicNum,
                         SquadLogoUrl = logoResult.VerifyUrl,
                         Name = request.Name,
                         City = request.City,
                         photoNum = photoResult.PublicNum,
                         photoUrl = photoResult.VerifyUrl,
-                        RegisterUserId = request.RegisterUserId,
+                        RegisterUserIdsId = request.RegisterUserId,
                     };
 
                     await _context.Squads.AddAsync(squad);

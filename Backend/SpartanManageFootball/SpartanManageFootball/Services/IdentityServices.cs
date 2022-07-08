@@ -313,7 +313,7 @@ namespace SpartanManageFootball.Services
 
         public async Task<List<Player>> GetPlayersOfSquad(int SquadTeamId)
         {
-            var players = await _smfcontext.Players.Where(x => x.SquadTeamId == SquadTeamId).ToListAsync();
+            var players = await _smfcontext.Players.Where(x => x.SquadTeamIdsTeamId == SquadTeamId).ToListAsync();
 
             return players;
         }
@@ -341,8 +341,8 @@ namespace SpartanManageFootball.Services
             {
                 var refereeToMatch = new MatchReferee
                 {
-                    IDOfMatch = matchrefereeDTO.MatchId,
-                    RefOfMatch = referee.Id
+                    IDOfMatchMatchId = matchrefereeDTO.MatchId,
+                    RefOfMatchMatchId = referee.Id
                 };
                 _smfcontext.MatchReferee.Add(refereeToMatch);
             }
@@ -360,7 +360,6 @@ namespace SpartanManageFootball.Services
                 .Include(x => x.Squads)
                 .ToListAsync();
 
-            var referees = await _smfcontext.Referees.ToListAsync();
             if (squads == null)
             {
                 return new UserManagerResponse
@@ -370,9 +369,9 @@ namespace SpartanManageFootball.Services
                 };
             }
             //string bla = squads[0].Squads[0].Name;
-            var listOfReferees = await _smfcontext.Referees.ToListAsync();
+
             var squadNames = new List<int>();
-            var refereesToBeAddedToGame = new List<Referee>();
+
 
             //Iterating to the list to get only the names of the squads
             for (int i = 0; i < squads[0].Squads.Count; i++)
@@ -389,6 +388,8 @@ namespace SpartanManageFootball.Services
                     IsSuccess = false,
                 };
             }
+
+
             Random rnd = new Random();
             var shuffledSquads = squadNames.OrderBy(a => rnd.Next()).ToList();
 
@@ -398,21 +399,57 @@ namespace SpartanManageFootball.Services
 
             matchesToBeAdded.AddRange(firstHalf);
             matchesToBeAdded.AddRange(secondHalf);
+            int numberOdDays = 0;
+            bool days = true;
+            int lengthOfArray = squadNames.Count;
+            int count = 0;
+            int matchesPerWeek = lengthOfArray / 2;
+            var matches = 0;
+
+            DateTime today = DateTime.Today;
+            int daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)today.DayOfWeek + 7) % 7;
+            DateTime d = today.AddDays(daysUntilSaturday);
+            for (int i = 0; i < lengthOfArray; i++)
+            {
+                for (int j = i + 1; j < lengthOfArray; j++)
+                {
+                    count++;
+
+                    if (!(count < matches))
+                    {
+
+                        if (days)
+                        {
+                            count = 0;
+                            numberOdDays += 1;
+                            days = false;
+                        }
+                        else
+                        {
+                            numberOdDays += 6;
+                            days = true;
+                            count = 1;
+                        }
+                    }
+
+                }
+            }
+
 
             foreach (var item in matchesToBeAdded)
             {
                 Match match = new Match
                 {
-                    HomeTeamTeamId = item.HomeTeamTeamId,
-                    AwayTeamTeamId = item.AwayTeamTeamId,
+                    HomeTeamTeamIdTeamId = item.HomeTeamTeamIdTeamId,
+                    AwayTeamTeamIdTeamId = item.AwayTeamTeamIdTeamId,
                     MatchWeek = item.MatchWeek,
-                    Result = "",
-                    MatchDate = DateTime.UtcNow,
+                    MatchDate = d.AddDays(numberOdDays),
+                    Result = null,
                 };
                 await _smfcontext.Matches.AddAsync(match);
 
                 var success = await _smfcontext.SaveChangesAsync() > 0;
-
+                await GenerateRefereesForMatches(match);
             }
             return null;
         }
@@ -429,8 +466,8 @@ namespace SpartanManageFootball.Services
                 {
                     var match = new Match
                     {
-                        HomeTeamTeamId = squads[i],
-                        AwayTeamTeamId = squads[i + 1],
+                        HomeTeamTeamIdTeamId = squads[i],
+                        AwayTeamTeamIdTeamId = squads[i + 1],
                         MatchWeek = matchWeek
                     };
 
@@ -453,14 +490,14 @@ namespace SpartanManageFootball.Services
             for (int i = 2; i < squads.Count; i += 2)
             {
                 var matchesFromMatchweek = listOfMatches?.Where(x => x.MatchWeek == i).ToList();
-                var matchToSwap = matchesFromMatchweek?.FirstOrDefault(x => x.HomeTeamTeamId == firstTeam);
+                var matchToSwap = matchesFromMatchweek?.FirstOrDefault(x => x.HomeTeamTeamIdTeamId == firstTeam);
 
                 int indexOfMatchToBeSwaped = listOfMatches.IndexOf(matchToSwap);
 
                 var match = new Match
                 {
-                    AwayTeamTeamId = matchToSwap.HomeTeamTeamId,
-                    HomeTeamTeamId = matchToSwap.AwayTeamTeamId,
+                    AwayTeamTeamIdTeamId = matchToSwap.HomeTeamTeamIdTeamId,
+                    HomeTeamTeamIdTeamId = matchToSwap.AwayTeamTeamIdTeamId,
                     MatchWeek = matchToSwap.MatchWeek
                 };
 
@@ -478,8 +515,8 @@ namespace SpartanManageFootball.Services
             {
                 var match = new Match
                 {
-                    HomeTeamTeamId = firstHalf[i].AwayTeamTeamId,
-                    AwayTeamTeamId = firstHalf[i].HomeTeamTeamId,
+                    HomeTeamTeamIdTeamId = firstHalf[i].AwayTeamTeamIdTeamId,
+                    AwayTeamTeamIdTeamId = firstHalf[i].HomeTeamTeamIdTeamId,
                     MatchWeek = firstHalf[i].MatchWeek + numOfSquads - 1
                 };
 
@@ -504,7 +541,7 @@ namespace SpartanManageFootball.Services
 
             foreach (var teams in dto)
             {
-                var team = _smfcontext.Standings.Where(x => x.SquadTeamId == teams.SquadTeamId).FirstOrDefault();
+                var team = _smfcontext.Standings.Where(x => x.SquadTeamName == teams.SquadTeamName).FirstOrDefault();
 
                 if (win)
                 {
@@ -571,7 +608,7 @@ namespace SpartanManageFootball.Services
                 //squadNames.Add();
                 var sdto = new Standings
                 {
-                    SquadTeamId = squads[0].Squads[i].TeamId,
+                    SquadTeamName = squads[0].Squads[i].Name,
                     Leagueid = leagueId,
                     Points = 0,
                     Wins = 0,
@@ -600,6 +637,53 @@ namespace SpartanManageFootball.Services
                 Message = "Something went wrong",
             };
 
+        }
+        public async Task<UserManagerResponse> GenerateRefereesForMatches(Match match)
+        {
+            var listOfReferees = await _smfcontext.Referees.ToListAsync();
+            var refereesToBeAddedToGame = new List<Referee>();
+            var HomeSquad = _smfcontext.Squads.Where(x => x.TeamId == match.HomeTeamTeamIdTeamId).FirstOrDefault();
+            var AwaySquad = _smfcontext.Squads.Where(x => x.TeamId == match.AwayTeamTeamIdTeamId).FirstOrDefault();
+            int whileIterator = 0;
+            int refereesAdded = 0;
+            while (refereesAdded < 5)
+            {
+                whileIterator++;
+                if (!(listOfReferees[whileIterator].City.Equals(HomeSquad.City)
+                    || listOfReferees[whileIterator].City.Equals(AwaySquad.City)))
+                {
+                    refereesToBeAddedToGame.Add(listOfReferees[whileIterator]);
+                    refereesAdded++;
+                    var matchReferee = new MatchRefereeDTO
+                    {
+                        MatchId = match.MatchId,
+                        RefListId = refereesToBeAddedToGame
+                    };
+                    await AddRefereeToMatch(matchReferee);
+                    await _smfcontext.Matches.AddAsync(match);
+
+                    var success = await _smfcontext.SaveChangesAsync() > 0;
+
+                }
+            }
+
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Succeded",
+            };
+        }
+
+        public async Task<List<Standings>> GetStandingsTable()
+        {
+            var result = await _smfcontext.Standings.ToListAsync();
+            return result;
+        }
+
+        public async Task<List<Match>> GetMatches()
+        {
+            var result = await _smfcontext.Matches.ToListAsync();
+            return result;
         }
     }
 }

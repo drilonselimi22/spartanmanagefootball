@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using SpartanManageFootball.DTOs;
 using SpartanManageFootball.Models;
 
@@ -31,6 +30,9 @@ namespace SpartanManageFootball.Interfaces
         Task<UserManagerResponse> GenerateGames(int id);//id is the id of the league
         Task<UserManagerResponse> AddPointsStandings(List<StandingsDTO> dto, string results);
         Task<UserManagerResponse> DefaultPointsStandings(int leaugeid);
+        Task<List<Standings>> GetStandingsTable();
+        Task<List<Match>> GetMatches();
+        Task<UserManagerResponse> GenerateRefereesForMatches(Match match);
 
     }
 }

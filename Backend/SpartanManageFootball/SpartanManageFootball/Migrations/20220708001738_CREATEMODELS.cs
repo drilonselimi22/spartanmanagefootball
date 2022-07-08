@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SpartanManageFootball.Migrations
 {
-    public partial class Init : Migration
+    public partial class CREATEMODELS : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,7 +56,7 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     LeagueId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "321213, 3"),
                     LeagueName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -69,7 +69,7 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "1232132, 213"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -82,11 +82,24 @@ namespace SpartanManageFootball.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SquadDto",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TeamId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SquadDto", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stadiums",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "100000, 99"),
+                        .Annotation("SqlServer:Identity", "1234421, 1223"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false)
@@ -222,12 +235,62 @@ namespace SpartanManageFootball.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Standings",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SquadTeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LeagueId = table.Column<int>(type: "int", nullable: false),
+                    Points = table.Column<int>(type: "int", nullable: false),
+                    Wins = table.Column<int>(type: "int", nullable: false),
+                    Losses = table.Column<int>(type: "int", nullable: false),
+                    Draws = table.Column<int>(type: "int", nullable: false),
+                    GoalsScored = table.Column<int>(type: "int", nullable: false),
+                    GoalsConceded = table.Column<int>(type: "int", nullable: false),
+                    GoalsDifference = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Standings", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Standings_Leagues_LeagueId",
+                        column: x => x.LeagueId,
+                        principalTable: "Leagues",
+                        principalColumn: "LeagueId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeagueSquads",
+                columns: table => new
+                {
+                    LeaguesLeagueIdLeagueId = table.Column<int>(type: "int", nullable: false),
+                    SquadsTeamIdid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_LeagueSquads_Leagues_LeaguesLeagueIdLeagueId",
+                        column: x => x.LeaguesLeagueIdLeagueId,
+                        principalTable: "Leagues",
+                        principalColumn: "LeagueId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LeagueSquads_SquadDto_SquadsTeamIdid",
+                        column: x => x.SquadsTeamIdid,
+                        principalTable: "SquadDto",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Squads",
                 columns: table => new
                 {
                     TeamId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "110000, 111"),
-                    StadiumId = table.Column<int>(type: "int", nullable: false),
+                        .Annotation("SqlServer:Identity", "231221, 321"),
+                    StadiumIdsId = table.Column<int>(type: "int", nullable: false),
                     SquadLogoNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SquadLogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -235,46 +298,21 @@ namespace SpartanManageFootball.Migrations
                     isVerified = table.Column<bool>(type: "bit", nullable: false),
                     photoNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     photoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RegisterUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    RegisterUserIdsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Squads", x => x.TeamId);
                     table.ForeignKey(
-                        name: "FK_Squads_AspNetUsers_RegisterUserId",
-                        column: x => x.RegisterUserId,
+                        name: "FK_Squads_AspNetUsers_RegisterUserIdsId",
+                        column: x => x.RegisterUserIdsId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Squads_Stadiums_StadiumId",
-                        column: x => x.StadiumId,
+                        name: "FK_Squads_Stadiums_StadiumIdsId",
+                        column: x => x.StadiumIdsId,
                         principalTable: "Stadiums",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeagueSquad",
-                columns: table => new
-                {
-                    LeaguesLeagueId = table.Column<int>(type: "int", nullable: false),
-                    SquadsTeamId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeagueSquad", x => new { x.LeaguesLeagueId, x.SquadsTeamId });
-                    table.ForeignKey(
-                        name: "FK_LeagueSquad_Leagues_LeaguesLeagueId",
-                        column: x => x.LeaguesLeagueId,
-                        principalTable: "Leagues",
-                        principalColumn: "LeagueId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LeagueSquad_Squads_SquadsTeamId",
-                        column: x => x.SquadsTeamId,
-                        principalTable: "Squads",
-                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -284,29 +322,25 @@ namespace SpartanManageFootball.Migrations
                 {
                     MatchId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HomeTeamTeamId = table.Column<int>(type: "int", nullable: false),
-                    AwayTeamTeamId = table.Column<int>(type: "int", nullable: false),
-                    RefereeId = table.Column<int>(type: "int", nullable: false),
-                    MatchDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    HomeTeamTeamIdTeamId = table.Column<int>(type: "int", nullable: false),
+                    AwayTeamTeamIdTeamId = table.Column<int>(type: "int", nullable: false),
+                    MatchDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Result = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPlayed = table.Column<bool>(type: "bit", nullable: false),
+                    MatchWeek = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Matches", x => x.MatchId);
                     table.ForeignKey(
-                        name: "FK_Matches_Referees_RefereeId",
-                        column: x => x.RefereeId,
-                        principalTable: "Referees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Matches_Squads_AwayTeamTeamId",
-                        column: x => x.AwayTeamTeamId,
+                        name: "FK_Matches_Squads_AwayTeamTeamIdTeamId",
+                        column: x => x.AwayTeamTeamIdTeamId,
                         principalTable: "Squads",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Matches_Squads_HomeTeamTeamId",
-                        column: x => x.HomeTeamTeamId,
+                        name: "FK_Matches_Squads_HomeTeamTeamIdTeamId",
+                        column: x => x.HomeTeamTeamIdTeamId,
                         principalTable: "Squads",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.NoAction);
@@ -317,22 +351,45 @@ namespace SpartanManageFootball.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "121321, 132"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SquadTeamId = table.Column<int>(type: "int", nullable: false)
+                    SquadTeamIdsTeamId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Players_Squads_SquadTeamId",
-                        column: x => x.SquadTeamId,
+                        name: "FK_Players_Squads_SquadTeamIdsTeamId",
+                        column: x => x.SquadTeamIdsTeamId,
                         principalTable: "Squads",
                         principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MatchReferee",
+                columns: table => new
+                {
+                    IDOfMatchMatchId = table.Column<int>(type: "int", nullable: false),
+                    RefOfMatchId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_MatchReferee_Matches_IDOfMatchMatchId",
+                        column: x => x.IDOfMatchMatchId,
+                        principalTable: "Matches",
+                        principalColumn: "MatchId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MatchReferee_Referees_RefOfMatchId",
+                        column: x => x.RefOfMatchId,
+                        principalTable: "Referees",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -376,24 +433,34 @@ namespace SpartanManageFootball.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeagueSquad_SquadsTeamId",
-                table: "LeagueSquad",
-                column: "SquadsTeamId");
+                name: "IX_LeagueSquads_LeaguesLeagueIdLeagueId",
+                table: "LeagueSquads",
+                column: "LeaguesLeagueIdLeagueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_AwayTeamTeamId",
-                table: "Matches",
-                column: "AwayTeamTeamId");
+                name: "IX_LeagueSquads_SquadsTeamIdid",
+                table: "LeagueSquads",
+                column: "SquadsTeamIdid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_HomeTeamTeamId",
+                name: "IX_Matches_AwayTeamTeamIdTeamId",
                 table: "Matches",
-                column: "HomeTeamTeamId");
+                column: "AwayTeamTeamIdTeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Matches_RefereeId",
+                name: "IX_Matches_HomeTeamTeamIdTeamId",
                 table: "Matches",
-                column: "RefereeId");
+                column: "HomeTeamTeamIdTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchReferee_IDOfMatchMatchId",
+                table: "MatchReferee",
+                column: "IDOfMatchMatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchReferee_RefOfMatchId",
+                table: "MatchReferee",
+                column: "RefOfMatchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_RegisterUserId",
@@ -401,19 +468,24 @@ namespace SpartanManageFootball.Migrations
                 column: "RegisterUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_SquadTeamId",
+                name: "IX_Players_SquadTeamIdsTeamId",
                 table: "Players",
-                column: "SquadTeamId");
+                column: "SquadTeamIdsTeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Squads_RegisterUserId",
+                name: "IX_Squads_RegisterUserIdsId",
                 table: "Squads",
-                column: "RegisterUserId");
+                column: "RegisterUserIdsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Squads_StadiumId",
+                name: "IX_Squads_StadiumIdsId",
                 table: "Squads",
-                column: "StadiumId");
+                column: "StadiumIdsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Standings_LeagueId",
+                table: "Standings",
+                column: "LeagueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -434,10 +506,10 @@ namespace SpartanManageFootball.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "LeagueSquad");
+                name: "LeagueSquads");
 
             migrationBuilder.DropTable(
-                name: "Matches");
+                name: "MatchReferee");
 
             migrationBuilder.DropTable(
                 name: "Photos");
@@ -446,13 +518,22 @@ namespace SpartanManageFootball.Migrations
                 name: "Players");
 
             migrationBuilder.DropTable(
+                name: "Standings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Leagues");
+                name: "SquadDto");
+
+            migrationBuilder.DropTable(
+                name: "Matches");
 
             migrationBuilder.DropTable(
                 name: "Referees");
+
+            migrationBuilder.DropTable(
+                name: "Leagues");
 
             migrationBuilder.DropTable(
                 name: "Squads");

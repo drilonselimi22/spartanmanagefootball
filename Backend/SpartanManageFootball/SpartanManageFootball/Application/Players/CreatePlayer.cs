@@ -47,7 +47,7 @@ namespace SpartanManageFootball.Application.Players
                         Age = request.Age,
                         Number = request.Number,
                         Position = request.Position,
-                        SquadTeamId = request.SuqadTeamId
+                        SquadTeamIdsTeamId = request.SuqadTeamId
 
                     };
 

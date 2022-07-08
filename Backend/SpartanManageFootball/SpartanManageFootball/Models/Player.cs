@@ -11,6 +11,6 @@ namespace SpartanManageFootball.Models
         public int Age { get; set; }
         public int Number { get; set; }
         public string Position { get; set; } 
-        public int SquadTeamId { get; set; } 
+        public int SquadTeamIdsTeamId { get; set; } 
     }
 }

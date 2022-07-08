@@ -41,7 +41,7 @@ namespace SpartanManageFootball.Application.Players
                 player.Age = request.Age ?? player.Age;
                 player.Number = request.Number ?? player.Number;
                 player.Position = request.Position ?? player.Position;
-                player.SquadTeamId = request.SquadTeamId ?? player.SquadTeamId;
+                player.SquadTeamIdsTeamId = request.SquadTeamId ?? player.SquadTeamIdsTeamId;
 
                 var success = await _context.SaveChangesAsync() > 0;
 

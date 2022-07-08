@@ -2,10 +2,11 @@
 
 namespace SpartanManageFootball.Models
 {
-    [Keyless]
+
     public class MatchReferee
     {
-        public int IDOfMatch { get; set; }
-        public int RefOfMatch { get; set; }
+        public int IDOfMatchId { get; set; }
+        public int IDOfMatchMatchId { get; set; }
+        public int RefOfMatchMatchId { get; set; }
     }
 }
